@@ -9,7 +9,7 @@
   <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
   <meta property="og:url" content="URL OF THE WEBSITE"/>
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/your_banner_image.png" />
+  <meta property="og:image" content="static/images/your_banner_image.png" />
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
 
@@ -25,9 +25,9 @@
 
 
   <title>Academic Project Page</title>
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-  rel="stylesheet">
+  rel="stylesheet"> -->
 
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
@@ -142,7 +142,7 @@
         type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
-        Six language model powered agents work together to mine a dimond in the Multi-Agent Crafter environment. 
+        Six language model-powered agents work together to mine a diamond in the Multi-Agent Crafter environment. This environment allows a customizable number of agents to respawn and interact with each other. The goal is to collect a diamond as quickly as possible, and the environment terminates once a diamond is found. To achieve this, agents must craft the necessary tools by following a hierarchical crafting order. Additionally, they must maintain their health to remain in the environment.
       </h2>
     </div>
   </div>
@@ -176,32 +176,30 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
       <div id="results-carousel" class="carousel results-carousel">
        <div class="item">
         <!-- Your image here -->
-        <!-- <img src="static/images/framework.pdf" alt="MY ALT TEXT"/> -->
-        <iframe src="static/images/framework.pdf" width="100%" height="600px"></iframe>
-
+        <img src="static/images/framework.jpg" style="width: 80%; height: auto; padding-left: 20%;" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          First image description.
+          Multiple agents respawn on the map and interact with each other through a memory system and communication protocol, aiming to collect a diamond as fast as possible. 
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="MY ALT TEXT"/>
+        <img src="static/images/crafter.jpg" style="width: 80%; height: auto; padding-left: 20%;" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          Second image description.
+          The environment allows a customizable number of agents to respawn in the same environment and interact with each other. The goal is to collect a diamond as soon as possible, and the environment terminates after a diamond is found. To collect a diamond, agents must craft the appropriate tools, following a hierarchical crafting order. The agents also need to maintain their health status to stay in the environment.
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="MY ALT TEXT"/>
+        <img src="static/images/memory.jpg" style="width: 80%; height: auto; padding-left: 20%;" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-         Third image description.
+         The memory system.
        </h2>
      </div>
      <div class="item">
       <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="MY ALT TEXT"/>
+      <img src="static/images/communication.jpg" style="width: 80%; height: auto; padding-left: 20%;" alt="MY ALT TEXT"/>
       <h2 class="subtitle has-text-centered">
-        Fourth image description.
+        Agents collaborate by exchanging messages to coordinate tasks and share resources. An arrow from agent i to agent j indicates that agent i is helping agent j. Communication then flows in the opposite direction. 
       </h2>
     </div>
   </div>
@@ -209,7 +207,6 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
 </div>
 </section>
 <!-- End image carousel -->
-
 
 
 
@@ -235,37 +232,73 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
 <!-- End youtube video -->
 
 
-<!-- Video carousel -->
+<!-- Result -->
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <video poster="" id="video1" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4"
-            type="video/mp4">
-          </video>
+      
+      <!-- Title at the top -->
+      <h2 class="title is-3">Result</h2>
+
+      <div class="columns is-vcentered">
+        <!-- Left Column: Text -->
+        <div class="column is-half">
+          <p class="subtitle">
+            Two agents with communication complete tasks faster than two agents without communication, who complete tasks at about the same speed as a single agent. The basic agent is slower than agents with our memory system.
+          </p>
+          <p class="subtitle">
+            Six agents with communication complete tasks faster than six agents without communication. They are also faster than two agents with communication.
+          </p>
         </div>
-        <div class="item item-video2">
-          <video poster="" id="video2" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <video poster="" id="video3" autoplay controls muted loop height="100%">\
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4"
-            type="video/mp4">
-          </video>
+
+        <!-- Right Column: Image or Video -->
+        <div class="column is-half has-text-centered">
+          <figure class="image">
+            <img src="static/images/result.png" style="width: 80%; height: auto;" alt="MY ALT TEXT">
+          </figure>
+          <!-- Uncomment if using video instead of image -->
+          <!-- <video poster="" id="video1" autoplay controls muted loop style="width: 80%;">
+            <source src="static/videos/carousel1.mp4" type="video/mp4">
+          </video> -->
         </div>
       </div>
+      
     </div>
   </div>
 </section>
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      
+
+      <div class="columns is-vcentered">
+        <!-- Left Column: Text -->
+        <div class="column is-half">
+          <p class="subtitle">
+            Two agents with communication complete tasks faster than two agents without communication, who complete tasks at about the same speed as a single agent. The basic agent is slower than agents with our memory system.
+          </p>
+          <p class="subtitle">
+            Six agents with communication complete tasks faster than six agents without communication. They are also faster than two agents with communication.
+          </p>
+        </div>
+
+        <!-- Right Column: Image or Video -->
+        <div class="column is-half has-text-centered">
+          <figure class="image">
+            <img src="static/images/result.png" style="width: 80%; height: auto;" alt="MY ALT TEXT">
+          </figure>
+          <!-- Uncomment if using video instead of image -->
+          <!-- <video poster="" id="video1" autoplay controls muted loop style="width: 80%;">
+            <source src="static/videos/carousel1.mp4" type="video/mp4">
+          </video> -->
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
 <!-- End video carousel -->
 
 
@@ -274,7 +307,7 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
 
 
 <!-- Paper poster -->
-<section class="hero is-small is-light">
+<!-- <section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
       <h2 class="title">Poster</h2>
@@ -284,7 +317,7 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
         
       </div>
     </div>
-  </section>
+  </section> -->
 <!--End paper poster -->
 
 
