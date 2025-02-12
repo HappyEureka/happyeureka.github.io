@@ -25,9 +25,9 @@
 
 
   <title>DAMCS</title>
-  <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <!-- <link rel="icon" type="ima ge/x-icon" href="static/images/favicon.ico"> -->
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-  rel="stylesheet"> -->
+  rel="stylesheet">
 
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
@@ -142,7 +142,6 @@
   </div>
 </section>
 
-
 <!-- Teaser video-->
 <section class="hero teaser">
   <div class="container is-max-desktop">
@@ -152,25 +151,76 @@
         <source src="static/videos/mcrafter.mov"
         type="video/mp4">
       </video>
-      <h2 class="subtitle has-text-centered">
+      <h2 class="subtitle">
         Six language model-powered agents work together to mine a diamond in the Multi-Agent Crafter environment. This environment allows a customizable number of agents to respawn and interact with each other. The goal is to collect a diamond as quickly as possible, and the environment terminates once a diamond is found. To achieve this, agents must craft the necessary tools by following a hierarchical crafting order. Additionally, they must maintain their health to remain in the environment.
       </h2>
     </div>
   </div>
 </section>
+
 <!-- End teaser video -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">What does our framework do?</h2>
+          <div class="content has-text-justified">
+            <p>We propose <strong>Decentralized Adaptive Knowledge Graph Memory and Structured Communication System (DAMCS)</strong> in a novel <strong>Multi-agent Crafter environment (MAC)</strong>. Our approach is built on three key innovations:</p>
+            <ul>
+                <li>
+                    <strong>Multi-Agent Crafter (MAC) Benchmark:</strong> 
+                    We introduce MAC, an open-world testbed for multi-agent cooperation, extending 
+                    <a href="https://github.com/danijar/crafter" target="_blank" style="color: #1E90FF">Crafter</a>. It provides a 
+                    <em>realistic platform for structured agent communication, coordination, and task allocation.</em>
+                </li>
+                <li>
+                    <strong>Decentralized Adaptive Knowledge Graph Memory (A-KGMS):</strong> 
+                    A hierarchical memory system that enables agents to <em>store, retrieve, and adapt knowledge dynamically</em>, 
+                    enhancing long-term planning and execution.
+                </li>
+                <li>
+                    <strong>Structured Communication System (S-CS):</strong> 
+                    A structured messaging framework that <em>reduces redundant communication</em> while ensuring efficient 
+                    information sharing among agents.
+                </li>
+            </ul>
+
+            <p>
+                DAMCS integrates <strong>A-KGMS</strong> and <strong>S-CS</strong> to improve long-term collaboration, reducing redundant 
+                actions and enhancing role allocation in cooperative tasks. Evaluations using <strong>MAC</strong> show that 
+                <strong>DAMCS outperforms baselines</strong>, cutting task completion steps by up to <strong>74%</strong> compared to 
+                single-agent scenarios.
+            </p>
+
+            <p>
+                Our framework builds upon recent advancements in LLM-powered agents, such as 
+                <a href="https://arxiv.org/abs/2304.03442" target="_blank" style="color: #1E90FF">Generative Agents</a>, 
+                to enhance decentralized multi-agent cooperation.
+            </p>
+
+            <p>
+                By enabling agents to <em>autonomously plan, coordinate, and optimize communication</em>, 
+                <strong>DAMCS advances scalable, decentralized LLM-powered multi-agent systems for real-world applications.</strong>
+            </p>
+
+
+            
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <!-- Paper abstract -->
-<section class="section hero is-light">
+<section class="section hero">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Developing intelligent agents for long-term cooperation in dynamic open-world scenarios is a major challenge in multi-agent systems. Traditional Multi-agent Reinforcement Learning (MARL) frameworks like centralized training decentralized execution (CTDE) struggle with scalability and flexibility. They require centralized long-term planning, which is difficult without custom reward functions, and face challenges in processing multi-modal data. CTDE approaches also assume fixed cooperation strategies, making them impractical in dynamic environments where agents need to adapt and plan independently.
-To address decentralized multi-agent cooperation, we propose Decentralized Adaptive Knowledge Graph Memory and Structured Communication System (DAMCS) in a novel Multi-agent Crafter environment. Our generative agents, powered by Large Language Models (LLMs), are more scalable than traditional MARL agents by leveraging external knowledge and language for long-term planning and reasoning. 
-Instead of fully sharing information from all past experiences, DAMCS introduces a multi-modal memory system organized as a hierarchical knowledge graph and a structured communication protocol to optimize agent cooperation. This allows agents to reason from past interactions and share relevant information efficiently. Experiments on novel multi-agent open-world tasks show that DAMCS outperforms both MARL and LLM baselines in task efficiency and collaboration. Compared to single-agent scenarios, the two-agent scenario achieves the same goal with 63% fewer steps, and the six-agent scenario with 74% fewer steps, highlighting the importance of adaptive memory and structured communication in achieving long-term goals.
+            Developing intelligent agents for long-term cooperation in dynamic open-world scenarios is a major challenge in multi-agent systems. Traditional Multi-agent Reinforcement Learning (MARL) frameworks like centralized training decentralized execution (CTDE) struggle with scalability and flexibility. They require centralized long-term planning, which is difficult without custom reward functions, and face challenges in processing multi-modal data. CTDE approaches also assume fixed cooperation strategies, making them impractical in dynamic environments where agents need to adapt and plan independently. To address decentralized multi-agent cooperation, we propose Decentralized Adaptive Knowledge Graph Memory and Structured Communication System (DAMCS) in a novel Multi-agent Crafter environment. Our generative agents, powered by Large Language Models (LLMs), are more scalable than traditional MARL agents by leveraging external knowledge and language for long-term planning and reasoning. Instead of fully sharing information from all past experiences, DAMCS introduces a multi-modal memory system organized as a hierarchical knowledge graph and a structured communication protocol to optimize agent cooperation. This allows agents to reason from past interactions and share relevant information efficiently. Experiments on novel multi-agent open-world tasks show that DAMCS outperforms both MARL and LLM baselines in task efficiency and collaboration. Compared to single-agent scenarios, the two-agent scenario achieves the same goal with 63% fewer steps, and the six-agent scenario with 74% fewer steps, highlighting the importance of adaptive memory and structured communication in achieving long-term goals.
           </p>
         </div>
       </div>
@@ -181,7 +231,7 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
 
 
 <!-- Image carousel -->
-<section class="hero is-small">
+<section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
       <div id="results-carousel" class="carousel results-carousel">
@@ -222,7 +272,7 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
 
 
 <!-- Youtube video -->
-<section class="hero is-small is-light">
+<section class="hero is-small">
   <div class="hero-body">
     <div class="container">
       <!-- Paper video. -->
@@ -244,16 +294,44 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
 
 
 <!-- Result -->
-<section class="hero is-small">
+<section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
-      
+
       <!-- Title at the top -->
-      <h2 class="title is-3">Result</h2>
 
       <div class="columns is-vcentered">
         <!-- Left Column: Text -->
         <div class="column is-half">
+
+          <h2 class="title is-3">RL Training</h2>
+          <p class="subtitle">
+            The figures showcase the training performance of reinforcement learning (RL) agents in a complex environment. The first figure presents a single-agent trained using Proximal Policy Optimization (PPO), while the second figure illustrates a multi-agent setup using Multi-Agent Deep Deterministic Policy Gradient (MADDPG). In both cases, the agents initially improve their rewards, but they soon hit a bottleneck as further progress requires learning advanced skills in a hierarchical order. The RL agents struggle to efficiently acquire these skills, leading to slow and unstable learning in this complex environment.
+        </div>
+
+        <!-- Right Column: Image or Video -->
+        <div class="column is-half has-text-centered">
+          <figure class="image">
+            <img src="static/images/single-agent.png" style="width: 100%; height: auto;" alt="MY ALT TEXT">
+            <img src="static/images/multi-agent.png" style="width: 100%; height: auto;" alt="MY ALT TEXT">
+          </figure>
+          <!-- Uncomment if using video instead of image -->
+          <!-- <video poster="" id="video1" autoplay controls muted loop style="width: 80%;">
+            <source src="static/videos/carousel1.mp4" type="video/mp4">
+          </video> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <!-- Left Column: Text -->
+        <div class="column is-half">
+          <h3 class="title is-3">Task Completion Time</h3>
           <p class="subtitle">
             Two agents with communication complete tasks faster than two agents without communication, who complete tasks at about the same speed as a single agent. The basic agent is slower than agents with our memory system.
           </p>
@@ -265,7 +343,7 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
         <!-- Right Column: Image or Video -->
         <div class="column is-half has-text-centered">
           <figure class="image">
-            <img src="static/images/result.png" style="width: 80%; height: auto;" alt="MY ALT TEXT">
+            <img src="static/images/result.png" style="width: 100%; height: auto;" alt="MY ALT TEXT">
           </figure>
           <!-- Uncomment if using video instead of image -->
           <!-- <video poster="" id="video1" autoplay controls muted loop style="width: 80%;">
@@ -273,28 +351,33 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
           </video> -->
         </div>
       </div>
-      
     </div>
   </div>
 </section>
+<!-- End video carousel -->
 
-<section class="hero is-small">
+<section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
-      
-
       <div class="columns is-vcentered">
         <!-- Left Column: Text -->
         <div class="column is-half">
+          <h3 class="title is-3">Memory of Each Agent in Gameplay</h3>
           <p class="subtitle">
-            The figures showcase the training performance of reinforcement learning (RL) agents in a complex environment. The first figure presents a single-agent trained using Proximal Policy Optimization (PPO), while the second figure illustrates a multi-agent setup using Multi-Agent Deep Deterministic Policy Gradient (MADDPG). In both cases, the agents initially improve their rewards, but they soon hit a bottleneck as further progress requires learning advanced skills in a hierarchical order. The RL agents struggle to efficiently acquire these skills, leading to slow and unstable learning in this complex environment.
+            While each agent independently controls its own behavior and maintains its own memory, the Structured Communication System ensures they remain aware of others’ progress, enabling timely and adaptive cooperation.
+          </p>
+          <p class="subtitle">
+            Agent 0, responsible for tool crafting, follows a sequential memory structure, reflecting hierarchical goal progression. Agent 1, tasked with assisting Agent 0, develops clustered memories centered on crafting and resource gathering, helping Agent 0 with its needs. Similarly, Agent 2 supports Agent 1, with memory clusters focused on cooperative material collection and crafting tasks. These agents dynamically adjust their strategies based on shared information in a decentralized manner.
+          </p>
+          <p class="subtitle">
+            Agents 3 and 4, focused on resource sharing, exhibit simpler, less interconnected memory structures since their role is primarily to collect and distribute materials rather than craft tools. Agent 5, which monitors the overall team’s progress, integrates information from all agents and determines when to transition toward diamond collection. The S-CS plays a crucial role in shaping these memory patterns. 
+          </p>
         </div>
 
         <!-- Right Column: Image or Video -->
         <div class="column is-half has-text-centered">
           <figure class="image">
-            <img src="static/images/single-agent.png" style="width: 80%; height: auto;" alt="MY ALT TEXT">
-            <img src="static/images/multi-agent.png" style="width: 80%; height: auto;" alt="MY ALT TEXT">
+            <img src="static/images/memory_of_each_agent.png" style="width: 100%; height: auto;" alt="MY ALT TEXT">
           </figure>
           <!-- Uncomment if using video instead of image -->
           <!-- <video poster="" id="video1" autoplay controls muted loop style="width: 80%;">
@@ -302,38 +385,25 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
           </video> -->
         </div>
       </div>
-      
     </div>
   </div>
 </section>
-
-<!-- End video carousel -->
-
-
-
-
-
-
-<!-- Paper poster -->
-<!-- <section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title">Poster</h2>
-
-      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
-          </iframe>
-        
-      </div>
-    </div>
-  </section> -->
-<!--End paper poster -->
-
 
 <!--BibTex citation -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
-      <pre><code>BibTex Code Here</code></pre>
+      <pre><code>
+        @misc{yang2025damcs,
+          title={LLM-Powered Decentralized Generative Agents with Adaptive Hierarchical Knowledge Graph for Cooperative Planning}, 
+          author={Hanqing Yang and Jingdi Chen and Marie Siew and Tania Lorido-Botran and Carlee Joe-Wong},
+          year={2025},
+          eprint={2502.05453},
+          archivePrefix={arXiv},
+          primaryClass={cs.AI},
+          url={https://arxiv.org/abs/2502.05453}, 
+        }
+      </code></pre>
     </div>
 </section>
 <!--End BibTex citation -->
@@ -344,13 +414,9 @@ Instead of fully sharing information from all past experiences, DAMCS introduces
     <div class="columns is-centered">
       <div class="column is-8">
         <div class="content">
-
           <p>
             This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
-
         </div>
       </div>
     </div>
