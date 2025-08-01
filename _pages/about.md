@@ -9,7 +9,7 @@ redirect_from:
 
 # Hanqing Yang
 
-I am a Ph.D. student in [Electrical and Computer Engineering](https://www.ece.cmu.edu/) at [Carnegie Mellon University](https://www.cmu.edu), where I am fortunate to work with [Professor Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/) in the [LIONS research group](https://research.ece.cmu.edu/lions/). My research focuses on the design of intelligent and cooperative multi-agent systems capable of making autonomous decisions at scale.
+I am a Ph.D. student in [Electrical and Computer Engineering](https://www.ece.cmu.edu/) at [Carnegie Mellon University](https://www.cmu.edu), where I am fortunate to work with [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/) in the [LIONS research group](https://research.ece.cmu.edu/lions/). My research focuses on the design of intelligent and cooperative multi-agent systems capable of making autonomous decisions at scale. Before coming to CMU, I had the valuable opportunity to assist with research projects in AI for healthcare in [CPSL](https://wsn.cse.wustl.edu/index.php/Cyber-Physical_Systems_Laboratory) at Washington University in St. Louis, advised by [Prof. Chenyang Lu](https://www.cse.wustl.edu/~lu/).
 
 ## Education
 
@@ -24,10 +24,6 @@ My research interests span several areas of artificial intelligence and multi-ag
 - **Scalable multi-agent systems** – large-scale cooperative systems, coordination and dynamic communication among agents
 - **Embodied and generative agents** – autonomous agents (often powered by LLMs) with collective reasoning, cross-domain generalization, and secure decentralized operation
 - **Human-agent teaming** – interpretability of AI decisions, human feedback integration, human–AI interaction, and trustworthiness in collaborative settings
-
-## Research and Publications
-
-My research is driven by a passion for developing cooperative AI through multi-agent systems and large language model (LLM)-based agents. I am particularly interested in how large-scale autonomous agents can collaborate with each other and with human teammates to solve complex problems. I have co-authored several research publications in these areas – for example, I helped develop an LLM-powered decentralized generative agent framework for cooperative planning. My work has been presented at academic venues such as AI conferences and workshops (including an AAAI 2025 workshop), and it reflects an interdisciplinary approach to multi-agent learning and human-in-the-loop systems.
 
 ## Teaching Experience
 
