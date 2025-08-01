@@ -26,7 +26,7 @@ author:
   name             : "Hanqing Yang"
   pronouns         : # example: "she/her"
   bio              : "PhD Student in ECE at CMU"
-  location         : "Porter Hall, Carnegie Mellon University, 4815 Frew St, Pittsburgh, PA 15213"
+  location         : #
   employer         : "Carnegie Mellon University"
   uri              : # URL
   email            : "hanqing3@andrew.cmu.edu"
@@ -37,7 +37,7 @@ author:
   googlescholar    : "https://scholar.google.com/citations?hl=en&user=HnhN3tYAAAAJ"
   inspire-hep      : # URL
   impactstory      : # URL
-  orcid            : "http://orcid.org/yourorcidurl"
+  orcid            : # "http://orcid.org/yourorcidurl"
   semantic         : # URL
   pubmed           : # URL
   researchgate     : # URL
@@ -62,7 +62,7 @@ author:
   keybase          : # Username
   instagram        : # Username
   lastfm           : # Username
-  linkedin         : "www.linkedin.com/in/hanqing-yang-36959a346"
+  linkedin         : "hanqing-yang-36959a346"
   mastodon         : # URL
   medium           : # URL
   pinterest        : # Username
