@@ -14,7 +14,7 @@ I am a Ph.D. student in Electrical and Computer Engineering at Carnegie Mellon U
 ## Education
 
 - **Ph.D. Student** – Electrical and Computer Engineering, Carnegie Mellon University (2025–Present)
-- **M.S.** – Artificial Intelligence Engineering (Electrical & Computer Engineering), Carnegie Mellon University (2024)
+- **M.S.** – Electrical and Computer Engineering, Carnegie Mellon University (2024)
 - **B.S.** – Computer Engineering and Computer Science (dual degree), Washington University in St. Louis (2023)
 
 ## Research Interests
