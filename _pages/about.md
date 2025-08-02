@@ -9,7 +9,7 @@ redirect_from:
 
 # Hanqing Yang
 
-I am a Ph.D. student in Electrical and Computer Engineering at Carnegie Mellon University, where I am fortunate to work with [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/) in the [LIONS research group](https://research.ece.cmu.edu/lions/). My research focuses on the design of intelligent and cooperative multi-agent systems capable of making autonomous decisions at scale. Before coming to CMU, I had the valuable opportunity to assist with research projects in AI for healthcare in [CPSL](https://wsn.cse.wustl.edu/index.php/Cyber-Physical_Systems_Laboratory) at Washington University in St. Louis, advised by [Prof. Chenyang Lu](https://www.cse.wustl.edu/~lu/).
+I am a Ph.D. student in Electrical and Computer Engineering at Carnegie Mellon University, where I am fortunate to work with [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/) in the [LIONS research group](https://research.ece.cmu.edu/lions/). My research focuses on the design of intelligent and cooperative multi-agent systems capable of making autonomous decisions at scale. Before coming to CMU, I had the opportunity to assist with research projects in AI for healthcare in [CPSL](https://wsn.cse.wustl.edu/index.php/Cyber-Physical_Systems_Laboratory) at Washington University in St. Louis, advised by [Prof. Chenyang Lu](https://www.cse.wustl.edu/~lu/).
 
 ## Education
 
