@@ -19,11 +19,11 @@ I am a Ph.D. student in Electrical and Computer Engineering at Carnegie Mellon U
 
 ## Research Interests
 
-My research interests span several areas of artificial intelligence and multi-agent systems. In particular, I’m passionate about:
+My research interests span several areas of artificial intelligence and multi-agent systems, with a focus on cooperation and robustness at scale. I am particularly passionate about:
 
-- **Scalable multi-agent systems** – large-scale cooperative systems, coordination and dynamic communication among agents
-- **Embodied and generative agents** – autonomous agents (often powered by LLMs) with collective reasoning, cross-domain generalization, and secure decentralized operation
-- **Human-agent teaming** – interpretability of AI decisions, human feedback integration, human–AI interaction, and trustworthiness in collaborative settings
+- **Scalable multi-agent systems** – large-scale cooperative systems, adaptive communication, evaluation of cooperative intelligence
+- **Embodied and generative agents** – autonomous agents (often powered by LLMs) in embodied environments, collective reasoning, cross-domain generalization, decentralized agents
+- **Human-agent teaming** – interpretability of AI decisions, human feedback integration, human–AI interaction, trustworthiness in collaborative settings
 
 ## Teaching Experience
 
