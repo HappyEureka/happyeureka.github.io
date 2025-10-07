@@ -1,45 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
-  <!-- Replace the content tag with appropriate information -->
-  <meta name="description" content="A collaborative multi-agent block-pushing environment for collective planning with LLM agents.">
-  <meta property="og:title" content="CUBE: Collaborative Multi-Agent Block-Pushing Environment for LLM Agents"/>
-  <meta property="og:description" content="A collaborative multi-agent block-pushing environment for collective planning with LLM agents."/>
-  <meta property="og:url" content="https://happyeureka.github.io/cube/"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <!-- <meta property="og:image" content="static/images/your_banner_image.png" /> -->
-  <!-- <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/> -->
+  <!-- ===== Social / SEO ===== -->
+  <title>CUBE: Collaborative Multi‑Agent Block‑Pushing Environment</title>
+  <meta name="description" content="CUBE is a lightweight, scalable, and interpretable environment for collective planning and cooperative evaluation of LLM and RL agents."/>
+  <meta name="keywords" content="CUBE, multi-agent, block pushing, LLM agents, symbolic planning, reinforcement learning, PettingZoo, cooperative planning" />
 
+  <meta property="og:title" content="CUBE: Collaborative Multi‑Agent Block‑Pushing Environment" />
+  <meta property="og:description" content="A scalable environment blending symbolic actions and embodied interaction for cooperative agents." />
+  <meta property="og:url" content="https://happyeureka.github.io/cube/" />
+  <!-- Update this to your banner once available -->
+  <meta property="og:image" content="static/images/banner_cube.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-  <meta name="twitter:title" content="CUBE: Collaborative Multi-Agent Block-Pushing Environment for LLM Agents">
-  <meta name="twitter:description" content="A collaborative multi-agent block-pushing environment for collective planning with LLM agents.">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <!-- Keywords for your paper to be indexed by-->
-  <meta name="keywords" content="Multi-Agent Systems, LLM Agents, Large Language Models, Embodied Environment">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CUBE: Collaborative Multi‑Agent Block‑Pushing Environment" />
+  <meta name="twitter:description" content="Lightweight, scalable benchmark for cooperative LLM/RL agents with symbolic + primitive actions." />
+  <meta name="twitter:image" content="static/images/banner_cube_twitter.png" />
 
+  <!-- ===== Fonts & Styles ===== -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,700|Castoro:400,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="static/css/bulma.min.css" />
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css" />
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css" />
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="static/css/index.css" />
 
-  <title>CUBE</title>
-  <!-- <link rel="icon" type="ima ge/x-icon" href="static/images/favicon.ico"> -->
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-  rel="stylesheet">
-
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-
+  <!-- ===== Scripts ===== -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
@@ -47,14 +40,15 @@
 </head>
 <body>
 
-
-  <section class="hero">
+  <!-- ================== Hero ================== -->
+  <section class="hero is-light">
     <div class="hero-body">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">CUBE: Collaborative Multi-Agent Block-Pushing Environment for LLM Agents</h1>
-            <div class="is-size-5 publication-authors">
+            <h1 class="title is-1 publication-title">CUBE: Collaborative Multi‑Agent Block‑Pushing Environment for Collective Planning with LLM Agents</h1>
+
+            <p class="is-size-5 publication-authors">
               <span class="author-block">
                 <a href="https://happyeureka.github.io/" target="_blank">Hanqing Yang</a><sup>*1</sup>,
               </span>
@@ -67,304 +61,327 @@
               <span class="author-block">
                 <a href="https://www.andrew.cmu.edu/user/cjoewong/" target="_blank">Carlee Joe-Wong</a><sup>1</sup>
               </span>
-            </div>
-
-            <div class="is-size-6 has-text-centered" style="margin-top: 0.5em;">
-              <small><em><sup>*</sup> Equal contribution &nbsp;&nbsp; <sup>†</sup> Work done during an internship at Carnegie Mellon University</em></small>
-            </div>
-
+            </p>
 
             <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <sup>1</sup> <a href="https://www.cmu.edu/" target="_blank">Carnegie Mellon University</a><br>
-                <sup>2</sup> <a href="https://www.usc.edu/" target="_blank">University of Southern California</a><br>
-                <!--<sup>1</sup> Carnegie Mellon University<br><sup>2</sup> Singapore University of Technology and Design<br><sup>3</sup> Roblox<br><sup>4</sup> Northeastern University<br>-->
-              </span><!--Conferance name and year</span>-->
-              <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>-->
+                <span class="author-block">
+                    <sup>1</sup><a href="https://www.cmu.edu/" target="_blank">Carnegie Mellon University</a><br>
+                    <sup>2</sup><a href="https://www.usc.edu/" target="_blank">University of Southern California</a><br>
+                    NeurIPS 2025 Workshop: Scaling Environments for Agents (SEA)
+                </span>
+                <span class="eql-cntrb">
+                    <small><br><sup>*</sup>Equal Contribution &nbsp;&nbsp; <sup>†</sup> Work done during an internship at Carnegie Mellon University</small>
+                </span>
             </div>
 
-                  <div class="column has-text-centered">
-                    <div class="publication-links">
-                         <!-- Arxiv PDF link -->
-                      <!-- <span class="link-block">
-                        <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
-                        class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon">
-                          <i class="fas fa-file-pdf"></i>
-                        </span>
-                        <span>Paper</span>
-                      </a>
-                    </span> -->
 
-                    <!-- Supplementary PDF link -->
-                    <!-- <span class="link-block">
-                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span>Supplementary</span>
-                    </a>
-                  </span>  -->
-
-                  <!-- New Github link -->
-                  <!-- <span class="link-block">
-                    <a href="https://github.com/13RENDA/Mcrafter_LLM_Agent" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fab fa-github"></i>
-                      </span>
-                      <span>Code (New)</span>
-                    </a>
-                  </span> -->
-
-                  <!-- Legacy Github link (fading out) -->
-                  <span class="link-block">
-                    <a href="https://github.com/13RENDA/CUBE.git" target="_blank"
-                    class="external-link button is-normal is-rounded is-light">
-                      <span class="icon">
-                        <i class="fab fa-github"></i>
-                      </span>
-                      <span>Code [coming soon]</span>
-                    </a>
-                  </span>
-                  <!-- Github link -->
-                  <!-- <span class="link-block">
-                    <a href="https://github.com/HappyEureka/mcrafter.git" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span> -->
-
-                <!-- ArXiv abstract Link -->
-                <span class="link-block">
-                  <a href="" target="_blank"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv [coming soon]</span>
+            <div class="publication-links" style="margin-top:1rem">
+              <!-- Primary code / project links; update targets as needed -->
+              <span class="link-block">
+                <a href="#" target="_blank" class="external-link button is-normal is-rounded is-light">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code (coming soon)</span>
+                </a>
+              </span>
+              <!-- Optional paper link; replace with arXiv/PDF if public -->
+              <span class="link-block">
+                <a href="static/pdfs/cube_paper.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>Paper (Coming Soon)</span>
                 </a>
               </span>
             </div>
+
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Teaser video-->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      
-      <div style="display: flex; justify-content: center; align-items: center;">
-        <img src="static/images/n4.png" style="width: 50%; height: auto;" alt="MY ALT TEXT">
-      </div>
-      <!-- Your video here -->
-      <!-- <video poster="" id="tree" autoplay controls muted loop height="100%">
-        <source src="static/videos/n4.png" type="video/mp4">
-      </video> -->
-      <h2 class="subtitle">CUBE is a scalable environment where agent count, grid size, and block distribution can be varied to control task complexity. A single parameter n defines configurations, with larger values creating harder settings. This provides a clear curriculum from simple to large-scale coordination, making CUBE a flexible platform for evaluating algorithms that combine symbolic reasoning and embodied multi-agent interaction.</h2>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== WHAT / OVERVIEW ===================== -->
-<section class="section hero">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">What is CUBE?</h2>
-        <div class="content has-text-justified">
-          <p>
-            CUBE is a lightweight, embodied grid world for studying cooperative multi-agent behavior with both RL and LLM agents. It combines <em>primitive block-pushing</em> dynamics with a <em>symbolic action vocabulary</em> and a library of <em>symbolic concepts</em>, enabling interpretable planning, synchronized pushing, and customized feedback at per-agent and team levels. :contentReference[oaicite:0]{index=0}
-          </p>
-
-          <ul>
-            <li><strong>Dual interface:</strong> primitive actions for RL pipelines and symbolic actions/observations for LLM planners. :contentReference[oaicite:1]{index=1}</li>
-            <li><strong>Single scaling parameter <code>n</code>:</strong> jointly controls agent count, block weights, and grid size, yielding a transparent difficulty curriculum. :contentReference[oaicite:2]{index=2}</li>
-            <li><strong>Symbolic concepts:</strong> reusable functions (e.g., alignment, quorum, progress) to design evaluation and feedback without changing core mechanics. :contentReference[oaicite:3]{index=3}</li>
-            <li><strong>Efficient & portable:</strong> native Python with Numba; scales to hundreds of agents on a single CPU core. :contentReference[oaicite:4]{index=4}</li>
-          </ul>
-
-          <figure class="image is-3by2" style="margin-bottom:1.5rem;">
-            <img src="static/images/cube_overview.png" alt="CUBE overview">
-            <figcaption class="has-text-centered">
-              Scaling mechanism and example layout (see diagrams on p.2 of the paper). :contentReference[oaicite:5]{index=5}
-            </figcaption>
-          </figure>
+  <!-- ================== Teaser ================== -->
+  <section class="hero">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <!-- <video id="teaser" autoplay controls muted loop style="width:100%; max-height:520px;">
+          <source src="static/videos/teaser.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video> -->
+        <div style="width:100%; max-height:520px; overflow:hidden; display:flex; justify-content:center; align-items:center;">
+            <img src="static/videos/teaser.gif" alt="CUBE Teaser"
+             style="width:auto; height:520px; object-fit:cover; object-position:center 50%;" />
         </div>
+        <h2 style="margin-top:1rem">
+          CUBE is a grid‑world where teams coordinate to push weighted blocks into a goal zone. A single
+          scaling parameter <em>n</em> jointly determines team size, block weights, and grid size, creating a transparent
+          curriculum from small to large‑scale cooperation.
+          Each panel shows a snapshot of a cooperative block-pushing scenario at increasing scales (<em>n</em> = 2 to 256), under a simple <strong><em>always-move-right</em></strong> agent policy.
+        </h2>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ===================== ABSTRACT ===================== -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            We introduce CUBE, a cooperative block-pushing testbed that blends embodied dynamics with symbolic structure. Primitive pushes are wrapped into interpretable symbolic actions and paired with symbolic concepts for per-agent and team-level feedback. CUBE’s single parameter <em>n</em> scales agents, block weights, and grid size, creating a transparent curriculum from minimal to large-scale coordination. The environment supports both RL and LLM agents and runs efficiently on commodity CPUs. :contentReference[oaicite:6]{index=6}
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== IMAGE / RESULTS CAROUSEL ===================== -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-
-        <div class="item">
-          <img src="static/images/cube_scaling.png" style="width:80%;height:auto;padding-left:20%;" alt="Scaling illustration"/>
-          <h2 class="subtitle has-text-centered">
-            Scaling with <em>n</em>: increases agents, block spectrum/weights, and grid size (diagram akin to p.2). :contentReference[oaicite:7]{index=7}
-          </h2>
-        </div>
-
-        <div class="item">
-          <img src="static/images/cube_symbolic_actions.png" style="width:80%;height:auto;padding-left:20%;" alt="Symbolic actions"/>
-          <h2 class="subtitle has-text-centered">
-            Symbolic actions (e.g., <code>MOVETOBLOCK</code>, <code>RENDEZVOUS</code>, <code>PUSH</code>) compile to primitives for synchronized pushing (Table on p.6). :contentReference[oaicite:8]{index=8}
-          </h2>
-        </div>
-
-        <div class="item">
-          <img src="static/images/cube_concepts.png" style="width:80%;height:auto;padding-left:20%;" alt="Symbolic concepts"/>
-          <h2 class="subtitle has-text-centered">
-            Symbolic concepts (alignment, quorum, progress, etc.) support custom feedback and metrics (Table on p.7). :contentReference[oaicite:9]{index=9}
-          </h2>
-        </div>
-
-        <div class="item">
-          <img src="static/images/cube_scalability.png" style="width:80%;height:auto;padding-left:20%;" alt="Scalability"/>
-          <h2 class="subtitle has-text-centered">
-            Lightweight and scalable: sub-ms steps at small scales; under ~0.05s/action and &lt;1GB at n=256 (Fig. 3–4). :contentReference[oaicite:10]{index=10}
-          </h2>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== VIDEO (OPTIONAL) ===================== -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Video Presentation</h2>
+  <!-- ================== Overview ================== -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <div class="publication-video">
-            <!-- Replace with your YouTube ID -->
-            <iframe src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <h2 class="title is-3">What is CUBE?</h2>
+          <div class="content has-text-justified">
+            <p>
+              CUBE is a lightweight, portable, and scalable multi-agent environment that unifies
+              <em>symbolic reasoning</em> with <em>embodied interaction</em>. It exposes both primitive grid actions
+              (UP, DOWN, LEFT, RIGHT, STAY) and a symbolic action library (e.g., <code>MOVETOBLOCK</code>,
+              <code>RENDEZVOUS</code>, <code>PUSH</code>, <code>WAIT</code>), enabling LLM-based planners, RL agents, and
+              hybrid methods to operate within the same task.
+            </p>
+            <ul>
+              <li>
+                <strong>Embodied multi-agent cooperation:</strong> 
+                Agents collaborate in a 2D grid to push weighted blocks into a goal zone, 
+                subject to embodied constraints such as <em>collisions</em>, <em>congestion</em>, and <em>block-chains</em>. 
+                These spatial dependencies make cooperation both necessary and measurable, 
+                as heavier blocks demand greater synchronization and coordination.
+              </li>
+              <li>
+                <strong>Lightweight, portable, and scalable:</strong> 
+                Implemented in Python with Numba acceleration, CUBE runs efficiently with hundreds of agents on a single CPU core, 
+                supporting rapid experimentation and large-scale benchmarking.
+              </li>
+              <li>
+                <strong>Dual-layer design:</strong> 
+                CUBE couples a <strong>symbolic layer</strong> and a <strong>vector-based layer</strong> across observation, action, and feedback channels.  
+                This architecture integrates symbolic planning with low-level state representations, enabling scalable and interpretable approaches to multi-agent coordination.
+              </li>
+              <li>
+                <strong>Fair benchmarking:</strong> 
+                A single parameter, <code>n</code>, determines agent count, grid size, and block distribution, 
+                yielding comparable cooperative difficulty for the same <code>n</code> and progressively harder coordination as <code>n</code> increases.  
+                This creates a transparent, scalable curriculum for evaluating multi-agent cooperation.
+              </li>
+
+            </ul>
+
+
+
+            <figure class="image " style="margin-bottom: 1.25rem;">
+              <img src="static/images/n5.jpg" alt="CUBE overview and scaling diagram" />
+            </figure>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ===================== RESULTS / BASELINES ===================== -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div class="columns is-vcentered">
-
-        <div class="column is-half">
-          <h2 class="title is-3">Baselines</h2>
-          <p class="subtitle">
-            A simple heuristic planner reliably completes blocks but can deadlock under congestion; naive zero-shot LLM agents (e.g., gpt-4o, gpt-4o-mini) can produce executable symbolic plans yet are less stable and efficient as coordination scales. (Figures 6–7). :contentReference[oaicite:11]{index=11}
-          </p>
-          <p class="subtitle">
-            Takeaway: symbolic structure helps LLM agents act, but robust cooperation benefits from synchronized actions and congestion-aware strategies. :contentReference[oaicite:12]{index=12}
-          </p>
-        </div>
-
-        <div class="column is-half has-text-centered">
-          <figure class="image">
-            <img src="static/images/cube_baselines.png" style="width:100%;height:auto;" alt="Baseline comparisons">
-            <figcaption class="has-text-centered">Steps and runtime vs. number of agents (n). :contentReference[oaicite:13]{index=13}</figcaption>
-          </figure>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== MAJOR FEATURES (SHORT) ===================== -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
+  <!-- ================== Abstract ================== -->
+  <section class="section hero">
     <div class="container is-max-desktop">
-      <div class="columns is-vcentered">
-
-        <div class="column is-half">
-          <h2 class="title is-3">Key Features</h2>
-          <ul style="margin-top:1em;">
-            <li><strong>Embodied + symbolic:</strong> primitive pushes wrapped in symbolic actions for interpretable plans. :contentReference[oaicite:14]{index=14}</li>
-            <li><strong>Transparent scaling:</strong> one parameter <em>n</em> controls agents, block weights, and grid size. :contentReference[oaicite:15]{index=15}</li>
-            <li><strong>Custom feedback:</strong> concept library enables per-agent/team metrics and progress signals. :contentReference[oaicite:16]{index=16}</li>
-            <li><strong>Plug-and-play:</strong> works with RL and LLM agents; CPU-friendly with Numba acceleration. :contentReference[oaicite:17]{index=17}</li>
-          </ul>
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              We introduce CUBE (Collaborative Multi-Agent Block-Pushing Environment), a lightweight yet expressive testbed for studying embodied cooperation in multi-agent systems. While traditional reinforcement learning benchmarks emphasize low-level action spaces and scalar rewards, and symbolic planning domains emphasize logical reasoning under deterministic transitions, neither alone captures the combination of embodiment, uncertainty, and symbolic structure needed to evaluate emerging embodied LLM-based agents. CUBE addresses this gap by wrapping primitive block-pushing actions into a symbolic action vocabulary, enabling interpretable and compositional cooperation strategies. It also provides a library of symbolic concepts for customized feedback at both per-agent and collective levels. These features allow the same environment to support reinforcement learning and LLM-based agents or hybrid architectures. For ease and fair comparison across experiments, a single parameter <code>n</code> specifies the number of agents, grid size, and block weights, creating a transparent curriculum that scales difficulty and cooperation demands. CUBE thus offers a flexible platform for scalable evaluation of algorithms that integrate symbolic reasoning with embodied multi-agent interaction. 
+            </p>
+          </div>
         </div>
-
-        <div class="column is-half has-text-centered">
-          <figure class="image is-4by3">
-            <img src="static/images/cube_grid.png" alt="CUBE grid and blocks">
-          </figure>
-        </div>
-
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ===================== BIBTEX ===================== -->
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@inproceedings{yang2025cube,
-  title={CUBE: Collaborative Multi-Agent Block-Pushing Environment for LLM Agents},
-  author={Yang, Hanqing and Nourzad, Narjes and Chen, Shiyu and Joe-Wong, Carlee},
-  booktitle={NeurIPS 2025 Workshop on Scaling Environments for Agents (SEA)},
-  note={Project page: https://happyeureka.github.io/cube}
-}</code></pre>
-  </div>
-</section>
-<!--End BibTex citation -->
+  <!-- ================== Chains in Environment and Failure Cases ================== -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Chains in Environment and Failure Cases due to Agent/Environment Dynamics</h2>
 
+      <p class="content has-text-justified mb-4">
+        In CUBE, blocks can form <strong>chains</strong>—composite structures that require coordinated force from multiple agents to move. 
+        A <em>pushing line</em> forms when agents align along a block’s face, each contributing unit force in the push direction. 
+        Motion succeeds only if the total applied force meets or exceeds the block’s weight and the <em>frontmost destination cell</em> is free. 
+        The first row of figures illustrates these geometric outcomes: when agents align, the chain advances; when misaligned or obstructed, it fails.
+      </p>
 
-  <footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+      <p class="content has-text-justified mb-5">
+        The second row shows <strong>failure cases due to agent and environment dynamics</strong>. 
+        Even when geometry permits motion, local heuristics or asynchronous policies may cause deadlock, blocking, or oscillation. 
+        Agents can obstruct one another’s approach or become trapped by congestion, revealing how spatial and temporal dependencies 
+        shape cooperative success and failure in embodied settings.
+      </p>
+
+      <div class="columns is-multiline is-centered is-variable is-2">
+        <div class="column is-one-quarter has-text-centered">
+          <figure class="image">
+            <img src="static/images/succ_chain.png" alt="Successful pushing chain with agents aligned" style="max-width:100%; height:auto;" />
+          </figure>
+          <p class="subtitle is-size-6 mt-2">
+            <strong>Successful chain:</strong> Aligned agents form a stable pushing line, transferring sufficient force to move the composite block.
+          </p>
+        </div>
+
+        <div class="column is-one-quarter has-text-centered">
+          <figure class="image">
+            <img src="static/images/fail_chain.png" alt="Geometric failure case" style="max-width:100%; height:auto;" />
+          </figure>
+          <p class="subtitle is-size-6 mt-2">
+            <strong>Geometric failure:</strong> Misalignment or blocked destination cell prevents the chain from advancing.
+          </p>
+        </div>
+
+        <div class="column is-one-quarter has-text-centered">
+          <figure class="image">
+            <img src="static/images/comp1.png" alt="Dynamics failure case 1" style="max-width:100%; height:auto;" />
+          </figure>
+          <p class="subtitle is-size-6 mt-2">
+            <strong>Failure I:</strong> Agents cannot stage on the target face due to congestion—no free cells for coordinated pushing.
+          </p>
+        </div>
+
+        <div class="column is-one-quarter has-text-centered">
+          <figure class="image">
+            <img src="static/images/comp2.png" alt="Dynamics failure case 2" style="max-width:100%; height:auto;" />
+          </figure>
+          <p class="subtitle is-size-6 mt-2">
+            <strong>Failure II:</strong> Agents block one another or oscillate, preventing stable cooperation despite a feasible plan.
           </p>
         </div>
       </div>
     </div>
-  </div>
-</footer>
+  </section>
 
-<!-- Statcounter tracking code -->
-  
-<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
 
-    <!-- End of Statcounter Code -->
+  <!-- ================== Results / Analysis ================== -->
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-vcentered">
+          <div class="column is-half">
+            <h3 class="title is-3">Task Performance</h3>
+            <p>LLM agents complete progressively heavier blocks as <em>n</em> increases; heuristics perform well on small layouts but struggle as coordination demands grow.</p>
+          </div>
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/complete_rate_vs_agents.png" alt="Completed blocks vs number of agents" />
+            </figure>
+          </div>
+        </div>
 
-  </body>
-  </html>
+        <div class="columns is-vcentered" style="margin-top:2rem;">
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/steps_vs_agents.png" alt="Average steps vs n by model" />
+            </figure>
+            <p class="subtitle">Average steps vs. <em>n</em> (cap&nbsp;200).</p>
+          </div>
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/runtime_vs_agents.png" alt="Runtime vs n by model" />
+            </figure>
+            <p class="subtitle">Runtime vs. <em>n</em> by model.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== Scalability Metrics ================== -->
+  <section class="hero is-small is-light">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-vcentered">
+          <div class="column is-one-third has-text-centered">
+            <figure class="image">
+              <img src="static/images/mean_time.png" alt="Mean time per step vs agents" />
+            </figure>
+            <p class="subtitle">Mean time per step vs agents.</p>
+          </div>
+          <div class="column is-one-third has-text-centered">
+            <figure class="image">
+              <img src="static/images/memory.png" alt="Process memory usage vs agents" />
+            </figure>
+            <p class="subtitle">Memory usage vs agents.</p>
+          </div>
+          <div class="column is-one-third has-text-centered">
+            <figure class="image">
+              <img src="static/images/cpu.png" alt="CPU utilization vs agents" />
+            </figure>
+            <p class="subtitle">CPU utilization vs agents.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== Action Profiling ================== -->
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Action Runtime Profiling</h2>
+        <div class="columns is-vcentered">
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/line_chart_performance.png" alt="Runtime vs agents by action type" />
+            </figure>
+            <p class="subtitle">Mean runtime per action vs agents.</p>
+          </div>
+          <div class="column is-half has-text-centered">
+            <figure class="image">
+              <img src="static/images/heatmap_performance.png" alt="Action runtime heatmap" />
+            </figure>
+            <p class="subtitle">Heatmap of action runtimes (log‑scale).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== Video Presentation ================== -->
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Video Presentation</h2>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <div class="publication-video">
+              <!-- Replace with your YouTube embed -->
+              <iframe src="https://www.youtube.com/embed/XXXXXXXXXXX" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== BibTeX ================== -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@inproceedings{yang2025cube,
+  title     = {CUBE: Collaborative Multi-Agent Block-Pushing Environment for Collective Planning with LLM Agents},
+  author    = {Hanqing Yang and Narjes Nourzad and Shiyu Chen and Carlee Joe-Wong},
+  booktitle = {NeurIPS 2025 Workshop on Scaling Environments for Agents (SEA)},
+  year      = {2025},
+  url       = {https://happyeureka.github.io/cube}
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ================== Footer ================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the
+              <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>,
+              adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Optional: analytics / tracking can be inserted here -->
+
+</body>
+</html>

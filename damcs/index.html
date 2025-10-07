@@ -169,7 +169,7 @@
         <source src="static/videos/mcrafter.mov"
         type="video/mp4">
       </video>
-      <h2 class="subtitle">
+      <h2>
         Six language model-powered agents work together to mine a diamond in the Multi-Agent Crafter environment. This environment allows a customizable number of agents to respawn and interact with each other. The goal is to collect a diamond as quickly as possible, and the environment terminates once a diamond is found. To achieve this, agents must craft the necessary tools by following a hierarchical crafting order. Additionally, they must maintain their health to remain in the environment.
       </h2>
     </div>
@@ -235,7 +235,7 @@
 <!-- Image carousel -->
 <section class="hero is-small">
   <div class="hero-body">
-    <div class="container">
+    <div class="container is-max-desktop">
       <div id="results-carousel" class="carousel results-carousel">
        <div class="item">
         <!-- Your image here -->
@@ -276,7 +276,7 @@
 <!-- Youtube video -->
 <section class="hero is-small is-light">
   <div class="hero-body">
-    <div class="container">
+    <div class="container is-max-desktop">
       <!-- Paper video. -->
       <h2 class="title is-3">Video Presentation</h2>
       <div class="columns is-centered has-text-centered">
@@ -298,7 +298,7 @@
 <!-- Result -->
 <section class="hero is-small">
   <div class="hero-body">
-    <div class="container">
+    <div class="container is-max-desktop">
 
       <!-- Title at the top -->
 
@@ -307,7 +307,7 @@
         <div class="column is-half">
 
           <h2 class="title is-3">RL Training</h2>
-          <p class="subtitle">
+          <p>
             The figures showcase the training performance of reinforcement learning (RL) agents in a complex environment. The first figure presents a single-agent trained using Proximal Policy Optimization (PPO), while the second figure illustrates a multi-agent setup using Multi-Agent Deep Deterministic Policy Gradient (MADDPG). In both cases, the agents initially improve their rewards, but they soon hit a bottleneck as further progress requires learning advanced skills in a hierarchical order. The RL agents struggle to efficiently acquire these skills, leading to slow and unstable learning in this complex environment.
         </div>
 
@@ -329,15 +329,15 @@
 
 <section class="hero is-small is-light">
   <div class="hero-body">
-    <div class="container">
+    <div class="container is-max-desktop">
       <div class="columns is-vcentered">
         <!-- Left Column: Text -->
         <div class="column is-half">
           <h3 class="title is-3">Task Completion Time</h3>
-          <p class="subtitle">
+          <p>
             Two agents with communication complete tasks faster than two agents without communication, who complete tasks at about the same speed as a single agent. The basic agent is slower than agents with our memory system.
           </p>
-          <p class="subtitle">
+          <p>
             Six agents with communication complete tasks faster than six agents without communication. They are also faster than two agents with communication.
           </p>
         </div>
@@ -360,18 +360,18 @@
 
 <section class="hero is-small">
   <div class="hero-body">
-    <div class="container">
+    <div class="container is-max-desktop">
       <div class="columns is-vcentered">
         <!-- Left Column: Text -->
         <div class="column is-half">
           <h3 class="title is-3">Memory of Each Agent in Gameplay</h3>
-          <p class="subtitle">
+          <p>
             While each agent independently controls its own behavior and maintains its own memory, the Structured Communication System ensures they remain aware of others’ progress, enabling timely and adaptive cooperation.
           </p>
-          <p class="subtitle">
+          <p>
             Agent 0, responsible for tool crafting, follows a sequential memory structure, reflecting hierarchical goal progression. Agent 1, tasked with assisting Agent 0, develops clustered memories centered on crafting and resource gathering, helping Agent 0 with its needs. Similarly, Agent 2 supports Agent 1, with memory clusters focused on cooperative material collection and crafting tasks. These agents dynamically adjust their strategies based on shared information in a decentralized manner.
           </p>
-          <p class="subtitle">
+          <p>
             Agents 3 and 4, focused on resource sharing, exhibit simpler, less interconnected memory structures since their role is primarily to collect and distribute materials rather than craft tools. Agent 5, which monitors the overall team’s progress, integrates information from all agents and determines when to transition toward diamond collection. The S-CS plays a crucial role in shaping these memory patterns. 
           </p>
         </div>
