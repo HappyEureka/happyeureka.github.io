@@ -36,7 +36,6 @@
 </head>
 <body>
 
-  <!-- Hero -->
   <section class="hero is-light">
     <div class="hero-body">
       <div class="container is-max-desktop">
@@ -106,7 +105,6 @@
     </div>
   </section>
 
-  <!-- Teaser -->
   <section class="hero">
     <div class="container is-max-desktop">
       <div class="hero-body">
@@ -124,197 +122,271 @@
     </div>
   </section>
 
-  <!-- What is CUBE (merged with environment at a glance) -->
   <section class="section hero is-light">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
           <h2 class="title is-3">What is CUBE</h2>
-
           <div class="content has-text-justified">
             <p>
-              CUBE is a lightweight and scalable multi agent block pushing environment for studying cooperation in embodied settings. 
-              Agents share a grid world, pushing weighted blocks toward a goal region while dealing with congestion, collisions, 
-              force requirements, and changing geometry.
+              CUBE is a lightweight, portable, and scalable multi agent environment that unifies
+              symbolic reasoning with embodied interaction. Agents operate in a shared grid world and must
+              push weighted blocks into a goal zone while avoiding collisions, congestion, and unproductive block chains.
+              These spatial dependencies make cooperation necessary and observable.
             </p>
 
             <p>
-              The environment follows the PettingZoo parallel API and is parameterized by a single integer <code>n</code>, 
-              which sets grid side length, number of agents, and the distribution of block weights. 
-              This creates a transparent curriculum from small to large teams. 
-              Details about embodied constraints, symbolic actions, and the dual layer interface appear in later sections.
+              At its base level CUBE is built on the PettingZoo parallel API, so it can plug directly into
+              existing multi agent reinforcement learning pipelines. The default episode configuration is generated
+              automatically from a single integer <code>n</code>. The grid side length is
+              <code>k = max(20, n)</code>, there are <code>n</code> agents, and blocks have integer weights from
+              <code>⌊n/2⌋ + 1</code> down to one, with lighter blocks appearing in greater numbers. Roughly half of the grid
+              is covered by blocks. Agents start along the wall opposite the goal region, and blocks are placed away from
+              walls and corners so that every block is movable by pushing.
             </p>
 
-            <h3 class="title is-5" style="margin-top:2rem;">Key Features</h3>
+            <p>
+              The parameter <code>n</code> therefore sets both environment scale and cooperative difficulty.
+              As <code>n</code> increases, heavier blocks require larger agent quorums and more complex block chains,
+              and congestion grows since each agent contributes only unit force. Tasks at the same <code>n</code> have
+              comparable complexity, which supports fair comparison of cooperative strategies across methods.
+            </p>
+
             <ul>
               <li>
-                <strong>Scalable and lightweight.</strong>
-                Numba accelerated Python implementation that supports hundreds of agents on a single CPU core.
+                <strong>Embodied multi agent cooperation.</strong>
+                Agents share a grid, occupy discrete cells, and exert one unit of force when they move.
+                Blocks have weights proportional to their side length and can be pushed from any face.
+                When agents align on a block face, their forces combine to move the block or a chain of blocks.
               </li>
               <li>
-                <strong>Embodied cooperation.</strong>
-                Movement, force, congestion, and collisions matter for whether plans succeed.
+                <strong>Dual layer design.</strong>
+                CUBE couples a symbolic layer and a vector based layer for observation, action, and feedback.
+                Symbolic plans are executed as sequences of primitive movements, while the environment returns both
+                low level state and structured symbolic feedback that summarize progress and outcomes.
               </li>
               <li>
-                <strong>Dual layer interface.</strong>
-                Both symbolic and primitive actions so LLM agents, RL agents, and hybrid systems can all use the same environment.
+                <strong>Controllable curriculum.</strong>
+                A single parameter <code>n</code> sets grid size, agent count, and block distribution.
+                Larger <code>n</code> increases the effort required for cooperative success while keeping
+                difficulty predictable and reproducible.
               </li>
               <li>
-                <strong>Single parameter curriculum.</strong>
-                Difficulty grows with <code>n</code> in a predictable way while tasks at the same <code>n</code> remain comparable.
+                <strong>Lightweight environment.</strong>
+                CUBE is implemented in Python with Numba acceleration and maintains low runtime and memory usage
+                even with hundreds of agents, so environment cost stays small compared with LLM inference.
               </li>
             </ul>
 
-            <figure class="image" style="margin-top:1.25rem;">
+            <figure class="image" style="margin-bottom: 1.25rem;">
               <img src="static/images/cube_overall.jpg" alt="CUBE overview and scaling diagram" />
             </figure>
           </div>
-
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Why CUBE -->
   <section class="section hero">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Why CUBE</h2>
-
-      <div class="content has-text-justified">
-        <p>
-          Traditional reinforcement learning benchmarks emphasize low level action spaces and scalar rewards. 
-          These signals are useful for training but offer limited support for symbolic reasoning, interpretability, 
-          or debugging. For LLM agents, emitting long sequences of primitive moves and waiting for a numerical reward 
-          is slow and unnatural.
-        </p>
-
-        <p>
-          Symbolic planning domains provide clean abstractions and logical structure but often assume deterministic 
-          transitions and ignore embodied dynamics such as collisions, congestion, and force accumulation. 
-          They are therefore not sufficient on their own to evaluate embodied LLM agents.
-        </p>
-
-        <p>
-          CUBE sits between these two extremes. It wraps primitive block pushing into a symbolic vocabulary while 
-          grounding every symbolic action in an embodied grid world. This makes it a single testbed where 
-          LLM planners, RL agents, and hybrid systems can be compared under the same cooperative conditions.
-        </p>
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Environment at a glance</h2>
+          <div class="content has-text-justified">
+            <p>
+              CUBE is presented with four main contributions.
+            </p>
+            <ul>
+              <li>
+                <strong>Scalable environment.</strong> A lightweight, portable environment that supports variation
+                in both number of agents and task difficulty.
+              </li>
+              <li>
+                <strong>Reproducible curriculum.</strong> A difficulty curriculum governed by a single parameter
+                <code>n</code> that enables systematic study of cooperation across comparable difficulty levels while
+                still allowing custom scenarios.
+              </li>
+              <li>
+                <strong>Dual interface.</strong> A paired symbolic and vector based interface for observation,
+                action, and feedback that supports reinforcement learning agents, LLM agents, and hybrids.
+              </li>
+              <li>
+                <strong>Baseline and scalability study.</strong> Empirical evaluation that profiles runtime,
+                memory, and CPU usage, and compares heuristic and LLM based planners.
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Why Embodied Tasks -->
   <section class="section hero is-light">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Why Embodied Tasks</h2>
+      <div class="columns">
+        <div class="column">
+          <h2 class="title is-3">Why CUBE</h2>
+          <div class="content has-text-justified">
+            <p>
+              Traditional reinforcement learning benchmarks emphasize low level action spaces and scalar rewards.
+              These signals are useful for gradient based training but give little support for symbolic reasoning,
+              interpretability, or debugging. For LLM agents, emitting long sequences of primitive moves and waiting
+              for numerical rewards is unnatural and inefficient.
+            </p>
+            <p>
+              Symbolic planning domains have clear preconditions and effects but usually assume deterministic
+              transitions and ignore embodied dynamics such as collisions, congestion, or force accumulation.
+              They are therefore not enough on their own to study embodied LLM agents that must reason in
+              uncertain, interactive worlds.
+            </p>
+            <p>
+              CUBE bridges this gap by wrapping primitive block pushing actions into a symbolic vocabulary and
+              linking that vocabulary to an embodied grid world. This lets LLM agents plan using interpretable,
+              compositional actions while still having to cope with uncertainty, races for cells, and changing geometry.
+            </p>
+          </div>
+        </div>
 
-      <div class="content has-text-justified">
-        <p>
-          Embodied settings introduce structured dependencies. Moving one block can make another reachable, 
-          block off corridors, or create new chains that require multiple agents. 
-          A strategy that looks good at the symbolic level can fail once the physical layout and timing are taken into account.
-        </p>
-
-        <p>
-          This combination of spatial and temporal constraints creates rich cooperation challenges that purely symbolic or 
-          abstract domains do not capture. CUBE is therefore a natural platform for studying multi agent cooperation, 
-          communication, task allocation, and emergent group behavior for LLM based and learned agents alike.
-        </p>
+        <div class="column">
+          <h2 class="title is-4">Why embodied tasks</h2>
+          <div class="content has-text-justified">
+            <p>
+              Human reasoning blends symbolic and embodied perspectives. We imagine plans, act, compare outcomes with
+              expectations, and revise our internal models. CUBE is built to support a similar loop for LLM agents.
+              Plans are expressed in symbolic actions, executed as primitive moves, and evaluated with both scalar
+              and structured feedback.
+            </p>
+            <p>
+              Embodied constraints keep tasks challenging as team size increases. Moving any block or agent reshapes
+              the scene. Agents must cope with tasks that can disappear, delivery paths that become blocked by other
+              blocks, and sequences where one agent can temporarily make a block unreachable.
+            </p>
+            <p>
+              This makes CUBE a natural testbed for research on cooperative intelligence at scale, including
+              communication, task allocation, and group level planning.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Embodied Constraints -->
   <section class="section hero">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Embodied Constraints in CUBE</h2>
       <div class="columns is-vcentered">
-        <div class="column is-two-thirds">
+        <div class="column is-half">
           <div class="content has-text-justified">
             <ul>
               <li>
                 <strong>Discrete occupancy.</strong>
-                Agents and blocks occupy grid cells with at most one entity per cell.
+                Agents and blocks live on grid cells, one entity per cell.
               </li>
               <li>
                 <strong>Forces and weights.</strong>
-                Each agent exerts one unit of force in its movement direction. 
-                Each block has integer weight equal to the force needed to move it and occupies a square whose side length equals that weight.
+                Each agent exerts one unit of force in its movement direction.
+                Each block has integer weight equal to the force needed to move it,
+                and occupies a square whose side length equals that weight.
               </li>
               <li>
                 <strong>Block chains.</strong>
-                When blocks sit in front of one another in a push direction they form a chain. 
-                A chain moves as a composite object when total applied force at the leading face meets or exceeds the sum of weights of all blocks 
-                and all destination cells are free.
+                When blocks sit in front of one another along a push direction they form a chain.
+                The chain moves as a composite object when total applied force at the leading face
+                meets or exceeds the sum of weights of all blocks and all destination cells are free.
               </li>
               <li>
                 <strong>Agent chains.</strong>
-                When agents line up behind a block and push in the same direction, the effective force equals the number of aligned agents. 
-                If this meets the chain weight, the block chain and agents advance together; otherwise nothing moves.
+                When agents line up behind a block and push in the same direction,
+                the effective force equals the number of aligned agents. If this meets the chain weight,
+                the block chain and agents advance together; otherwise nothing moves.
               </li>
               <li>
                 <strong>Collisions and races.</strong>
-                Moves that target occupied cells fail. 
-                When several agents aim at the same free cell, a single agent succeeds and others remain in place, 
-                creating cell access races that affect how plans unfold.
+                Agent moves that target occupied cells fail. When several agents aim at the same free cell,
+                the agent with smallest index claims it. This creates cell access races where one agent succeeds
+                and others must rethink their plans.
               </li>
             </ul>
           </div>
         </div>
 
-        <div class="column is-one-third has-text-centered">
+        <div class="column is-half has-text-centered">
           <figure class="image">
-            <img src="static/images/succ_chain.png" alt="Successful chain" style="width: 100%;" />
+            <img src="static/images/succ_chain.png" alt="Illustration of embodied constraints" />
           </figure>
           <figure class="image">
-            <img src="static/images/fail_chain.png" alt="Failed chain" style="width: 100%;" />
+            <img src="static/images/fail_chain.png" alt="Illustration of embodied constraints" />
           </figure>
           <p class="subtitle is-size-6">
-            Agent chains, block chains, and force thresholds in CUBE.
+            Agent chains, block chains, and forces in CUBE.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Dual-Layer Design -->
   <section class="section hero is-light">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Dual-Layer Design: A Natural Fit for LLM Agents</h2>
-
+      <h2 class="title is-3 has-text-centered">Observation, Action, and Feedback Interfaces</h2>
       <div class="columns is-vcentered">
         <div class="column is-half has-text-centered">
           <figure class="image">
-            <img src="static/images/placeholder_dual_layer.png" alt="Dual Layer Design" />
+            <img src="static/images/placeholder_dual_layer.png" alt="Primitive and symbolic layers in CUBE" />
           </figure>
           <p class="subtitle is-size-6">
-            Symbolic actions unfold into sequences of primitive movements on the shared grid.
+            Symbolic actions unfold into sequences of primitive movements that operate on the shared grid.
           </p>
         </div>
 
         <div class="column is-half">
           <div class="content has-text-justified">
-            <h3 class="title is-5">Symbolic Layer</h3>
+            <h3 class="title is-5">Observation</h3>
             <p>
-              Agents generate short symbolic plans that use actions such as 
-              <code>move_to_block</code>, <code>rendezvous</code>, <code>push_block</code>, <code>yield_block</code>, 
-              <code>wait_agents</code>, and <code>idle</code>. 
-              Each symbolic action compiles into primitive movements and runs until a success or failure condition is reached.
+              CUBE exposes two complementary observations.
             </p>
+            <ul>
+              <li>
+                <strong>Symbolic observation.</strong>
+                Per agent dictionaries that include global grid size, positions of all agents,
+                and compact summaries of each block such as id, weight, position, and distance to the goal column.
+                The history of symbolic actions, their primitive expansions, and their status
+                is also recorded, which supports reasoning about what has been tried so far.
+              </li>
+              <li>
+                <strong>Multi channel observation.</strong>
+                A five channel grid with agent locations, block weights, goal column, agent index per cell,
+                and block id per cell, intended for reinforcement learning encoders and visualizations.
+              </li>
+            </ul>
 
-            <h3 class="title is-5">Primitive Layer</h3>
+            <h3 class="title is-5">Action</h3>
             <p>
-              Primitive actions are from the set <code>{STAY, UP, DOWN, LEFT, RIGHT}</code>. 
-              These actions handle low level details such as motion, force accumulation, collisions, and chain movement, 
-              and are processed in parallel for all agents.
+              The action interface has two layers.
             </p>
+            <ul>
+              <li>
+                <strong>Primitive actions.</strong>
+                Each agent chooses from <code>{STAY, UP, DOWN, LEFT, RIGHT}</code>.
+                Movements succeed only when the target cell is free, and pushes succeed only when aligned agents
+                provide enough force and the front cell is empty.
+              </li>
+              <li>
+                <strong>Symbolic actions.</strong>
+                A small library of parameterized actions such as
+                <code>move</code>, <code>move_to_block</code>, <code>rendezvous</code>,
+                <code>push_block</code>, <code>yield_block</code>, <code>idle</code>,
+                and <code>wait_agents</code>. Each action compiles to primitive moves until a condition is met.
+                Agents submit short plans that are sequences of such actions with arguments, which then execute in order.
+              </li>
+            </ul>
 
-            <h3 class="title is-5">Observation and Feedback</h3>
+            <h3 class="title is-5">Feedback and symbolic concepts</h3>
             <p>
-              Each agent receives both a symbolic observation and a multi channel grid. 
-              Symbolic observations provide per block summaries, agent positions, and the history and status of symbolic actions. 
-              The grid representation records agent indices, block ids, goal cells, and block weights. 
-              CUBE also provides scalar rewards and symbolic feedback concepts that can be combined into custom evaluation signals.
+              CUBE provides both scalar rewards and a library of symbolic concepts that help define custom metrics.
+              The default reward has a small step cost and a shared delivery reward proportional to delivered block weight.
+              Symbolic concepts include utilities such as functions that measure distances, count aligned agents,
+              summarize block progress, measure quorum deficit, and detect blocking, which can be combined
+              to design adaptive feedback or evaluation signals.
             </p>
           </div>
         </div>
@@ -322,60 +394,65 @@
     </div>
   </section>
 
-  <!-- Embodied Failure Modes -->
   <section class="section hero">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Embodied Failure Modes</h2>
+      <h2 class="title is-3 has-text-centered">Chains and Embodied Failure Modes</h2>
 
-      <div class="content has-text-justified">
-        <p>
-          Even when a geometric solution exists, cooperative execution can fail due to congestion, staging conflicts, 
-          or asynchronous behavior among agents. These failures arise naturally from spatial competition and timing mismatch, 
-          and reveal how challenging embodied cooperation can be for simple heuristics or naive language agents.
-        </p>
-      </div>
+      <p class="content has-text-justified mb-4">
+        In CUBE, blocks can form chains that require joint force from several agents.
+        A pushing line forms when agents align along a block face, each contributing unit force in the push direction.
+        Motion succeeds only when the total applied force meets or exceeds the chain weight and the frontmost
+        destination cell is free.
+      </p>
+
+      <p class="content has-text-justified mb-5">
+        Valid tasks can disappear dynamically as blocks move.
+        For example, a face of a block that was previously reachable can vanish when another block moves adjacent
+        to it. Agents that were committed to that face must then recover and replan.
+        Cell races and boundary geometry introduce further failure cases, such as blocks that become actionless
+        along walls because they can only be pushed, not pulled.
+      </p>
 
       <div class="columns is-multiline is-centered is-variable is-2">
         <div class="column is-one-quarter has-text-centered">
           <figure class="image">
-            <img src="static/images/comp1.png" alt="Congestion failure" />
+            <img src="static/images/x.png" alt="Successful pushing chain with agents aligned" />
           </figure>
           <p class="subtitle is-size-6 mt-2">
-            <strong>Staging congestion.</strong> Agents cannot reach the required block face because teammates occupy all viable cells.
+            <strong>Successful chain.</strong> Aligned agents form a stable pushing line and move a composite block chain.
           </p>
         </div>
 
         <div class="column is-one-quarter has-text-centered">
           <figure class="image">
-            <img src="static/images/comp2.png" alt="Oscillation failure" />
+            <img src="static/images/x.png" alt="Geometric failure case" />
           </figure>
           <p class="subtitle is-size-6 mt-2">
-            <strong>Oscillation.</strong> Agents repeatedly block each other or switch directions and no stable pushing line forms.
+            <strong>Geometric failure.</strong> Misalignment or an occupied destination cell prevents progress.
           </p>
         </div>
 
         <div class="column is-one-quarter has-text-centered">
           <figure class="image">
-            <img src="static/images/x.png" alt="Misalignment failure" />
+            <img src="static/images/comp1.png" alt="Dynamics failure case 1" />
           </figure>
           <p class="subtitle is-size-6 mt-2">
-            <strong>Misaligned intent.</strong> Agents approach compatible faces at incompatible times so joint pushes fail to materialize.
+            <strong>Failure I.</strong> Agents cannot stage on the target face due to congestion, so no joint push can form.
           </p>
         </div>
 
         <div class="column is-one-quarter has-text-centered">
           <figure class="image">
-            <img src="static/images/x.png" alt="Dynamic blocking" />
+            <img src="static/images/comp2.png" alt="Dynamics failure case 2" />
           </figure>
           <p class="subtitle is-size-6 mt-2">
-            <strong>Dynamic blocking.</strong> An agent or block moves into a corridor and unintentionally traps teammates or key blocks.
+            <strong>Failure II.</strong> Agents block one another or oscillate, preventing stable cooperation despite a feasible strategy.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Controllable Difficulty Curriculum -->
   <section class="hero is-small is-light">
     <div class="hero-body">
       <div class="container is-max-desktop">
@@ -411,7 +488,6 @@
     </div>
   </section>
 
-  <!-- Baselines and Task Performance -->
   <section class="hero is-small">
     <div class="hero-body">
       <div class="container is-max-desktop">
@@ -426,9 +502,9 @@
                 The heuristic baseline follows a greedy strategy.
                 At each stage it selects the block closest to the goal zone and assigns agents to move it,
                 issuing symbolic instructions such as <code>move_to_block</code>, <code>rendezvous</code>, and
-                <code>push_block</code> until the block is delivered. 
-                The baseline produces consistent cooperative behavior without explicitly optimizing path length or resolving congestion, 
-                and serves as a reference point for more advanced agents.
+                <code>push_block</code> until the block is delivered. The baseline produces valid cooperative
+                behavior without explicitly optimizing path length or resolving congestion, and serves as a
+                reference point for more advanced agents.
               </p>
             </div>
           </div>
@@ -447,15 +523,15 @@
             <h3 class="title is-4">Naive language agents</h3>
             <div class="content has-text-justified">
               <p>
-                As language based baselines, the paper evaluates LLM agents in a zero shot style setting.
+                As language based baselines, the paper evaluates two LLM agents in a zero shot style setting.
                 Each agent repeatedly receives a symbolic observation and generates short plans written in the
                 CUBE action vocabulary, with a prompt that encodes a simple rule
                 to always target the block closest to the goal zone.
               </p>
               <p>
                 These naive LLM agents can generate executable plans but perform inconsistently,
-                particularly when they must rely on other agents. 
-                Smaller models show high variance and longer runtimes, suggesting frequent replanning and difficulty with coordination as <em>n</em> grows.
+                particularly when they must rely on other agents. Smaller models show high variance and longer runtimes,
+                suggesting frequent replanning and difficulty with coordination as n grows.
               </p>
             </div>
           </div>
@@ -478,16 +554,15 @@
         <div class="content has-text-justified" style="margin-top:2rem;">
           <p>
             Overall, the heuristic baseline consistently completes all blocks at the tested scales,
-            whereas naive LLM agents reveal a cooperation gap. 
-            They can express nontrivial symbolic behavior yet fall short of robust cooperative performance as team size grows. 
-            This motivates richer designs for embodied LLM agents that combine symbolic world models, communication, and learning.
+            whereas naive LLM agents reveal a cooperation gap. They can express nontrivial symbolic behavior
+            yet fall short of robust cooperative performance as team size grows. This motivates richer designs
+            for embodied LLM agents that combine symbolic world models, communication, and learning.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Scalability and Computational Overhead -->
   <section class="hero is-small is-light">
     <div class="hero-body">
       <div class="container is-max-desktop">
@@ -529,8 +604,8 @@
             </figure>
             <p class="subtitle">
               Mean runtime per symbolic action versus agent count.
-              Most actions stay in a narrow band of run times even at larger <em>n</em>, 
-              while actions that inspect many environment objects become more expensive but remain efficient.
+              Most actions stay in a narrow band of run times even at larger n, while actions that inspect
+              many environment objects become more expensive but remain efficient.
             </p>
           </div>
           <div class="column is-half has-text-centered">
@@ -545,16 +620,14 @@
 
         <div class="content has-text-justified" style="margin-top:2rem;">
           <p>
-            In contrast, LLM inference time is relatively large. 
-            Generating even short plans takes hundreds of milliseconds to seconds, 
-            which makes environment overhead negligible for studies of embodied language agents.
+            In contrast, LLM inference time is relatively large. Generating even short plans takes hundreds of milliseconds
+            to seconds, which makes environment overhead negligible for studies of embodied language agents.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Challenges and Opportunities -->
   <section class="section hero">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Challenges and Opportunities</h2>
@@ -564,8 +637,8 @@
           <div class="content has-text-justified">
             <p>
               As agents move blocks they create new chains, tighten corridors, or close off some paths,
-              which can make later deliveries easier or harder. 
-              Agents must reason about how current choices change future task difficulty and may need to revise decompositions on the fly.
+              which can make later deliveries easier or harder. Agents must reason about how current
+              choices change future task difficulty and may need to revise decompositions on the fly.
             </p>
           </div>
 
@@ -573,8 +646,8 @@
           <div class="content has-text-justified">
             <p>
               Successful teams need to understand how blocks interact, which sides can be used for approach,
-              and how block chains create soft dependencies between tasks. 
-              Simple distance based rules are often not enough when heavy blocks and narrow passages interact.
+              and how block chains create soft dependencies between tasks. Simple distance based rules
+              are often not enough when heavy blocks and narrow passages interact.
             </p>
           </div>
 
@@ -594,7 +667,7 @@
             <p>
               Agents rarely know exactly what teammates will do.
               They must form expectations about others, infer goals from movement, and decide when to wait,
-              yield, or reroute. Misjudgments can temporarily lock tasks, such as when a single agent
+              yield, or reroute. Misjudgments can lock tasks temporarily, such as when a single agent
               stands in the only useful staging cell near a block.
             </p>
           </div>
@@ -622,15 +695,14 @@
     </div>
   </section>
 
-  <!-- Poster -->
   <section class="hero is-small">
     <div class="hero-body">
-      <div class="container" style="max-width: 90%;">
+      <div class="container is-max-desktop">
         <h2 class="title is-3 has-text-centered">Poster</h2>
         <div class="columns is-centered has-text-centered">
-          <div class="column">
+          <div class="column is-four-fifths">
             <div class="publication-video">
-              <iframe src="static/pdfs/cube_poster.pdf" frameborder="0" style="width:100%; height:1000px;" allowfullscreen></iframe>
+              <iframe src="static/pdfs/cube_poster.pdf" frameborder="0" style="width:100%; height:800px;" allowfullscreen></iframe>
             </div>
           </div>
         </div>
@@ -638,7 +710,6 @@
     </div>
   </section>
 
-  <!-- BibTeX -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
@@ -660,7 +731,6 @@
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="columns is-centered">
