@@ -47,8 +47,7 @@
             </h1>
 
             <h2 class="subtitle is-4">
-              A PettingZoo compatible grid world where symbolic plans are grounded in embodied interaction,
-              with a single parameter n that controls team size, block spectrum, and task difficulty.
+              Embodied grid world where symbolic plans are grounded in physical interaction, designed to study cooperative intelligence at scale.
             </h2>
 
             <p class="is-size-5 publication-authors">
@@ -165,9 +164,9 @@
               </li>
             </ul>
 
-            <figure class="image" style="margin-top:1.25rem;">
+            <!-- <figure class="image" style="margin-top:1.25rem;">
               <img src="static/images/cube_overall.jpg" alt="CUBE overview and scaling diagram" />
-            </figure>
+            </figure> -->
           </div>
 
         </div>
@@ -220,7 +219,19 @@
           abstract domains do not capture. CUBE is therefore a natural platform for studying multi agent cooperation, 
           communication, task allocation, and emergent group behavior for LLM based and learned agents alike.
         </p>
-      </div>
+
+<div class="columns is-centered" style="margin-top:1.25rem;">
+  <div class="column is-one-third has-text-centered">
+    <figure class="image" style="margin:0 auto;">
+      <img
+        src="static/images/embodied_constraints.png"
+        alt="Embodied constraints in CUBE"
+        style="width:100%; height:auto;"
+      />
+    </figure>
+  </div>
+</div>
+
     </div>
   </section>
 
@@ -277,103 +288,194 @@
     </div>
   </section>
 
-  <!-- Dual-Layer Design -->
-  <section class="section hero is-light">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Dual-Layer Design: A Natural Fit for LLM Agents</h2>
 
-      <div class="columns is-vcentered">
-        <div class="column is-half has-text-centered">
-          <figure class="image">
-            <img src="static/images/placeholder_dual_layer.png" alt="Dual Layer Design" />
-          </figure>
-          <p class="subtitle is-size-6">
-            Symbolic actions unfold into sequences of primitive movements on the shared grid.
-          </p>
-        </div>
+<!-- Dual-Layer Design -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Dual Layer Environment for LLM Agents</h2>
 
-        <div class="column is-half">
-          <div class="content has-text-justified">
-            <h3 class="title is-5">Symbolic Layer</h3>
-            <p>
-              Agents generate short symbolic plans that use actions such as 
-              <code>move_to_block</code>, <code>rendezvous</code>, <code>push_block</code>, <code>yield_block</code>, 
-              <code>wait_agents</code>, and <code>idle</code>. 
-              Each symbolic action compiles into primitive movements and runs until a success or failure condition is reached.
-            </p>
+    <div class="content has-text-justified">
+      <p>
+        Human reasoning blends symbolic planning with embodied feedback. 
+        We imagine abstract plans, act, compare outcomes with expectations, and adjust. 
+        CUBE lets LLM agents follow the same loop: use symbolic structure to reason about goals and relations, 
+        then update plans based on the concrete consequences of their actions as the environment evolves.
+      </p>
 
-            <h3 class="title is-5">Primitive Layer</h3>
-            <p>
-              Primitive actions are from the set <code>{STAY, UP, DOWN, LEFT, RIGHT}</code>. 
-              These actions handle low level details such as motion, force accumulation, collisions, and chain movement, 
-              and are processed in parallel for all agents.
-            </p>
+      <p>
+        The environment exposes two aligned views of the same world:
+        a primitive layer that handles low level grid dynamics, and a symbolic layer that provides compact, 
+        expressive actions and concepts for planning.
+      </p>
 
-            <h3 class="title is-5">Observation and Feedback</h3>
-            <p>
-              Each agent receives both a symbolic observation and a multi channel grid. 
-              Symbolic observations provide per block summaries, agent positions, and the history and status of symbolic actions. 
-              The grid representation records agent indices, block ids, goal cells, and block weights. 
-              CUBE also provides scalar rewards and symbolic feedback concepts that can be combined into custom evaluation signals.
-            </p>
-          </div>
-        </div>
-      </div>
+      <p>
+        <strong>Action.</strong>
+        At the primitive layer, each agent chooses from <code>{STAY, UP, DOWN, LEFT, RIGHT}</code>. 
+        These actions determine motion, contact, and force on blocks. 
+        At the symbolic layer, agents issue macro actions such as 
+        <code>move</code>, <code>move_to_block</code>, <code>rendezvous</code>, <code>push_block</code>, 
+        <code>yield_block</code>, <code>idle</code>, and <code>wait_agents</code>. 
+        Each symbolic action unfolds into a sequence of primitive moves during runtime.
+      </p>
+
+      <div class="columns is-vcentered" style="margin-top:0.25rem;">
+  <div class="column is-two-thirds">
+    <figure class="image">
+      <img
+        src="static/images/symbolic_actions.png"
+        alt="Symbolic action table"
+        style="width:100%; height:auto;"
+      />
+    </figure>
+  </div>
+
+  <div class="column is-one-third has-text-centered">
+    <figure class="image" style="max-width:100%; margin:0 auto;">
+      <img
+        src="static/images/symbolic_action_unroll.png"
+        alt="Symbolic action unroll"
+        style="width:100%; height:auto;"
+      />
+    </figure>
+  </div>
+</div>
+
+
+
+      <p>
+        <strong>Observation.</strong>
+        The primitive view is a multi channel grid with agent locations, block weights, block ids, and the goal zone. 
+        The symbolic view is a structured dictionary that stores grid size, agent positions, block properties 
+        such as size, location, and distance to the goal, together with a history of symbolic actions and their status.
+      </p>
+
+      <p>
+        <strong>Feedback.</strong>
+        CUBE provides a scalar reward with step cost and shared delivery reward, 
+        plus a library of symbolic concepts for shaping richer feedback. 
+        Examples include distance between entities, whether an agent is aligned with a block face, 
+        how many agents are aligned, block progress toward the goal, quorum status, and whether a block is currently blocked.
+      </p>
+     
+
+            <div class="columns is-vcentered" style="margin-top:1.25rem;">
+  <div class="column is-two-thirds">
+    <figure class="image">
+      <img
+        src="static/images/symbolic_concepts.png"
+        alt="Symbolic concept examples"
+        style="width:100%; height:auto;"
+      />
+    </figure>
+  </div>
+
+  <div class="column is-one-third has-text-centered">
+    <figure class="image" style="max-width:100%; margin:0 auto;">
+      <img
+        src="static/images/symbolic_plan.png"
+        alt="Symbolic plan"
+        style="width:100%; height:auto;"
+      />
+    </figure>
+  </div>
+</div>
+
+      <p>
+        <strong>Plan.</strong>
+        Symbolic actions are compact but highly expressive. 
+        Their arguments select blocks, faces, directions, and time horizons, which creates a rich planning space for LLM agents. 
+        Plans become short programs written in this vocabulary, while the primitive layer ensures that every step 
+        is grounded in an uncertain, continuously changing environment.
+      </p>
+
+
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Embodied Failure Modes -->
-  <section class="section hero">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Embodied Failure Modes</h2>
 
-      <div class="content has-text-justified">
-        <p>
-          Even when a geometric solution exists, cooperative execution can fail due to congestion, staging conflicts, 
-          or asynchronous behavior among agents. These failures arise naturally from spatial competition and timing mismatch, 
-          and reveal how challenging embodied cooperation can be for simple heuristics or naive language agents.
+
+<!-- Embodied Failure Modes -->
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Embodied Cooperation Failure Modes</h2>
+
+    <div class="content has-text-justified">
+      <p>
+        Embodied movement introduces uncertainty during execution. 
+        A plan that is feasible at one step can become infeasible a few steps later as blocks move, 
+        faces disappear, agents occlude each other, or key cells are taken by another agent. 
+        These effects do not appear in purely symbolic domains and are a central reason why cooperation in CUBE remains challenging.
+      </p>
+    </div>
+
+    <!-- Plan becomes infeasible over time -->
+<div class="columns is-vcentered" style="margin-top:2rem;">
+
+  <div class="column is-half has-text-centered">
+    <figure class="image" style="display:flex; justify-content:center;">
+      <img 
+        src="static/images/fail_k.png" 
+        alt="Plan at step k" 
+        style="width:50%; height:auto;"
+      />
+    </figure>
+  </div>
+
+  <div class="column is-half has-text-centered">
+    <figure class="image" style="display:flex; justify-content:center;">
+      <img 
+        src="static/images/fail_k1.png" 
+        alt="Plan at step k plus one" 
+        style="width:50%; height:auto;"
+      />
+    </figure>
+  </div>
+
+</div>
+
+    <p class="subtitle is-size-6 has-text-centered" style="margin-top:0.75rem;">
+      Embodied updates between step k and step k plus one can remove useful faces and turn a previously feasible plan into an infeasible one.
+    </p>
+
+    <!-- Local failure modes -->
+    <div class="columns is-multiline is-centered is-variable is-3" style="margin-top:2rem;">
+
+      <div class="column is-one-third has-text-centered">
+        <figure class="image">
+          <img src="static/images/fail_occlude.png" alt="Occlusion failure" />
+        </figure>
+        <p class="subtitle is-size-6 mt-2">
+          <strong>Occlusion by agents.</strong>
+          Moving agents can temporarily block the remaining staging cells, preventing others from reaching useful positions.
         </p>
       </div>
 
-      <div class="columns is-multiline is-centered is-variable is-2">
-        <div class="column is-one-quarter has-text-centered">
-          <figure class="image">
-            <img src="static/images/comp1.png" alt="Congestion failure" />
-          </figure>
-          <p class="subtitle is-size-6 mt-2">
-            <strong>Staging congestion.</strong> Agents cannot reach the required block face because teammates occupy all viable cells.
-          </p>
-        </div>
-
-        <div class="column is-one-quarter has-text-centered">
-          <figure class="image">
-            <img src="static/images/comp2.png" alt="Oscillation failure" />
-          </figure>
-          <p class="subtitle is-size-6 mt-2">
-            <strong>Oscillation.</strong> Agents repeatedly block each other or switch directions and no stable pushing line forms.
-          </p>
-        </div>
-
-        <div class="column is-one-quarter has-text-centered">
-          <figure class="image">
-            <img src="static/images/x.png" alt="Misalignment failure" />
-          </figure>
-          <p class="subtitle is-size-6 mt-2">
-            <strong>Misaligned intent.</strong> Agents approach compatible faces at incompatible times so joint pushes fail to materialize.
-          </p>
-        </div>
-
-        <div class="column is-one-quarter has-text-centered">
-          <figure class="image">
-            <img src="static/images/x.png" alt="Dynamic blocking" />
-          </figure>
-          <p class="subtitle is-size-6 mt-2">
-            <strong>Dynamic blocking.</strong> An agent or block moves into a corridor and unintentionally traps teammates or key blocks.
-          </p>
-        </div>
+      <div class="column is-one-third has-text-centered">
+        <figure class="image">
+          <img src="static/images/fail_corner_block.png" alt="Corner block failure" />
+        </figure>
+        <p class="subtitle is-size-6 mt-2">
+          <strong>Corner block.</strong>
+          A block pushed into a corner has no usable faces, so it is not actionable even if agents are available nearby.
+        </p>
       </div>
+
+      <div class="column is-one-third has-text-centered">
+        <figure class="image">
+          <img src="static/images/fail_cell_race.png" alt="Cell access race" />
+        </figure>
+        <p class="subtitle is-size-6 mt-2">
+          <strong>Cell access race.</strong>
+          Several agents move toward the same key cell. Only one succeeds, leaving others misaligned and wasting cooperative effort.
+        </p>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
+
+
 
   <!-- Controllable Difficulty Curriculum -->
   <section class="hero is-small is-light">
