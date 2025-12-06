@@ -599,28 +599,19 @@
             <figure class="image">
               <img src="static/images/mean_time.png" alt="Mean time per step vs agents" />
             </figure>
-            <p class="subtitle">
-              Mean environment step time grows smoothly with <em>n</em>,
-              from small fractions of a millisecond for small teams to tens of milliseconds at 256 agents on one CPU core.
-            </p>
+            <p class="subtitle">Mean environment step time versus agent count.</p>
           </div>
           <div class="column is-one-third has-text-centered">
             <figure class="image">
               <img src="static/images/memory.png" alt="Process memory usage vs agents" />
             </figure>
-            <p class="subtitle">
-              Memory usage increases approximately linearly, reaching under a gigabyte at <em>n</em> equal to 256,
-              with tens of megabytes at small scales.
-            </p>
+            <p class="subtitle">Memory usage versus agent count.</p>
           </div>
           <div class="column is-one-third has-text-centered">
             <figure class="image">
               <img src="static/images/cpu.png" alt="CPU utilization vs agents" />
             </figure>
-            <p class="subtitle">
-              CPU utilization rises steadily and stays within a manageable range even with 256 agents,
-              so the environment remains lightweight compared with LLM inference.
-            </p>
+            <p class="subtitle">CPU utilization versus agent count.</p>
           </div>
         </div>
 
@@ -629,19 +620,13 @@
             <figure class="image">
               <img src="static/images/line_chart_performance.png" alt="Runtime vs agents by action type" />
             </figure>
-            <p class="subtitle">
-              Mean runtime per symbolic action versus agent count.
-              Most actions stay in a narrow band of run times even at larger <em>n</em>, 
-              while actions that inspect many environment objects become more expensive but remain efficient.
-            </p>
+            <p class="subtitle">Runtime per symbolic action versus agent count.</p>
           </div>
           <div class="column is-half has-text-centered">
             <figure class="image">
               <img src="static/images/heatmap_performance.png" alt="Action runtime heatmap" />
             </figure>
-            <p class="subtitle">
-              Heatmap of symbolic action runtimes across scales.
-            </p>
+            <p class="subtitle">Heatmap of symbolic action runtimes.</p>
           </div>
         </div>
 
