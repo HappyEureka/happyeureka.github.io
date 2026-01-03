@@ -9,21 +9,19 @@ redirect_from:
 
 # Hanqing Yang
 
-I am a Ph.D. student in Electrical and Computer Engineering at Carnegie Mellon University, where I am fortunate to work with [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/) in the [LIONS research group](https://research.ece.cmu.edu/lions/). My research focuses on the design of intelligent and cooperative multi-agent systems capable of making autonomous decisions at scale. Before coming to CMU, I had the opportunity to assist with research projects in AI for healthcare in [CPSL](https://wsn.cse.wustl.edu/index.php/Cyber-Physical_Systems_Laboratory) at Washington University in St. Louis, advised by [Prof. Chenyang Lu](https://www.cse.wustl.edu/~lu/).
+I am a Ph.D. student in Electrical and Computer Engineering at [Carnegie Mellon University](https://www.cmu.edu/), where I am fortunate to work with [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/) in the [LIONS research group](https://research.ece.cmu.edu/lions/). My research focuses on the design of intelligent and cooperative multi-agent systems capable of making autonomous decisions at scale. Before coming to CMU, I had the opportunity to assist with research projects in AI for healthcare in [CPSL](https://wsn.cse.wustl.edu/index.php/Cyber-Physical_Systems_Laboratory) at [Washington University in St. Louis](https://washu.edu/), advised by [Prof. Chenyang Lu](https://www.cse.wustl.edu/~lu/).
 
 ## Education
 
-- **Ph.D. Student** – Electrical and Computer Engineering, Carnegie Mellon University (2025–Present)
-- **M.S.** – Electrical and Computer Engineering, Carnegie Mellon University (2024)
-- **B.S.** – Computer Engineering and Computer Science (dual degree), Washington University in St. Louis (2023)
+- **Ph.D. Student**: Electrical and Computer Engineering, CMU (2025–Present)
+- **M.S.**: Electrical and Computer Engineering, CMU (2024)
+- **B.S.**: Computer Engineering; Computer Science, WashU (2023)
 
 ## Research Interests
 
-My research interests span several areas of artificial intelligence and multi-agent systems, with a focus on cooperation and robustness at scale. I am particularly passionate about:
+My research interests span artificial intelligence and multi-agent systems, with a focus on cooperative intelligence at scale. I am particularly passionate about:
 
-- **Scalable multi-agent systems** – large-scale cooperative systems, adaptive communication, evaluation of cooperative intelligence
-- **Embodied and generative agents** – autonomous agents (often powered by LLMs) in embodied environments, collective reasoning, cross-domain generalization, decentralized agents
-- **Human-agent teaming** – interpretability of AI decisions, human feedback integration, human–AI interaction, trustworthiness in collaborative settings
+- **Multi-Agent Systems**: scalability, safety, cooperative intelligence (communication, collective planning, emergent behaviors, learning, evaluation, generalization), decentralized agents, generative agents (often LLM-based), embodied agents.
 
 ## Teaching Experience
 
