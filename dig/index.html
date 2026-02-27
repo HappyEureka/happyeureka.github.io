@@ -225,21 +225,15 @@
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered section-title">Overview</h2>
 
-      <!-- Intro: full width -->
+      <!-- Text (left) + Figures (right) -->
       <div class="columns">
-        <div class="column">
+        <div class="column is-6">
           <p class="mini">
             We consider <strong>cooperative problem solving</strong> in systems of multiple <em>general-purpose agents</em> that interact
             asynchronously via message passing, with no predefined roles, control flow, or communication protocols.
             Coordination and task decomposition emerge solely from local agent decisions.
           </p>
-        </div>
-      </div>
-
-      <!-- System model (left) + fig1 (right) -->
-      <div class="columns is-vcentered" style="margin-top: 0.75rem;">
-        <div class="column is-7">
-          <div style="background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.25); border-radius: 0 8px 8px 0; padding: 0.7rem 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <div style="background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.25); border-radius: 0 8px 8px 0; padding: 0.7rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
             <p class="mini" style="margin: 0;">
               <strong>System model</strong> $\mathcal{S} = (\mathcal{A}, \mathcal{E}, \mathcal{P}, \mathbb{Z})$: a set of agents $\mathcal{A}=\{a_1,\dots,a_N\}$, interaction events $\mathcal{E}$, problem instance $\mathcal{P}$ (encoded as an initial event $e_0$ delivered at $t=0$), and discrete logical time $\mathbb{Z}$. Execution terminates when a terminal event $e_\infty$ is generated.
             </p>
@@ -247,33 +241,32 @@
               <strong>Agents</strong> are modeled as autonomous decision-making units with no predefined role. We abstract away agent internals and model only observable interaction behavior: $f_a : I_a \to O_a$, where $I_a, O_a \subseteq \mathcal{E}$. Each agent maintains a local event buffer $B_a(t)$; activation occurs when the buffer changes while the agent is idle.
             </p>
             <p class="mini" style="margin: 0;">
-              <strong>Events</strong> $e = (p_e, \pi_e)$ carry a payload $p_e$ and a delivery policy $\pi_e$ that determines recipients $R_t(e) \subseteq \mathcal{A}$ at each logical time and updates itself to $\pi_e'$. The event expires when $\pi_e'$ is empty.
+              <strong>Events</strong> $e = (p_e, \pi_e)$ are the messages that trigger agents to activate and act. Each event carries a payload $p_e$ (e.g., a task assignment, a question, a code snippet, or a file artifact) and a delivery policy $\pi_e$ that determines recipients $R_t(e) \subseteq \mathcal{A}$ at each logical time. For example, a user request "<em>Implement a sorting algorithm</em>" is delivered as an initial event $e_0$; an agent responding with code produces a new event carrying that code to downstream agents. The event expires when $\pi_e'$ is empty.
             </p>
             <p class="mini" style="margin: 0;">
               <strong>Execution trace</strong> $\mathcal{T} = \{(a_t, e_t, t)\}_{t \in \mathbb{Z}}$ records the activated agent and generated/delivered event at each logical time step.
             </p>
           </div>
-        </div>
-
-        <div class="column is-5">
-          <div class="figure">
-            <img src="figs/fig1.png" alt="DIG at a glance: cooperative problem solving" style="width:100%; display:block;" />
-            <div class="cap">
-              <strong>Problem setting.</strong> Cooperative problem solving is represented as a time-evolving interaction graph.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Inference problem: full width -->
-      <div class="columns" style="margin-top: 1rem;">
-        <div class="column">
-          <p class="mini" style="margin-bottom: 0.6rem;">
+          <p class="mini" style="margin-top: 0.75rem;">
             Failures may arise from intermediate interaction structure - stalled activations, lost subproblems, duplicated work, or premature termination.
             We study the <strong>inference problem</strong>: given only an observable trace $\mathcal{T}$, infer a diagnosis $\Phi : \mathcal{T} \to \mathcal{F}$
             operating solely on observable interaction structure, without access to agent internals.
           </p>
-          
+        </div>
+
+        <div class="column is-6">
+          <div class="figure">
+            <img src="figs/fig1_new.png" alt="DIG at a glance: cooperative problem solving" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Problem setting.</strong> Cooperative problem solving is represented as a time-evolving interaction graph.
+            </div>
+          </div>
+          <div class="figure" style="margin-top: 1rem;">
+            <img src="figs/fig1-1-new.png" alt="Agent interaction illustration" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Agent interaction.</strong> <strong>Circle nodes</strong> represent agent activations; <strong>rectangular nodes</strong> represent events. Agents interact with each other through event passing, where each <strong>event</strong> can carry an arbitrary payload such as a <strong>message</strong>. Agents are triggered whenever they receive new event(s), transforming a set of input events to a set of output events.
+            </div>
+          </div>
         </div>
       </div>
 
@@ -344,7 +337,7 @@
 
         <div class="column is-6">
           <div class="figure">
-            <img src="figs/fig2.png" alt="DIG definition and rewrites" style="width:100%; display:block;" />
+            <img src="figs/fig2_new.png" alt="DIG definition and rewrites" style="width:100%; display:block;" />
             <div class="cap">
               <strong>DIG construction.</strong> (1-2) Agent activation node and event node representations. (3) Canonical rewrite operators applied at each activation. (4-5) Resulting graph structures capturing observable cooperation dynamics.
             </div>
