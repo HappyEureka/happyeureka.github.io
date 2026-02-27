@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems</title>
+  <meta name="description" content="DIG to Heal introduces the Dynamic Interaction Graph (DIG): a causal, time-evolving interaction graph that makes emergent cooperation observable and enables structure-driven detection and healing in general-purpose LLM multi-agent systems." />
+  <meta name="keywords" content="DIG, Dynamic Interaction Graph, LLM agents, multi-agent systems, cooperation, failure detection, healing, explainability, interaction graphs" />
+
+  <meta property="og:title" content="DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems" />
+  <meta property="og:description" content="A system-level, graph-based framework to observe emergent cooperation and enable real-time structure-driven healing in general-purpose LLM multi-agent systems." />
+  <meta property="og:url" content="https://YOUR_GITHUB_PAGES_URL_HERE/" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems" />
+  <meta name="twitter:description" content="Observe and heal emergent cooperation via a causal Dynamic Interaction Graph (DIG)." />
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,700|Castoro:400,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma-carousel.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma-slider.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/fontawesome.all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/index.css" />
+
+  <style>
+    :root { --accent: #2563eb; }
+    html { scroll-behavior: smooth; }
+
+    .hero.is-gradient {
+      background: radial-gradient(1200px circle at 10% 10%, rgba(37,99,235,0.15), transparent 45%),
+                  radial-gradient(1200px circle at 90% 10%, rgba(16,185,129,0.12), transparent 45%),
+                  linear-gradient(180deg, #fcfcff 0%, #f6f7fb 100%);
+    }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.7rem; border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
+    .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+    .section-title { margin-bottom: 1.25rem; }
+    .card.rounded { border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .figure {
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+      overflow: hidden;
+    }
+    .figure .cap { padding: 0.85rem 1rem; font-size: 0.95rem; color: rgba(0,0,0,0.75); }
+    .mini { font-size: 0.95rem; color: rgba(0,0,0,0.78); }
+    .accent { color: var(--accent); }
+    .tagish {
+      display: inline-block; padding: 0.25rem 0.6rem;
+      border-radius: 999px; background: rgba(37,99,235,0.10);
+      color: rgba(37,99,235,1); font-weight: 600; font-size: 0.85rem;
+      border: 1px solid rgba(37,99,235,0.18);
+      margin-right: 0.35rem; margin-bottom: 0.35rem;
+    }
+    .codebox {
+      border-radius: 14px; border: 1px solid rgba(0,0,0,0.08);
+      background: #0b1020; color: #dbeafe;
+      padding: 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.88rem; line-height: 1.55;
+      overflow: auto;
+    }
+    .codebox .muted { color: rgba(219,234,254,0.7); }
+    .toc a { color: rgba(0,0,0,0.8); }
+    .toc a:hover { color: var(--accent); }
+
+    .kpi { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; }
+    .kpi-sub { font-size: 0.92rem; color: rgba(0,0,0,0.68); }
+
+    .video-wrap { border-radius: 14px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08); }
+    video { width: 100%; height: auto; display: block; background: #000; }
+  </style>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="../damcs/static/js/fontawesome.all.min.js"></script>
+  <script src="../damcs/static/js/bulma-carousel.min.js"></script>
+  <script src="../damcs/static/js/bulma-slider.min.js"></script>
+  <script src="../damcs/static/js/index.js"></script>
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <section class="hero is-gradient" id="top">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+
+            <h1 class="title is-1 publication-title" style="margin-bottom: 0.6rem;">
+              DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems
+            </h1>
+
+            <p class="subtitle is-4" style="max-width: 58rem; margin: 0.75rem auto 0;">
+              A system-level, causal interaction graph that makes emergent cooperation observable and enables
+              structure-driven detection and healing for general-purpose LLM agent teams.
+            </p>
+
+            <!-- AUTHORS -->
+            <div class="is-size-5 publication-authors" style="margin-top: 1.2rem;">
+            <span class="author-block">Hanqing Yang<sup>1</sup>,</span>
+            <span class="author-block">Hyungwoo Lee<sup>1</sup>,</span>
+            <span class="author-block">Yuhang Yao<sup>2</sup>,</span>
+            <span class="author-block">Zhiwei Liu<sup>3</sup>,</span>
+            <span class="author-block">Kay Liu<sup>4</sup>,</span>
+            <span class="author-block">Jingdi Chen<sup>5</sup>,</span>
+            <span class="author-block">Carlee Joe-Wong<sup>1</sup></span>
+            </div>
+
+            <div class="is-size-6" style="margin-top: 0.55rem; color: rgba(0,0,0,0.7); line-height: 1.35;">
+            <span><sup>1</sup>Carnegie Mellon University</span>
+            &nbsp;·&nbsp;
+            <span><sup>2</sup>Zoom</span>
+            &nbsp;·&nbsp;
+            <span><sup>3</sup>Salesforce</span>
+            &nbsp;·&nbsp;
+            <span><sup>4</sup>Amazon</span>
+            &nbsp;·&nbsp;
+            <span><sup>5</sup>University of Arizona</span>
+            </div>
+
+            <!-- LINKS -->
+            <div class="publication-links" style="margin-top: 1.25rem;">
+              <span class="link-block">
+                <a href="YOUR_PAPER_LINK_HERE" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="YOUR_CODE_LINK_HERE" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code [Soon...]</span>
+                </a>
+              </span>
+              <!-- <span class="link-block">
+                <a href="#BibTeX"
+                   class="external-link button is-normal is-rounded is-light">
+                  <span class="icon"><i class="fas fa-quote-right"></i></span>
+                  <span>BibTeX</span>
+                </a>
+              </span> -->
+            </div>
+
+            <!-- TOC -->
+            <div class="toc" style="margin-top: 1.35rem;">
+              <a class="pill" href="#demo">DIG in Action</a>
+              <a class="pill" href="#overview">Overview</a>
+              <a class="pill" href="#dig">DIG</a>
+              <a class="pill" href="#taxonomy">Failure Detection &amp; Healing</a>
+              <a class="pill" href="#results">Results</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO -->
+  <section class="section" id="demo">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">DIG in Action</h2>
+
+      <!-- Text (left) + GIF (right) -->
+      <div class="columns is-vcentered" style="margin-bottom: 1.5rem;">
+        <div class="column is-5">
+          <p class="mini" style="margin-bottom: 0.75rem;">
+            A pool of autonomous LLM agents works on a shared task without predefined roles, control flow, or communication constraints - each operating <strong>independently and non-deterministically</strong>, interacting through emergent cooperative strategies. In practice, such unstructured interactions lead to redundant work and <strong>cascading failures</strong> that are hard to interpret or correct.
+          </p>
+          <p class="mini" style="margin-bottom: 0.75rem;">
+            We introduce the <strong>Dynamic Interaction Graph (DIG)</strong> - a time-evolving causal network of agent activations and interactions that makes emergent cooperation <strong>observable, explainable, and healable</strong> in a protocol-agnostic manner, without any assumptions on agent internals or task structure.
+          </p>
+          <div style="margin-top: 0.5rem;">
+            <span class="tagish">General-purpose agents</span>
+            <span class="tagish">Emergent collaboration</span>
+            <span class="tagish">Observable &amp; explainable</span>
+            <span class="tagish">Real-time correction</span>
+          </div>
+        </div>
+
+        <div class="column is-7">
+          <div class="figure">
+            <img src="figs/realtime_dig.gif" alt="DIG in action" style="width:100%; display:block; border-radius: 6px;" />
+            <div class="cap">
+              <strong>DIG in action.</strong> Agent activations and interaction events evolve as a causal graph in real time - failures are detected and healed as execution unfolds.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive graph: full width -->
+      <div class="columns">
+        <div class="column">
+          <iframe
+            src="figs/interactive_dig.html"
+            style="width:100%; height:820px; border:none; border-radius: 6px; background: #fff; display:block;"
+            title="Interactive DIG"
+            loading="lazy"
+          ></iframe>
+          <div class="cap" style="margin-top: 0.4rem;">
+            <strong>Interactive graph.</strong> Explore the causal interaction graph from the teaser. Hover over nodes and edges for details.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="section hero is-light" id="overview">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Overview</h2>
+
+      <!-- Intro: full width -->
+      <div class="columns">
+        <div class="column">
+          <p class="mini">
+            We consider <strong>cooperative problem solving</strong> in systems of multiple <em>general-purpose agents</em> that interact
+            asynchronously via message passing, with no predefined roles, control flow, or communication protocols.
+            Coordination and task decomposition emerge solely from local agent decisions.
+          </p>
+        </div>
+      </div>
+
+      <!-- System model (left) + fig1 (right) -->
+      <div class="columns is-vcentered" style="margin-top: 0.75rem;">
+        <div class="column is-7">
+          <div style="background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.25); border-radius: 0 8px 8px 0; padding: 0.7rem 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <p class="mini" style="margin: 0;">
+              <strong>System model</strong> $\mathcal{S} = (\mathcal{A}, \mathcal{E}, \mathcal{P}, \mathbb{Z})$: a set of agents $\mathcal{A}=\{a_1,\dots,a_N\}$, interaction events $\mathcal{E}$, problem instance $\mathcal{P}$ (encoded as an initial event $e_0$ delivered at $t=0$), and discrete logical time $\mathbb{Z}$. Execution terminates when a terminal event $e_\infty$ is generated.
+            </p>
+            <p class="mini" style="margin: 0;">
+              <strong>Agents</strong> are modeled as autonomous decision-making units with no predefined role. We abstract away agent internals and model only observable interaction behavior: $f_a : I_a \to O_a$, where $I_a, O_a \subseteq \mathcal{E}$. Each agent maintains a local event buffer $B_a(t)$; activation occurs when the buffer changes while the agent is idle.
+            </p>
+            <p class="mini" style="margin: 0;">
+              <strong>Events</strong> $e = (p_e, \pi_e)$ carry a payload $p_e$ and a delivery policy $\pi_e$ that determines recipients $R_t(e) \subseteq \mathcal{A}$ at each logical time and updates itself to $\pi_e'$. The event expires when $\pi_e'$ is empty.
+            </p>
+            <p class="mini" style="margin: 0;">
+              <strong>Execution trace</strong> $\mathcal{T} = \{(a_t, e_t, t)\}_{t \in \mathbb{Z}}$ records the activated agent and generated/delivered event at each logical time step.
+            </p>
+          </div>
+        </div>
+
+        <div class="column is-5">
+          <div class="figure">
+            <img src="figs/fig1.png" alt="DIG at a glance: cooperative problem solving" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Problem setting.</strong> Cooperative problem solving is represented as a time-evolving causal interaction graph.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inference problem: full width -->
+      <div class="columns" style="margin-top: 1rem;">
+        <div class="column">
+          <p class="mini" style="margin-bottom: 0.6rem;">
+            Due to asynchrony and non-determinism, system behavior is not fully characterized by the terminal output $e_\infty$.
+            Failures may arise from intermediate interaction structure - stalled activations, lost subproblems, duplicated work, or premature termination.
+            We study the <strong>inference problem</strong>: given only an observable trace $\mathcal{T}$, infer a diagnosis $\Phi : \mathcal{T} \to \mathcal{F}$
+            operating solely on observable interaction structure, without access to agent internals or semantic labels.
+          </p>
+          
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DIG -->
+  <section class="section" id="dig">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Dynamic Interaction Graph (DIG)</h2>
+
+      <!-- Intro: full width -->
+      <div class="columns">
+        <div class="column">
+          <p class="mini" style="margin-bottom: 0.8rem;">
+            DIG represents execution as a bipartite directed graph
+            $G(t) = (\mathcal{V}_A(t) \cup \mathcal{V}_E(t),\, \mathcal{E}_G(t))$
+            with two node types:
+            <strong>activation nodes</strong> $v \in \mathcal{V}_A$ (agent activations at logical time $t$) and
+            <strong>event nodes</strong> $e \in \mathcal{V}_E$ (messages, artifacts, system events).
+            Edges capture causal generation and delivery.
+          </p>
+          <p class="mini" style="margin-bottom: 0;">
+            The DIG evolves through <strong>local graph rewrite operators</strong> induced by agent activations.
+            When agent $a$ is activated at time $t$, let $B_a(t)$ be its event buffer and $I_a(t) \subseteq B_a(t)$ the selected inputs.
+            These correspond to incoming edges $E_G^{\mathrm{in}}(v) = \{(e,v) \in \mathcal{E}_G(t)\}$.
+            A system-level <strong>edge rewrite semantics</strong>
+            $\phi_v : E_G^{\mathrm{in}}(v) \to \{\texttt{consume}, \texttt{delay}, \texttt{reroute}, \texttt{discard}\}$
+            assigns a causal fate to each edge, inducing a local rewrite
+            $\mathcal{R}_v : G(t) \to G(t^+)$.
+          </p>
+        </div>
+      </div>
+
+      <!-- Table (left) + fig2 (right) -->
+      <div class="columns is-vcentered" style="margin-top: 0.75rem; margin-bottom: 1rem;">
+        <div class="column is-6">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5" style="margin-bottom: 0.7rem;">Canonical Rewrite Operators</p>
+              <table style="width:100%; border-collapse: collapse; font-size: 0.8rem; line-height: 1.5;">
+                <tbody>
+                  <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+                    <td style="padding: 0.35rem 0.5rem; font-weight: 700; white-space: nowrap; color: rgba(37,99,235,0.85); width: 28%;">Respond (R)</td>
+                    <td style="padding: 0.35rem 0.5rem; color: rgba(0,0,0,0.7);">$I_a(t)=B_a(t)$; all edges labeled <code>consume</code>; input edges removed, output edges $\{(v,e') \mid e' \in O_a(t)\}$ added.</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+                    <td style="padding: 0.35rem 0.5rem; font-weight: 700; white-space: nowrap; color: rgba(37,99,235,0.85);">Wait (W)</td>
+                    <td style="padding: 0.35rem 0.5rem; color: rgba(0,0,0,0.7);">$B_a(t^+)=B_a(t)$; all edges labeled <code>delay</code>; no graph modification, $G(t^+)=G(t)$.</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+                    <td style="padding: 0.35rem 0.5rem; font-weight: 700; white-space: nowrap; color: rgba(37,99,235,0.85);">Reroute (RR)</td>
+                    <td style="padding: 0.35rem 0.5rem; color: rgba(0,0,0,0.7);">Selected edges labeled <code>reroute</code>; each edge redirected $(e,v) \mapsto (e,v')$ to a new recipient.</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+                    <td style="padding: 0.35rem 0.5rem; font-weight: 700; white-space: nowrap; color: rgba(37,99,235,0.85);">Discard (D)</td>
+                    <td style="padding: 0.35rem 0.5rem; color: rgba(0,0,0,0.7);">Selected edges labeled <code>discard</code>; edges removed $(e,v) \mapsto \emptyset$.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 0.35rem 0.5rem; font-weight: 700; white-space: nowrap; color: rgba(37,99,235,0.85);">Submit (S)</td>
+                    <td style="padding: 0.35rem 0.5rem; color: rgba(0,0,0,0.7);">Terminal Respond with $O_a(t)=\{e_\infty\}$; produces the final terminal event node.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-6">
+          <div class="figure">
+            <img src="figs/fig2.png" alt="DIG definition and rewrites" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>DIG construction.</strong> Activation nodes generate events; events trigger downstream activations. Local rewrites define observable cooperation dynamics.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Global execution semantics: full width -->
+      <div class="columns">
+        <div class="column">
+          <div style="background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.25); border-radius: 0 8px 8px 0; padding: 0.7rem 1rem;">
+            <p class="mini" style="margin-bottom: 0.5rem;"><strong>Global Execution Semantics.</strong>
+              The overall system execution is the composition of local graph rewrite operators induced by activation nodes:
+            </p>
+            <p style="text-align: center; font-size: 0.88rem; margin: 0.4rem 0;">
+              $$G_0 \xrightarrow{\mathcal{R}_{v_1}} G_1 \xrightarrow{\mathcal{R}_{v_2}} \cdots \xrightarrow{\mathcal{R}_{v_T}} G_T$$
+            </p>
+            <p class="mini" style="margin: 0;">
+              where each $\mathcal{R}_{v_t} \in \{R,\, W,\, RR,\, D,\, S\}$ is determined by the edge-action labeling function $\phi_{v_t}$.
+              The resulting trace $G_T$ is the DIG used for failure detection, diagnosis, and healing.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAILURE DETECTION AND HEALING -->
+  <section class="section hero is-light" id="taxonomy">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Failure Detection and Healing in DIG</h2>
+
+      <!-- Intro (left) + fig3 (right) -->
+      <div class="columns is-vcentered">
+        <div class="column is-7">
+          <p class="mini" style="margin-bottom: 0.65rem;">
+            Cooperative general agent systems exhibit failures that arise not from isolated reasoning mistakes within individual agents,
+            but from <strong>breakdowns in interaction structure and execution dynamics</strong>.
+            The taxonomy is defined in terms of observable execution structure, without access to agent internals, task semantics, or predefined workflows.
+            We consider two distinct classes of violated structural or temporal invariants:
+            failures in preserving and exhausting work (<strong>Reachability and Coverage</strong>) and
+            warnings indicating inefficient or risky handling of emitted work (<strong>Progress</strong>).
+            This separation enables precise monitoring, diagnosis, and intervention.
+            Detection remains <em>task- and domain-agnostic</em>, as it operates on interaction structure alone.
+          </p>
+          <p class="mini" style="margin-bottom: 0.65rem;">
+            <strong>Detection and Healing.</strong> Whenever a new event $e$ is generated at time $t$, DIG temporarily blocks its delivery
+            and evaluates the current interaction graph $G(t)$ for structural error patterns.
+            When a failure is detected, the system may
+            <strong>(i)</strong> inject new information into the event before delivery,
+            <strong>(ii)</strong> inject and reroute it to a corrected recipient set, or
+            <strong>(iii)</strong> create a new event and deliver it to a recipient set
+            to <em>heal</em> from the failure.
+          </p>
+        </div>
+
+        <div class="column is-5">
+          <div class="figure">
+            <img src="figs/fig3.png" alt="Failure patterns in DIG" style="width:90%; display:block; margin: 0 auto;" />
+            <div class="cap">
+              <strong>Failure patterns.</strong> Coordination invariant violations appear as recognizable structural motifs in the interaction graph.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns" style="margin-top: 1.5rem;">
+        <div class="column">
+          <div style="overflow-x: auto;">
+            <table style="width:100%; border-collapse: collapse; font-size: 0.82rem; line-height: 1.55;">
+              <thead>
+                <tr style="border-bottom: 2px solid rgba(0,0,0,0.10);">
+                  <th style="padding: 0.5rem 0.75rem; text-align: left; color: rgba(0,0,0,0.45); font-weight: 700; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.04em; width: 22%;">Failure Category</th>
+                  <th style="padding: 0.5rem 0.75rem; text-align: left; color: rgba(0,0,0,0.45); font-weight: 700; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.04em; width: 38%;">Failure pattern</th>
+                  <th style="padding: 0.5rem 0.75rem; text-align: left; color: rgba(0,0,0,0.45); font-weight: 700; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.04em;">Detection &amp; Healing</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Reachability & Coverage -->
+                <tr style="border-top: 1.5px solid rgba(37,99,235,0.18); background: rgba(37,99,235,0.03);">
+                  <td rowspan="4" style="padding: 0.6rem 0.75rem; vertical-align: top; font-weight: 600; color: rgba(0,0,0,0.75); border-right: 3px solid rgba(37,99,235,0.25);">
+                    <strong>Reachability and Coverage</strong>
+                    <p class="mini" style="font-weight: 400; margin-top: 0.4rem; color: rgba(0,0,0,0.55);">All reachable work should persist until consumed. The system should emit a single <em>Submit</em> event, and only after all reachable work has been consumed.</p>
+                  </td>
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                    <strong>Early termination (ET):</strong> a <em>Submit</em> event is generated while some reachable work remains unconsumed. Formally, $e_\infty \in V_E(t)$ and $\exists\, e \in R(t)$ with no directed path from $e$ to $e_\infty$.
+                  </td>
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); color: rgba(0,0,0,0.7);">
+                    <span style="color: rgba(37,99,235,0.85); font-weight: 600;">Detection:</span> Submit generated despite unresolved reachable work.<br/>
+                    <span style="color: rgba(16,185,129,0.85); font-weight: 600;">Healing (ii):</span> Inject information about unresolved events; reroute Submit back to the issuing agent.
+                  </td>
+                </tr>
+                <tr style="background: rgba(37,99,235,0.03);">
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                    <strong>Missing termination (MC):</strong> all reachable work has been consumed, but no <em>Submit</em> event is generated within a reasonable time window. Formally, $R(t)=\emptyset$ and $e_\infty \notin V_E(t)$ past a threshold.
+                  </td>
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); color: rgba(0,0,0,0.7);">
+                    <span style="color: rgba(37,99,235,0.85); font-weight: 600;">Detection:</span> Reachable set exhausted with no Submit.<br/>
+                    <span style="color: rgba(16,185,129,0.85); font-weight: 600;">Healing (i):</span> Inject a signal that all reachable work is exhausted.
+                  </td>
+                </tr>
+                <tr style="background: rgba(37,99,235,0.03);">
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                    <strong>Orphaned event (OE):</strong> an event is generated but has no recipients for longer than a reasonable time window. Formally, $\exists\, e \in V_E(t),\, e \neq e_\infty$ with $R_t(e)=\emptyset$.
+                  </td>
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); color: rgba(0,0,0,0.7);">
+                    <span style="color: rgba(37,99,235,0.85); font-weight: 600;">Detection:</span> Generated event with empty recipient set past timeout.<br/>
+                    <span style="color: rgba(16,185,129,0.85); font-weight: 600;">Healing (ii):</span> Inject status information; reroute the event back to its generating agent.
+                  </td>
+                </tr>
+                <tr style="background: rgba(37,99,235,0.03);">
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1.5px solid rgba(0,0,0,0.08);">
+                    <strong>Deadlock (DL):</strong> reachable work remains but no activation occurs within a reasonable window. Formally, $R(t)\neq\emptyset$ while $V_A(t)=\emptyset$ across a time window.
+                  </td>
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1.5px solid rgba(0,0,0,0.08); color: rgba(0,0,0,0.7);">
+                    <span style="color: rgba(37,99,235,0.85); font-weight: 600;">Detection:</span> Pending work with no active agent past timeout.<br/>
+                    <span style="color: rgba(16,185,129,0.85); font-weight: 600;">Healing (iii):</span> Create a new event and broadcast to all agents to restart activity.
+                  </td>
+                </tr>
+                <!-- Progress -->
+                <tr style="background: rgba(16,185,129,0.03);">
+                  <td rowspan="3" style="padding: 0.6rem 0.75rem; vertical-align: top; font-weight: 600; color: rgba(0,0,0,0.75); border-right: 3px solid rgba(16,185,129,0.3);">
+                    <strong>Progress</strong>
+                    <p class="mini" style="font-weight: 400; margin-top: 0.4rem; color: rgba(0,0,0,0.55);">Generated events should be consumed downstream within a reasonable time; repeated deferral, rerouting, or redundant handling indicates risk.</p>
+                  </td>
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                    <strong>Excessive rerouting (ER):</strong> an event is repeatedly <em>Rerouted</em> across activations without being <em>Consumed</em>. Formally, $\exists\, e \in V_E(t)$ whose delivery edges are rerouted more than a reasonable threshold.
+                  </td>
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); color: rgba(0,0,0,0.7);">
+                    <span style="color: rgba(37,99,235,0.85); font-weight: 600;">Detection:</span> Reroute count on an event exceeds threshold.<br/>
+                    <span style="color: rgba(16,185,129,0.85); font-weight: 600;">Healing (i):</span> Inject information indicating repeated rerouting into the event.
+                  </td>
+                </tr>
+                <tr style="background: rgba(16,185,129,0.03);">
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                    <strong>Cross-lineage aggregation (CLA):</strong> events from different problem-generating activations are delivered to the same recipient. Formally, $\exists\, v \in V_A(t)$ and $e \neq e' \in I_v$ with no common generating activation ancestor.
+                  </td>
+                  <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); color: rgba(0,0,0,0.7);">
+                    <span style="color: rgba(37,99,235,0.85); font-weight: 600;">Detection:</span> Inputs to an activation span multiple unrelated lineages.<br/>
+                    <span style="color: rgba(16,185,129,0.85); font-weight: 600;">Healing (i):</span> Inject ancestry information into each event.
+                  </td>
+                </tr>
+                <tr style="background: rgba(16,185,129,0.03);">
+                  <td style="padding: 0.5rem 0.75rem;">
+                    <strong>Repeated subproblem solving (RSP):</strong> multiple problem-reducing activations consume the same upstream event $p$. Formally, $\exists\, p \in V_E(t)$ and problem-reducing activations $v \neq v'$ with $p \in I_v \cap I_{v'}$.
+                  </td>
+                  <td style="padding: 0.5rem 0.75rem; color: rgba(0,0,0,0.7);">
+                    <span style="color: rgba(37,99,235,0.85); font-weight: 600;">Detection:</span> Same upstream event consumed by multiple reducers.<br/>
+                    <span style="color: rgba(16,185,129,0.85); font-weight: 600;">Healing (i):</span> Inject information on which part of the result may be repeated.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="section" id="results">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Results</h2>
+
+      <!-- Intro -->
+      <div class="columns">
+        <div class="column">
+          <p class="mini" style="margin-bottom: 0.75rem;">
+            We evaluate on <strong>CountFrequency</strong> and <strong>20Newsgroups</strong> across three difficulty levels and 1, 3, and 6 agents,
+            reporting detected error counts, prediction accuracy (RMSE), runtime, and valid output rate - averaged over multiple runs.
+            We compare <em>MAS-Only</em>, <em>MAS+LLM Judge</em>, and <em>MAS+DIG</em>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Key findings cards -->
+      <div class="columns" style="margin-top: 0.5rem; margin-bottom: 1.25rem;">
+        <div class="column is-4">
+          <div class="card rounded" style="height: 100%;">
+            <div class="card-content">
+              <p class="title is-6" style="margin-bottom: 0.4rem;">Reliability at Scale</p>
+              <p class="mini" style="color: rgba(0,0,0,0.7);">
+                MAS+DIG generally achieves the lowest RMSE and higher valid output rates, especially on hard tasks.
+                As agent count and task difficulty increase, DIG more frequently enables the system to complete with valid and accurate results -
+                whereas MAS-Only and MAS+LLM Judge frequently fail to produce valid outputs at all.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="card rounded" style="height: 100%;">
+            <div class="card-content">
+              <p class="title is-6" style="margin-bottom: 0.4rem;">Detection Overhead is Intentional</p>
+              <p class="mini" style="color: rgba(0,0,0,0.7);">
+                Higher detected error counts and longer runtimes for MAS+DIG reflect active healing, not worse performance:
+                healing keeps the system running longer, exposing and resolving additional failures.
+                MAS-Only appears faster with fewer errors only because failures go undetected and unresolved.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="card rounded" style="height: 100%;">
+            <div class="card-content">
+              <p class="title is-6" style="margin-bottom: 0.4rem;">LLM Judge Overhead</p>
+              <p class="mini" style="color: rgba(0,0,0,0.7);">
+                The LLM Judge baseline incurs high healing overhead, making real-time intervention impractical.
+                Despite this cost, it often yields higher RMSE and lower valid output rates - not every intervention improves performance.
+                DIG-based interventions are structure-driven, not semantic, and incur negligible overhead.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Execution traces -->
+      <p class="mini" style="margin-top: 1.25rem; margin-bottom: 0.75rem;">
+        <strong>Case study: 20-agent scale.</strong>
+        A 20-agent run on CountFrequency with 100,000 elements (10× the hard setting) demonstrates DIG's scalability.
+        The baseline MAS fails to produce any result within 120 s without healing; MAS+DIG produces a valid answer within 70 s
+        (RMSE 5812.69, ~5.8% relative error), detecting 1 missing completion, 8 repeated-effort incidents, 2 dependency warnings, 1 orphaned event, and 4 early termination errors.
+        MAS+LLM Judge shows increasingly fragmented interaction patterns as system size grows.
+      </p>
+
+      <div class="columns" style="margin-top: 1rem;">
+        <div class="column is-4">
+          <div class="figure">
+            <img src="figs/fig4.png" alt="3-agent DIG trace" style="width:100%; display:block;" />
+            <div class="cap"><strong>3 agents.</strong> Stable coordination and clean convergence.</div>
+          </div>
+        </div>
+
+        <div class="column is-4">
+          <div class="figure">
+            <img src="figs/fig5.png" alt="LLM-judge trace" style="width:100%; display:block;" />
+            <div class="cap"><strong>LLM judge.</strong> Intervention overhead can stall progress and destabilize trajectories.</div>
+          </div>
+        </div>
+
+        <div class="column is-4">
+          <div class="figure">
+            <img src="figs/fig6.png" alt="20-agent DIG trace" style="width:100%; display:block;" />
+            <div class="cap"><strong>20 agents.</strong> DIG maintains coherent causal structure even with dense interactions.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results table -->
+      <div class="columns" style="margin-top: 1.5rem;">
+        <div class="column">
+          <div class="figure">
+            <img src="figs/results.png" alt="Results table" style="width:100%; display:block;" />
+            <div class="cap"><strong>Table 1.</strong> System-level evaluation across baselines, domains (CountFrequency & 20Newsgroups), difficulty levels, and agent counts. Detected Error and RMSE averaged over three runs; Valid Output Rate over ten runs.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BIBTEX -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title is-3 has-text-centered section-title">BibTeX</h2>
+      <pre><code>@article{yang2026dig,
+  title   = {DIG to Heal: Scaling General-purpose Agent Cooperation via Explainable Dynamic Decision Paths},
+  author  = {Yang, Hanqing and Lee, Hyungwoo and Yao, Yuhang and Liu, Zhiwei and Liu, Kay and Chen, Jingdi and Joe-Wong, Carlee},
+  year    = {2026},
+  note    = {Preprint}
+}</code></pre>
+      <p class="mini" style="text-align:center; margin-top: 1rem;">
+        <a href="#top">Back to top</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p class="mini">
+              This page is based on the Academic Project Page Template.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
