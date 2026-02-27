@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems</title>
-  <meta name="description" content="DIG to Heal introduces the Dynamic Interaction Graph (DIG): a causal, time-evolving interaction graph that makes emergent cooperation observable and enables structure-driven detection and healing in general-purpose LLM multi-agent systems." />
+  <meta name="description" content="DIG to Heal introduces the Dynamic Interaction Graph (DIG): a time-evolving interaction graph that makes emergent cooperation observable and enables structure-driven detection and healing in general-purpose LLM multi-agent systems." />
   <meta name="keywords" content="DIG, Dynamic Interaction Graph, LLM agents, multi-agent systems, cooperation, failure detection, healing, explainability, interaction graphs" />
 
   <meta property="og:title" content="DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems" />
-  <meta property="og:description" content="A system-level, graph-based framework to observe emergent cooperation and enable real-time structure-driven healing in general-purpose LLM multi-agent systems." />
+  <meta property="og:description" content="A graph-based framework to observe emergent cooperation and enable real-time structure-driven healing in general-purpose LLM multi-agent systems." />
   <meta property="og:url" content="https://YOUR_GITHUB_PAGES_URL_HERE/" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems" />
-  <meta name="twitter:description" content="Observe and heal emergent cooperation via a causal Dynamic Interaction Graph (DIG)." />
+  <meta name="twitter:description" content="Observe and heal emergent cooperation via the Dynamic Interaction Graph (DIG)." />
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,700|Castoro:400,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../damcs/static/css/bulma.min.css" />
@@ -103,7 +103,7 @@
             </h1>
 
             <p class="subtitle is-4" style="max-width: 58rem; margin: 0.75rem auto 0;">
-              A system-level, causal interaction graph that makes emergent cooperation observable and enables
+              An interaction graph that makes emergent cooperation observable and enables
               structure-driven detection and healing for general-purpose LLM agent teams.
             </p>
 
@@ -182,7 +182,7 @@
             A pool of autonomous LLM agents works on a shared task without predefined roles, control flow, or communication constraints - each operating <strong>independently and non-deterministically</strong>, interacting through emergent cooperative strategies. In practice, such unstructured interactions lead to redundant work and <strong>cascading failures</strong> that are hard to interpret or correct.
           </p>
           <p class="mini" style="margin-bottom: 0.75rem;">
-            We introduce the <strong>Dynamic Interaction Graph (DIG)</strong> - a time-evolving causal network of agent activations and interactions that makes emergent cooperation <strong>observable, explainable, and healable</strong> in a protocol-agnostic manner, without any assumptions on agent internals or task structure.
+            We introduce the <strong>Dynamic Interaction Graph (DIG)</strong> - a time-evolving interaction network of agent activations and events that makes emergent cooperation <strong>observable, explainable, and healable</strong> in a protocol-agnostic manner, without any assumptions on agent internals or task structure.
           </p>
           <div style="margin-top: 0.5rem;">
             <span class="tagish">General-purpose agents</span>
@@ -196,7 +196,7 @@
           <div class="figure">
             <img src="figs/realtime_dig.gif" alt="DIG in action" style="width:100%; display:block; border-radius: 6px;" />
             <div class="cap">
-              <strong>DIG in action.</strong> Agent activations and interaction events evolve as a causal graph in real time - failures are detected and healed as execution unfolds.
+              <strong>DIG in action.</strong> Agent activations and interaction events evolve as an interaction graph in real time - failures are detected and healed as execution unfolds.
             </div>
           </div>
         </div>
@@ -212,7 +212,7 @@
             loading="lazy"
           ></iframe>
           <div class="cap" style="margin-top: 0.4rem;">
-            <strong>Interactive graph.</strong> Explore the causal interaction graph from the teaser. Hover over nodes and edges for details.
+            <strong>Interactive graph.</strong> Explore the interaction graph. Hover over nodes and edges for details.
           </div>
         </div>
       </div>
@@ -259,7 +259,7 @@
           <div class="figure">
             <img src="figs/fig1.png" alt="DIG at a glance: cooperative problem solving" style="width:100%; display:block;" />
             <div class="cap">
-              <strong>Problem setting.</strong> Cooperative problem solving is represented as a time-evolving causal interaction graph.
+              <strong>Problem setting.</strong> Cooperative problem solving is represented as a time-evolving interaction graph.
             </div>
           </div>
         </div>
@@ -269,10 +269,9 @@
       <div class="columns" style="margin-top: 1rem;">
         <div class="column">
           <p class="mini" style="margin-bottom: 0.6rem;">
-            Due to asynchrony and non-determinism, system behavior is not fully characterized by the terminal output $e_\infty$.
             Failures may arise from intermediate interaction structure - stalled activations, lost subproblems, duplicated work, or premature termination.
             We study the <strong>inference problem</strong>: given only an observable trace $\mathcal{T}$, infer a diagnosis $\Phi : \mathcal{T} \to \mathcal{F}$
-            operating solely on observable interaction structure, without access to agent internals or semantic labels.
+            operating solely on observable interaction structure, without access to agent internals.
           </p>
           
         </div>
@@ -295,15 +294,15 @@
             with two node types:
             <strong>activation nodes</strong> $v \in \mathcal{V}_A$ (agent activations at logical time $t$) and
             <strong>event nodes</strong> $e \in \mathcal{V}_E$ (messages, artifacts, system events).
-            Edges capture causal generation and delivery.
+            Edges capture generation and delivery relationships.
           </p>
           <p class="mini" style="margin-bottom: 0;">
             The DIG evolves through <strong>local graph rewrite operators</strong> induced by agent activations.
             When agent $a$ is activated at time $t$, let $B_a(t)$ be its event buffer and $I_a(t) \subseteq B_a(t)$ the selected inputs.
             These correspond to incoming edges $E_G^{\mathrm{in}}(v) = \{(e,v) \in \mathcal{E}_G(t)\}$.
-            A system-level <strong>edge rewrite semantics</strong>
+            A global <strong>edge rewrite semantics</strong>
             $\phi_v : E_G^{\mathrm{in}}(v) \to \{\texttt{consume}, \texttt{delay}, \texttt{reroute}, \texttt{discard}\}$
-            assigns a causal fate to each edge, inducing a local rewrite
+            assigns an action label to each edge, inducing a local rewrite
             $\mathcal{R}_v : G(t) \to G(t^+)$.
           </p>
         </div>
@@ -319,7 +318,7 @@
                 <tbody>
                   <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
                     <td style="padding: 0.35rem 0.5rem; font-weight: 700; white-space: nowrap; color: rgba(37,99,235,0.85); width: 28%;">Respond (R)</td>
-                    <td style="padding: 0.35rem 0.5rem; color: rgba(0,0,0,0.7);">$I_a(t)=B_a(t)$; all edges labeled <code>consume</code>; input edges removed, output edges $\{(v,e') \mid e' \in O_a(t)\}$ added.</td>
+                    <td style="padding: 0.35rem 0.5rem; color: rgba(0,0,0,0.7);">$I_a(t)=B_a(t)$; all edges labeled <code>consume</code>; input events removed from buffer, output edges $\{(v,e') \mid e' \in O_a(t)\}$ added.</td>
                   </tr>
                   <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
                     <td style="padding: 0.35rem 0.5rem; font-weight: 700; white-space: nowrap; color: rgba(37,99,235,0.85);">Wait (W)</td>
@@ -347,7 +346,7 @@
           <div class="figure">
             <img src="figs/fig2.png" alt="DIG definition and rewrites" style="width:100%; display:block;" />
             <div class="cap">
-              <strong>DIG construction.</strong> Activation nodes generate events; events trigger downstream activations. Local rewrites define observable cooperation dynamics.
+              <strong>DIG construction.</strong> (1-2) Agent activation node and event node representations. (3) Canonical rewrite operators applied at each activation. (4-5) Resulting graph structures capturing observable cooperation dynamics.
             </div>
           </div>
         </div>
@@ -564,14 +563,6 @@
       </div>
 
       <!-- Execution traces -->
-      <p class="mini" style="margin-top: 1.25rem; margin-bottom: 0.75rem;">
-        <strong>Case study: 20-agent scale.</strong>
-        A 20-agent run on CountFrequency with 100,000 elements (10× the hard setting) demonstrates DIG's scalability.
-        The baseline MAS fails to produce any result within 120 s without healing; MAS+DIG produces a valid answer within 70 s
-        (RMSE 5812.69, ~5.8% relative error), detecting 1 missing completion, 8 repeated-effort incidents, 2 dependency warnings, 1 orphaned event, and 4 early termination errors.
-        MAS+LLM Judge shows increasingly fragmented interaction patterns as system size grows.
-      </p>
-
       <div class="columns" style="margin-top: 1rem;">
         <div class="column is-4">
           <div class="figure">
@@ -590,17 +581,25 @@
         <div class="column is-4">
           <div class="figure">
             <img src="figs/fig6.png" alt="20-agent DIG trace" style="width:100%; display:block;" />
-            <div class="cap"><strong>20 agents.</strong> DIG maintains coherent causal structure even with dense interactions.</div>
+            <div class="cap"><strong>20 agents.</strong> DIG maintains coherent interaction structure even with dense interactions.</div>
           </div>
         </div>
       </div>
+
+      <p class="mini" style="margin-top: 1.25rem; margin-bottom: 0.75rem;">
+        <strong>Case study: 20-agent scale.</strong>
+        A 20-agent run on CountFrequency with 100,000 elements (10× the hard setting) demonstrates DIG's scalability.
+        The baseline MAS fails to produce any result within 120 s without healing; MAS+DIG produces a valid answer within 70 s
+        (RMSE 5812.69, ~5.8% relative error), detecting 1 missing completion, 8 repeated-effort incidents, 2 dependency warnings, 1 orphaned event, and 4 early termination errors.
+        MAS+LLM Judge shows increasingly fragmented interaction patterns as system size grows.
+      </p>
 
       <!-- Results table -->
       <div class="columns" style="margin-top: 1.5rem;">
         <div class="column">
           <div class="figure">
             <img src="figs/results.png" alt="Results table" style="width:100%; display:block;" />
-            <div class="cap"><strong>Table 1.</strong> System-level evaluation across baselines, domains (CountFrequency & 20Newsgroups), difficulty levels, and agent counts. Detected Error and RMSE averaged over three runs; Valid Output Rate over ten runs.</div>
+            <div class="cap"><strong>Table 1.</strong> Evaluation across baselines, domains (CountFrequency & 20Newsgroups), difficulty levels, and agent counts. Detected Error and RMSE averaged over three runs; Valid Output Rate over ten runs.</div>
           </div>
         </div>
       </div>
