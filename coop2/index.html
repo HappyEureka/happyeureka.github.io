@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>COOP^2: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems</title>
+  <meta name="description" content="COOP^2 is an evaluation framework for defining, observing, and repairing cooperation in LLM-based multi-agent systems through cognitive-primitive traces, cooperative task constraints, and targeted repair communication." />
+  <meta name="keywords" content="COOP^2, LLM agents, multi-agent systems, cooperation, process-level evaluation, cooperative constraints, COOP^2-Repair, MA-Crafter, CUBE, MAEIL" />
+
+  <meta property="og:title" content="COOP^2: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems" />
+  <meta property="og:description" content="A process-level framework for grounding LLM multi-agent cooperation in task progress, diagnosing constraint failures, and guiding targeted repair." />
+  <meta property="og:url" content="https://happyeureka.github.io/coop2/" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="COOP^2: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems" />
+  <meta name="twitter:description" content="Define cooperative tasks, observe grounded cooperation traces, and repair predicted constraint failures in LLM-MAS." />
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,700|Castoro:400,700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma-carousel.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma-slider.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/fontawesome.all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/index.css" />
+
+  <style>
+    :root { --accent: #2563eb; }
+    html { scroll-behavior: smooth; }
+    .hero.is-gradient {
+      background: linear-gradient(180deg, #fbfcff 0%, #f3f6fb 100%);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.7rem; border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
+    .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+    .section-title { margin-bottom: 1.25rem; }
+    .card.rounded { border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .figure {
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+      overflow: hidden;
+    }
+    .figure .ph {
+      display: grid; place-items: center;
+      aspect-ratio: 16 / 9;
+      color: rgba(0,0,0,0.55);
+      background:
+        linear-gradient(135deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.00) 60%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.04), rgba(0,0,0,0.04) 1px, transparent 1px, transparent 18px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.035), rgba(0,0,0,0.035) 1px, transparent 1px, transparent 18px);
+    }
+    .figure .cap { padding: 0.85rem 1rem; font-size: 0.95rem; color: rgba(0,0,0,0.75); }
+    .mini { font-size: 0.92rem; color: rgba(0,0,0,0.75); }
+    .accent { color: var(--accent); }
+    .kpi { font-size: 2rem; font-weight: 700; }
+    .kpi-sub { font-size: 0.95rem; color: rgba(0,0,0,0.7); }
+    .toc a { color: rgba(0,0,0,0.8); }
+    .toc a:hover { color: var(--accent); }
+    .codebox {
+      border-radius: 8px; border: 1px solid rgba(0,0,0,0.08);
+      background: #0b1020; color: #dbeafe;
+      padding: 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.88rem; line-height: 1.55;
+      overflow: auto;
+    }
+    .codebox .muted { color: rgba(219,234,254,0.7); }
+    .tagish {
+      display: inline-block; padding: 0.25rem 0.6rem;
+      border-radius: 999px; background: rgba(37,99,235,0.10);
+      color: rgba(37,99,235,1); font-weight: 600; font-size: 0.85rem;
+      border: 1px solid rgba(37,99,235,0.18);
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="../damcs/static/js/fontawesome.all.min.js"></script>
+  <script src="../damcs/static/js/bulma-carousel.min.js"></script>
+  <script src="../damcs/static/js/bulma-slider.min.js"></script>
+  <script src="../damcs/static/js/index.js"></script>
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <section class="hero is-gradient">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+
+            <h1 class="title is-1 publication-title" style="margin-bottom: 0.6rem;">
+              COOP<sup>2</sup>: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems
+            </h1>
+
+            <p class="subtitle is-4" style="max-width: 56rem; margin: 0.75rem auto 0;">
+              A cognitive-primitive evaluation framework that makes cooperation observable as a task-grounded process,
+              then repairs predicted constraint failures through targeted communication before execution.
+            </p>
+
+            <div class="is-size-5 publication-authors" style="margin-top: 1.2rem;">
+              <span class="author-block">
+                <a href="https://happyeureka.github.io/" target="_blank">Hanqing Yang</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://narjesnourzad.wixsite.com/webpage" target="_blank">Narjes Nourzad</a><sup>2</sup><span class="accent">*</span>,
+              </span>
+              <span class="author-block">
+                <a href="https://linkedin.com/in/shiyu-chen-a367a4263" target="_blank">Shiyu Chen</a><sup>1</sup><span class="accent">*</span>,
+              </span>
+              <span class="author-block">
+                <a href="https://mariesiewhuilin.weebly.com/" target="_blank">Marie Siew</a><sup>3</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=-YpedXsAAAAJ&amp;hl=en" target="_blank">Jingdi Chen</a><sup>4</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.andrew.cmu.edu/user/cjoewong/" target="_blank">Carlee Joe-Wong</a><sup>1</sup>
+              </span>
+            </div>
+
+            <div class="is-size-6" style="margin-top: 0.55rem; color: rgba(0,0,0,0.7);">
+              <span><sup>1</sup><a href="https://www.cmu.edu/" target="_blank">Carnegie Mellon University</a></span>
+              &nbsp;·&nbsp;
+              <span><sup>2</sup><a href="https://www.usc.edu/" target="_blank">University of Southern California</a></span>
+              &nbsp;·&nbsp;
+              <span><sup>3</sup><a href="https://www.sutd.edu.sg/" target="_blank">Singapore University of Technology and Design</a></span>
+              &nbsp;·&nbsp;
+              <span><sup>4</sup><a href="https://www.arizona.edu/" target="_blank">University of Arizona</a></span>
+              <div style="margin-top: 0.35rem;"><span class="accent">*</span> Equal contribution</div>
+            </div>
+
+            <div class="publication-links" style="margin-top: 1.25rem;">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.00349" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/HappyEureka/coop2" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#BibTeX"
+                   class="external-link button is-normal is-rounded is-light">
+                  <span class="icon"><i class="fas fa-quote-right"></i></span>
+                  <span>BibTeX</span>
+                </a>
+              </span>
+            </div>
+
+            <div class="toc" style="margin-top: 1.4rem;">
+              <a class="pill" href="#overview">Overview</a>
+              <a class="pill" href="#framework">Framework</a>
+              <a class="pill" href="#tasks">Task Design</a>
+              <a class="pill" href="#metrics">Trace</a>
+              <a class="pill" href="#repair">Repair</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO TEASER -->
+  <section class="section" id="benchmark">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Agents in Action</h2>
+
+      <div class="columns is-vcentered" style="margin-bottom: 2rem;">
+        <div class="column is-5">
+          <h3 class="title is-4">MA-Crafter</h3>
+          <p class="mini">
+            Multi-agent open-world survival with partial observability and a technology tree. Cooperative tasks are defined over resource
+            collection and crafting, requiring multiple agents to work together.
+          </p>
+          <div style="overflow-x: auto;">
+            <table style="width:100%; border-collapse: collapse; font-size: 0.73rem; line-height: 1.3;">
+              <thead>
+                <tr style="border-bottom: 1.5px solid rgba(0,0,0,0.12); text-align: left;">
+                  <th style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.45); font-weight: 700; text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.04em; white-space: nowrap;">Action Concept</th>
+                  <th style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.45); font-weight: 700; text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.04em;">Args</th>
+                  <th style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.45); font-weight: 700; text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.04em;">Effect</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>noop</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>steps</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Do nothing for <em>steps</em> steps.</td></tr>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(0,0,0,0.015);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>move</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>dir, steps</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Move left/right/up/down.</td></tr>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>collect</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>resource</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Collect; all qualifying agents receive it.</td></tr>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(0,0,0,0.015);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>craft</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>item</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Craft at a tool station; requires simultaneous <code>craft</code> with a nearby quorum. Resources consumed from leader's bag; all participating agents receive the crafted item.</td></tr>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>sleep</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);">-</td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Recover energy.</td></tr>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(0,0,0,0.015);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>place</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>object</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Place an object in the world.</td></tr>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>share</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>id, item, qty</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Transfer resources to another agent.</td></tr>
+                <tr style="background: rgba(0,0,0,0.015);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>navigate</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>target, id</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Pathfind to target (64-step timeout).</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="column is-8">
+          <div class="figure">
+            <img src="coop2_data/macrafter_gpt_3agents_30steps_lv1_debate.gif" alt="MA-Crafter demo" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>MA-Crafter.</strong> Open-world cooperative collection and crafting with explicit participation thresholds and tool dependencies.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-vcentered">
+        <div class="column is-7">
+          <div class="figure">
+            <img src="coop2_data/CUBE_ds_3agents_30steps_lv1_debate_20260129_104617.gif" alt="CUBE demo" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>CUBE.</strong> Grid-world cooperative block pushing with embodied constraints from collisions and quorum-based pushing.
+            </div>
+          </div>
+        </div>
+        <div class="column is-5">
+          <h3 class="title is-4">CUBE</h3>
+          <p class="mini">
+            Block-pushing grid world where blocks have weights that determine both their physical size and
+            the number of agents required to push from a side simultaneously. Spatial-temporal cooperation failures emerge.
+          </p>
+          <div style="overflow-x: auto;">
+            <table style="width:100%; border-collapse: collapse; font-size: 0.73rem; line-height: 1.3;">
+              <thead>
+                <tr style="border-bottom: 1.5px solid rgba(0,0,0,0.12); text-align: left;">
+                  <th style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.45); font-weight: 700; text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.04em; white-space: nowrap;">Action Concept</th>
+                  <th style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.45); font-weight: 700; text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.04em;">Args</th>
+                  <th style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.45); font-weight: 700; text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.04em;">Effect</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>move</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>dir, steps</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Move in direction for <em>steps</em> steps.</td></tr>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(0,0,0,0.015);"><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>wait</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>steps</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Idle for <em>steps</em> steps (STAY).</td></tr>
+                <tr><td style="padding: 0.15rem 0.35rem; white-space: nowrap;"><code>push</code></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.5);"><em>block, steps</em></td><td style="padding: 0.15rem 0.35rem; color: rgba(0,0,0,0.65);">Push; succeeds only if a sufficient number of agents align on the same face and their combined force meets or exceeds the (possibly chained) block weight, with a free destination cell.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section hero is-light" id="overview">
+    <div class="container is-max-desktop">
+      <div class="columns">
+        <div class="column">
+          <h2 class="title is-3 section-title">Overview</h2>
+          <div class="content">
+            <p>
+              <strong>COOP<sup>2</sup></strong> is an evaluation framework for studying cooperation in <strong>LLM-based multi-agent systems</strong>.
+              It connects agents' high-level natural-language planning, communication, interruption, and replanning to the grounded actions
+              that change task state in the environment. Cooperative tasks are represented with verifiable constraints, so the trace reveals
+              <em>where</em> cooperation succeeds, <em>where</em> it breaks down, and <em>why</em> a task cannot progress.
+            </p>
+            <div style="margin-top: 1rem;">
+              <span class="tagish">Cognitive-Primitive Interface</span>
+              <span class="tagish">MAEIL</span>
+              <span class="tagish">Constraint-Guarded Tasks</span>
+              <span class="tagish">COOP<sup>2</sup>-Repair</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column">
+          <div class="figure">
+            <img src="figs/overview.png" alt="Figure 1: COOP2 overview" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>COOP<sup>2</sup> at a glance.</strong> A cognitive-primitive interface couples symbolic agent activity with environment transitions.
+              Cooperative constraints diagnose task progress and feed COOP<sup>2</sup>-Repair before primitive execution.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-multiline" style="margin-top: 1.25rem;">
+        <div class="column is-one-third">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5"><span class="icon"><i class="fas fa-layer-group"></i></span> Agent trace</p>
+              <p class="mini">
+                Records symbolic activity, committed plans, messages, interruptions, grounded actions, and task-state transitions in one aligned trace.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5"><span class="icon"><i class="fas fa-tasks"></i></span> Cooperative tasks</p>
+              <p class="mini">
+                Task progress is guarded by temporal, spatial or relational, participation or capability, and dependency constraints.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5"><span class="icon"><i class="fas fa-tools"></i></span> Targeted repair</p>
+              <p class="mini">
+                COOP<sup>2</sup>-Repair predicts constraint failures from group plans and opens temporary repair channels for guided revisions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FRAMEWORK -->
+  <section class="section" id="framework">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Framework: Cognitive-Primitive Interface and MAEIL</h2>
+
+      <!-- Dual clock intro: text left, fig2 right -->
+      <div class="columns is-vcentered" style="margin-bottom: 1.5rem;">
+        <div class="column is-5">
+          <p class="mini" style="margin-bottom: 0.85rem;">
+            To study embodied multi-agent cooperation, we need to capture three intertwined dynamics at once:
+            how agents <strong>reason and plan individually</strong>, how they <strong>communicate and coordinate with each other</strong>,
+            and how they <strong>jointly interact with a shared physical environment</strong>.
+            COOP<sup>2</sup> uses the <strong>Multi-Agent Environment Interaction Loop (MAEIL)</strong> to model all three through two decoupled time scales:
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="border-radius: 8px; border: 1px solid rgba(37,99,235,0.2); background: rgba(37,99,235,0.04); padding: 0.6rem 0.85rem;">
+              <p class="mini" style="margin: 0;"><strong style="color: var(--accent);">Cognitive clock $\hat t$</strong> - runs freely between environment steps. Governs reasoning ($\mathsf{R}$), interruption ($\mathsf{I}$), messaging, and plan generation. Advances as many times as needed before any primitive action is taken.</p>
+            </div>
+            <div style="border-radius: 8px; border: 1px solid rgba(16,185,129,0.2); background: rgba(16,185,129,0.04); padding: 0.6rem 0.85rem;">
+              <p class="mini" style="margin: 0;"><strong style="color: #059669;">Environment clock $t$</strong> - advances only when <em>all</em> agents have committed a plan and entered $\mathsf{W}$. Governs primitive execution ($\mathsf{X}$) and state transitions $s_t \to s_{t+1}$.</p>
+            </div>
+          </div>
+          <p class="mini" style="margin-top: 0.6rem;">
+            This decoupling lets agents think and communicate asynchronously at their own pace, while the shared environment advances at synchronized step boundaries.
+          </p>
+        </div>
+        <div class="column is-7">
+          <div class="figure">
+            <img src="figs/plan-progression.png" alt="Figure 2: cognitive and environment clock alignment" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Cognitive and environment clocks.</strong> Plans may be generated, resumed, interrupted, or terminated while primitive execution advances only after agents commit executable plans.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-column: cognitive-primitive left, MAEIL right -->
+      <div class="columns" style="gap: 0.5rem;">
+
+        <!-- LEFT: Cognitive-primitive -->
+        <div class="column is-6">
+          <h3 class="title is-5" style="margin-bottom: 0.5rem;">Cognitive-Primitive Interface</h3>
+          <p class="mini" style="margin-bottom: 0.6rem;">
+            LLMs excel at <strong>cognitive-level decisions</strong> - reasoning over goals and composing symbolic plans -
+            but are ill-suited to specifying low-level primitive actions directly.
+            COOP<sup>2</sup> bridges this gap with two coupled layers:
+          </p>
+
+          <div style="background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.25); border-radius: 0 8px 8px 0; padding: 0.7rem 1rem; display: flex; flex-direction: column; gap: 0.45rem;">
+            <p class="mini" style="margin: 0;">
+              <strong>Primitive layer</strong> indexes environment steps by $t\in\mathbb{T}$ and decomposes state into active tasks, task states, and other environment variables:
+            </p>
+            <div style="margin: 0;">$$s_t=(\mathcal{G}_t,\{x_{g,t}\}_{g\in\mathcal{G}_t},s_t^-)$$</div>
+            <p class="mini" style="margin: 0;">Joint primitive actions may complete active tasks, activate new tasks, or modify existing task states.</p>
+
+            <p class="mini" style="margin: 0;">
+              <strong>Cognitive layer</strong> captures each agent's interaction stage and committed symbolic plan. At cognitive time $\hat t$, agent $i$ holds:
+            </p>
+            <div style="margin: 0;">$$\hat x_{i,\hat t}=(\hat Q_{i,\hat t},\hat\pi_{i,\hat t}),\quad \hat Q_{i,\hat t}\in\{\mathsf{R},\mathsf{W},\mathsf{X},\mathsf{I}\}$$</div>
+            <p class="mini" style="margin: 0;">The plan $\hat\pi_{i,\hat t}$ stores a task specification and a sequence of tool operations $\hat a_i(\theta_i)$.</p>
+
+            <p class="mini" style="margin: 0;">
+              The clock alignment $\kappa:\hat{\mathbb{T}}\to\mathbb{T}$ maps cognitive activity to primitive steps. For each interval $\mathcal{I}_t$,
+              COOP<sup>2</sup> records cognitive activity $\hat X_{\mathcal{I}_t}$ and communication events $\hat M_{\mathcal{I}_t}$:
+            </p>
+            <div style="margin: 0;">$$\hat X_{\mathcal{I}_t}=\{\hat x_{i,\tau}\}_{i\in I,\tau\in\mathcal{I}_t},\quad \hat M_{\mathcal{I}_t}=\{m_\tau\}_{\tau\in\mathcal{I}_t}$$</div>
+            <p class="mini" style="margin: 0;">Each message includes a sender, recipient set, and payload, making coordination and interruption part of the trace.</p>
+
+            <p class="mini" style="margin: 0;">
+              <strong>Grounding $\Gamma$</strong> bridges the two layers by unrolling tool operations into primitive actions conditioned on state and recent interaction:
+            </p>
+            <div style="margin: 0;">$$\bigl(\{a_{i,\tau}\}_{\tau=t:t'},t'\bigr)\sim P_{\Gamma}\bigl(\cdot\mid \hat a_i(\theta_i),s_t,\hat X_{\mathcal{I}_t},\hat M_{\mathcal{I}_t}\bigr)$$</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: MAEIL -->
+        <div class="column is-6">
+          <h3 class="title is-5" style="margin-bottom: 0.5rem;">Multi-Agent Environment Interaction Loop (MAEIL)</h3>
+          <p class="mini" style="margin-bottom: 0.6rem;">
+            MAEIL makes the cooperation process <strong>observable</strong> by defining explicit interaction stages that capture both agent-to-agent dynamics (reasoning, messaging, interruption) and agent-to-environment dynamics (joint execution, embodied interaction).
+            An agent is <strong>ready</strong> when it has a committed plan and is not in active conversation with others. The environment advances only once <em>all</em> agents are simultaneously ready.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+
+            <div style="border-radius: 8px; border: 1px solid rgba(0,0,0,0.06); background: #fafafa; padding: 0.65rem 1rem; opacity: 0.8;">
+              <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(0,0,0,0.28); margin-bottom: 0.25rem;">Step 1 - Single agent</p>
+              <p class="mini" style="margin-bottom: 0.25rem; color: rgba(0,0,0,0.6);">Alternates between <strong>Reason (R)</strong> - freely reason and plan - and <strong>Execute (X)</strong> - run primitive actions.</p>
+              <p style="font-size: 0.88rem; margin: 0; color: rgba(0,0,0,0.6);"><span class="tagish" style="opacity:0.7;">R</span> &nbsp;&lt;-&gt;&nbsp; <span class="tagish" style="opacity:0.7;">X</span></p>
+            </div>
+
+            <div style="border-radius: 8px; border: 1px solid rgba(0,0,0,0.06); background: #fafafa; padding: 0.65rem 1rem; opacity: 0.8;">
+              <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(0,0,0,0.28); margin-bottom: 0.25rem;">Step 2 - Multi-agent, no communication</p>
+              <p class="mini" style="margin-bottom: 0.25rem; color: rgba(0,0,0,0.6);"><strong>Wait (W)</strong> added - an agent enters W (ready) when it has a committed plan and is not in active conversation with others. The environment only advances once all agents are ready.</p>
+              <p style="font-size: 0.88rem; margin: 0; color: rgba(0,0,0,0.6);">
+                <span class="tagish" style="opacity:0.7;">R</span>, <span class="tagish" style="opacity:0.7;">X</span> &nbsp;-&gt;&nbsp;
+                <span class="tagish" style="background:rgba(234,179,8,0.10); color:#92400e; border-color:rgba(234,179,8,0.3); opacity:0.7;">W</span>
+                &nbsp;-&gt;&nbsp; <span class="tagish" style="opacity:0.7;">X</span>
+                <span class="mini" style="margin-left:0.3rem;">(all ready)</span>
+              </p>
+            </div>
+
+            <div style="border-radius: 8px; border: 2px solid rgba(37,99,235,0.3); background: rgba(37,99,235,0.04); padding: 0.75rem 1rem; box-shadow: 0 2px 12px rgba(37,99,235,0.08);">
+              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom: 0.35rem;">
+                <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin: 0;">Multi-agent with communication</p>
+              </div>
+              <p class="mini" style="margin-bottom: 0.3rem;"><strong>Interrupt (I)</strong> added. Agents in R or I may send; any stage may receive:</p>
+              <p style="font-size: 0.9rem; margin-bottom: 0.4rem;">
+                <span style="color:rgba(0,0,0,0.45); font-size:0.8rem;">sender:</span>
+                <span class="tagish">R</span>, <span class="tagish" style="background:rgba(220,38,38,0.08); color:#dc2626; border-color:rgba(220,38,38,0.25);">I</span>
+                &nbsp;<span style="color:#dc2626;">--msg--&gt;</span>&nbsp;
+                <span class="tagish">R</span>, <span class="tagish">X</span>,
+                <span class="tagish" style="background:rgba(234,179,8,0.10); color:#92400e; border-color:rgba(234,179,8,0.3);">W</span>,
+                <span class="tagish" style="background:rgba(220,38,38,0.08); color:#dc2626; border-color:rgba(220,38,38,0.25);">I</span>
+                <span style="color:rgba(0,0,0,0.45); font-size:0.8rem;">:receiver</span>
+              </p>
+              <p class="mini" style="margin-bottom: 0.3rem;">Message arrival interrupts W or X, triggering replanning before re-entering W:</p>
+              <p style="font-size: 0.9rem; margin: 0;">
+                <span class="tagish">W</span>, <span class="tagish">X</span>
+                &nbsp;<span style="color:#dc2626;">--msg--&gt;</span>&nbsp;
+                <span class="tagish" style="background:rgba(220,38,38,0.08); color:#dc2626; border-color:rgba(220,38,38,0.25);">I</span>
+                &nbsp;<span style="color:rgba(0,0,0,0.4);">--ready--&gt;</span>&nbsp;
+                <span class="tagish" style="background:rgba(234,179,8,0.10); color:#92400e; border-color:rgba(234,179,8,0.3);">W</span>
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TASK DESIGN -->
+  <section class="section hero is-light" id="tasks">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Cooperation-constrained Task Design</h2>
+
+      <!-- Intro paragraph full width -->
+      <div class="columns">
+        <div class="column">
+          <p class="mini" style="margin-bottom: 0.7rem;">
+            Rather than treating cooperation as an implicit ingredient of final task success, COOP<sup>2</sup> defines
+            cooperative tasks as state transitions guarded by verifiable cooperative constraints. For each active task
+            $g\in\mathcal{G}_t$, the task state $x_{g,t}$, participating agents $\mathcal{I}_{g,t}$, and capability state
+            $Z_{g,t}=\{z_{i,t}\}_{i\in\mathcal{I}_{g,t}}$ induce constraint likelihoods:
+          </p>
+          $$p^c_{g,t}=\Pr\!\left(C^c_{g,t}\mid x_{g,t},Z_{g,t}\right),\quad c\in\mathcal{C}_g=\{\Delta t,\Delta\ell,n,d\}$$
+          <ul class="mini" style="margin-bottom: 0.7rem;">
+            <li><strong>Temporal ($\Delta t$):</strong> actions must occur within the required window, often simultaneously.</li>
+            <li><strong>Spatial or relational ($\Delta\ell$):</strong> agents must occupy the required locations or relations.</li>
+            <li><strong>Participation or capability ($n$):</strong> enough agents with the needed capabilities must participate.</li>
+            <li><strong>Dependency ($d$):</strong> prerequisites, tools, resources, or subtasks must be available before progress is possible.</li>
+          </ul>
+          <p class="mini" style="margin-bottom: 0.5rem;">
+            The task-level cooperation process evolves over the active span of each task, while the episode-level trace logs how
+            cognitive activity, messages, primitive actions, and cooperative state transitions connect:
+          </p>
+          $$\phi_{g,t}=(x_{g,t},\mathcal{I}_{g,t},Z_{g,t},\{p^c_{g,t}\}_{c\in\mathcal{C}_g}),\quad
+          L_t=(\hat X_{\mathcal{I}_t},\hat M_{\mathcal{I}_t},a_t,\Phi_t,\Phi_{t+1})$$
+          <p class="mini" style="margin-top: 0.5rem; margin-bottom: 0.6rem;">Constraints are instantiated per environment as:</p>
+          <div style="overflow-x: auto;">
+            <table style="width:100%; border-collapse: collapse; font-size: 0.78rem; line-height: 1.5;">
+              <thead>
+                <tr style="text-align: left;">
+                  <th style="padding: 0.4rem 0.7rem; color: rgba(0,0,0,0.4); font-weight: 700; text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.04em; border-bottom: 2px solid rgba(0,0,0,0.08); width: 22%;">Constraint</th>
+                  <th style="padding: 0.4rem 0.7rem; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.01em; background: rgba(37,99,235,0.07); color: #1d4ed8; border-bottom: 2px solid rgba(37,99,235,0.3); border-left: 3px solid rgba(37,99,235,0.4); width: 39%;">MA-Crafter</th>
+                  <th style="padding: 0.4rem 0.7rem; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.01em; background: rgba(5,150,105,0.07); color: #065f46; border-bottom: 2px solid rgba(5,150,105,0.3); border-left: 3px solid rgba(5,150,105,0.4); width: 39%;">CUBE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+                  <td style="padding: 0.35rem 0.7rem; white-space: nowrap; color: rgba(0,0,0,0.55); font-weight: 600;">Task $g$</td>
+                  <td style="padding: 0.35rem 0.7rem; background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.15);">Collectible resource; $p(g)$ agents <code>collect</code> simultaneously within radius $d$</td>
+                  <td style="padding: 0.35rem 0.7rem; background: rgba(5,150,105,0.03); border-left: 3px solid rgba(5,150,105,0.15);">Side $s(g)$ of block $b(g)$; $p(g)=w_{b(g)}$ (block weight)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+                  <td style="padding: 0.35rem 0.7rem; white-space: nowrap; color: rgba(0,0,0,0.55); font-weight: 600;">$C_n^i$ (participation)</td>
+                  <td style="padding: 0.35rem 0.7rem; background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.15);">$\mathrm{cap}_i(t)\succeq \mathrm{cap}(g,t)$</td>
+                  <td style="padding: 0.35rem 0.7rem; background: rgba(5,150,105,0.03); border-left: 3px solid rgba(5,150,105,0.15);">$\mathrm{cap}_i(t)$ (any agent)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+                  <td style="padding: 0.35rem 0.7rem; white-space: nowrap; color: rgba(0,0,0,0.55); font-weight: 600;">$C_{\Delta\ell}^i$ (spatial)</td>
+                  <td style="padding: 0.35rem 0.7rem; background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.15);">$\|x_{i,t}-y_g\|\le d$</td>
+                  <td style="padding: 0.35rem 0.7rem; background: rgba(5,150,105,0.03); border-left: 3px solid rgba(5,150,105,0.15);">$\min_{y\in\mathcal{Y}_g}\|x_{i,t}-y\|\le 1$</td>
+                </tr>
+                <tr>
+                  <td style="padding: 0.35rem 0.7rem; white-space: nowrap; color: rgba(0,0,0,0.55); font-weight: 600;">$C_{\Delta t}^i$ (temporal)</td>
+                  <td style="padding: 0.35rem 0.7rem; background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.15);">$a_{i,t}=\texttt{collect}(g)$</td>
+                  <td style="padding: 0.35rem 0.7rem; background: rgba(5,150,105,0.03); border-left: 3px solid rgba(5,150,105,0.15);">$a_{i,t}=\texttt{push}(b(g))$</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="figure" style="margin-top: 1.25rem;">
+            <img src="figs/environments.png" alt="Two cooperative environment instantiations: CUBE and MA-Crafter" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Environment instantiations.</strong> CUBE emphasizes spatial alignment and simultaneous pushing; MA-Crafter emphasizes capability acquisition, dependency satisfaction, and synchronized collection.
+            </div>
+          </div>
+          <!-- <p class="mini" style="margin-top: 0.6rem;">
+            Difficulty scales by tightening $p(g)$ and constraint windows while preserving task structure.
+          </p> -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section class="section" id="metrics">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Observing the Cooperation Process</h2>
+
+      <div class="columns">
+        <div class="column">
+          <p class="mini" style="margin-bottom: 0.7rem;">
+            COOP<sup>2</sup> logs cooperation as a process rather than a final score. Each transition records what agents did in the
+            cognitive layer, which messages were exchanged, which primitive actions executed, and how cooperative task states changed.
+            This makes it possible to connect natural-language coordination to concrete task progress and constraint satisfaction.
+          </p>
+        </div>
+      </div>
+
+      <div class="columns is-multiline">
+        <div class="column is-one-third">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5"><span class="icon"><i class="fas fa-chart-line"></i></span> Task progress</p>
+              <p class="mini">
+                Score, episode length, and score per step show how much useful task progress occurs under both environment-step and wall-clock budgets.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5"><span class="icon"><i class="fas fa-comments"></i></span> Coordination cost</p>
+              <p class="mini">
+                Plans per agent, messages, interruptions, and total decision time expose the overhead of reasoning, waiting, and replanning.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5"><span class="icon"><i class="fas fa-exclamation-triangle"></i></span> Constraint deficits</p>
+              <p class="mini">
+                Spatial, temporal, and dependency deficits identify which cooperative requirements were missed during targeted task attempts.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns" style="margin-top: 1.25rem;">
+        <div class="column">
+          <div class="figure">
+            <img src="figs/process-trace-3agent.png" alt="COOP2 process traces for MA-Crafter with 3-agent teams" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Process trace.</strong> Active task focus, observed constraint satisfaction, cumulative team score, and episode termination are shown across backbones and communication structures.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-multiline" style="margin-top: 1.25rem;">
+        <div class="column is-half">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5">Stronger backbones progress better</p>
+              <p class="mini">
+                Stronger models produce more grounded, executable plans and shift earlier from low-level resources toward tools and higher-value tasks.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5">More agents are not automatically better</p>
+              <p class="mini">
+                Larger teams add capacity, but they also increase conflicts, interruptions, waiting, and decision overhead under the wall-clock budget.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5">Communication is not always cooperation</p>
+              <p class="mini">
+                Centralized and Chain structures add messages and interruptions; coordination helps only when its benefits exceed synchronization cost.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="card rounded">
+            <div class="card-content">
+              <p class="title is-5">Failures are constraint-specific</p>
+              <p class="mini">
+                Dependency failures reflect planning and capability reasoning, while spatial failures remain a separate embodied coordination bottleneck.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- REPAIR -->
+  <section class="section hero is-light" id="repair">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">COOP<sup>2</sup>-Repair</h2>
+
+      <div class="columns is-vcentered">
+        <div class="column is-5">
+          <p class="mini" style="margin-bottom: 0.75rem;">
+            COOP<sup>2</sup>-Repair uses the trace before primitive execution. After agents commit plans, it groups plans by intended task,
+            predicts whether each group can satisfy the task constraints, and opens a temporary repair channel only when failure is predicted.
+          </p>
+          <div style="background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.25); border-radius: 0 8px 8px 0; padding: 0.75rem 1rem;">
+            <p class="mini" style="margin: 0 0 0.5rem;">
+              <strong>Feasibility check.</strong> Group committed plans by task:
+            </p>
+            $$\mathcal{I}_{g,t}=\{i\in I:\hat\rho_{\hat\pi_{i,t}}=g\},\quad \hat\Pi_{g,t}=\{\hat\pi_{i,t}\}_{i\in\mathcal{I}_{g,t}}$$
+            <p class="mini" style="margin: 0.5rem 0;">
+              Predict failing constraints:
+            </p>
+            $$\widehat{\mathcal{C}}^-_{g,t}=\{c\in\mathcal{C}_g:\widehat p^c_{g,t}<\tau_c\}$$
+            <p class="mini" style="margin: 0.5rem 0 0;">
+              Open a repair channel for the affected group and failure reason:
+            </p>
+            $$\mathcal{R}_{g,t}=\mathcal{I}_{g,t},\quad \mathrm{ctx}_{g,t}=(g,\mathcal{I}_{g,t},\widehat{\mathcal{C}}^-_{g,t})$$
+          </div>
+        </div>
+        <div class="column is-7">
+          <div class="figure">
+            <img src="figs/repair-case-study.png" alt="COOP2-Repair process trace" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Repair trace.</strong> Gold markers indicate predicted constraint failures that trigger targeted repair rounds, shifting agents from low-level collection toward tool crafting and higher-value resources.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMMUNICATION TOPOLOGIES -->
+  <section class="section hero is-light" id="topologies">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Communication Topologies</h2>
+
+      <div class="columns">
+        <div class="column">
+          <p class="mini">
+            COOP<sup>2</sup> records interaction independently of the communication structure, allowing the same task-grounded trace to compare
+            how different communication rules shape cooperation, overhead, and task progress. The paper compares three structures.
+          </p>
+        </div>
+      </div>
+
+      <div class="columns is-multiline" style="margin-top: 1rem;">
+        <div class="column is-one-third">
+          <div class="figure">
+            <img src="figs/topology-individual.png" alt="Individual communication structure timeline" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Individual.</strong> No communication; agents plan independently without waiting or sending messages.
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="figure">
+            <img src="figs/topology-centralized.png" alt="Centralized communication structure timeline" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Centralized.</strong> A leader broadcasts to followers, waits for responses, then commits its own plan.
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="figure">
+            <img src="figs/topology-chain.png" alt="Chain communication structure timeline" style="width:100%; display:block;" />
+            <div class="cap">
+              <strong>Chain.</strong> Agents speak in order; each later agent conditions on earlier messages before planning.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BIBTEX -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{yang2026coop2,
+  title   = {COOP$^2$: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems},
+  author  = {Yang, Hanqing and Nourzad, Narjes and Chen, Shiyu and Siew, Marie and Chen, Jingdi and Joe-Wong, Carlee},
+  journal = {arXiv preprint arXiv:2603.00349},
+  year    = {2026}
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p class="mini">
+               This page was built using the
+              <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

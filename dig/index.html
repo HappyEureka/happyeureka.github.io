@@ -4,17 +4,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems</title>
-  <meta name="description" content="DIG to Heal introduces the Dynamic Interaction Graph (DIG): a time-evolving interaction graph that makes emergent cooperation observable and enables structure-driven detection and healing in general-purpose LLM multi-agent systems." />
-  <meta name="keywords" content="DIG, Dynamic Interaction Graph, LLM agents, multi-agent systems, cooperation, failure detection, healing, explainability, interaction graphs" />
+  <title>DIG to Heal: Scaling General-purpose Agent Collaboration via Explainable Dynamic Decision Paths</title>
+  <meta name="description" content="DIG to Heal introduces the Dynamic Interaction Graph (DIG): a representation for the emergent collaboration process of LLM agents, where nothing is predefined and DIG works with whatever actually happens at run time." />
+  <meta name="keywords" content="DIG, Dynamic Interaction Graph, LLM agents, multi-agent systems, collaboration, failure detection, healing, explainability, interaction graphs" />
 
-  <meta property="og:title" content="DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems" />
-  <meta property="og:description" content="A graph-based framework to observe emergent cooperation and enable real-time structure-driven healing in general-purpose LLM multi-agent systems." />
-  <meta property="og:url" content="https://YOUR_GITHUB_PAGES_URL_HERE/" />
+  <meta property="og:title" content="DIG to Heal: Scaling General-purpose Agent Collaboration via Explainable Dynamic Decision Paths" />
+  <meta property="og:description" content="A graph-based representation for emergent LLM-agent collaboration: no predefined protocol, workflow, or roles, just whatever actually happens at run time." />
+  <meta property="og:url" content="https://happyeureka.github.io/dig/" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems" />
-  <meta name="twitter:description" content="Observe and heal emergent cooperation via the Dynamic Interaction Graph (DIG)." />
+  <meta name="twitter:title" content="DIG to Heal: Scaling General-purpose Agent Collaboration via Explainable Dynamic Decision Paths" />
+  <meta name="twitter:description" content="A representation for emergent LLM-agent collaboration, where no protocol, workflow, or roles are predefined." />
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,700|Castoro:400,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../damcs/static/css/bulma.min.css" />
@@ -75,6 +75,53 @@
 
     .video-wrap { border-radius: 14px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08); }
     video { width: 100%; height: auto; display: block; background: #000; }
+
+    .metric-strip {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem; margin: 1rem 0 1.35rem;
+    }
+    .metric-strip .metric {
+      border: 1px solid rgba(0,0,0,0.08); border-radius: 8px;
+      padding: 0.85rem 0.95rem; background: rgba(255,255,255,0.72);
+    }
+    .metric .value { font-size: 1.45rem; font-weight: 800; color: var(--accent); line-height: 1.1; }
+    .metric .label { font-size: 0.88rem; color: rgba(0,0,0,0.68); margin-top: 0.3rem; }
+    .table-wrap {
+      overflow-x: auto; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px; background: white;
+    }
+    table.results-table { width: 100%; border-collapse: collapse; min-width: 720px; font-size: 0.86rem; }
+    .results-table th, .results-table td { padding: 0.45rem 0.55rem; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: top; }
+    .results-table th { background: rgba(37,99,235,0.08); color: rgba(0,0,0,0.82); font-weight: 700; text-align: left; white-space: nowrap; }
+    .results-table tr.group-row td { background: rgba(0,0,0,0.035); font-weight: 700; color: rgba(0,0,0,0.72); }
+    .results-table td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .results-table .best { font-weight: 800; color: rgba(16,105,66,1); }
+    .results-table .delta-good { color: rgba(16,105,66,1); font-weight: 700; }
+    .results-table .delta-cost { color: rgba(180,83,9,1); font-weight: 700; }
+    .results-table .delta-neutral { color: rgba(0,0,0,0.58); font-weight: 700; }
+    @media (max-width: 768px) {
+      .metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .publication-title {
+        font-size: 2.15rem !important;
+        line-height: 1.12 !important;
+      }
+      .hero .subtitle.is-4 {
+        font-size: 1.2rem;
+        line-height: 1.35;
+      }
+      .hero-body {
+        padding: 2.25rem 1rem;
+      }
+      .toc {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem;
+      }
+      .toc .pill {
+        margin: 0;
+      }
+    }
   </style>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
@@ -99,7 +146,7 @@
           <div class="column has-text-centered">
 
             <h1 class="title is-1 publication-title" style="margin-bottom: 0.6rem;">
-              DIG to Heal: Explainable Dynamic Decision Paths for LLM Multi-Agent Systems
+              DIG to Heal: Scaling General-purpose Agent Collaboration via Explainable Dynamic Decision Paths
             </h1>
 
             <p class="subtitle is-4" style="max-width: 58rem; margin: 0.75rem auto 0;">
@@ -133,26 +180,26 @@
             <!-- LINKS -->
             <div class="publication-links" style="margin-top: 1.25rem;">
               <span class="link-block">
-                <a href="YOUR_PAPER_LINK_HERE" target="_blank"
+                <a href="https://arxiv.org/abs/2603.00309" target="_blank"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-file-pdf"></i></span>
                   <span>Paper</span>
                 </a>
               </span>
               <span class="link-block">
-                <a href="YOUR_CODE_LINK_HERE" target="_blank"
+                <a href="https://github.com/HappyEureka/dig" target="_blank"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fab fa-github"></i></span>
-                  <span>Code [Soon...]</span>
+                  <span>Code</span>
                 </a>
               </span>
-              <!-- <span class="link-block">
+              <span class="link-block">
                 <a href="#BibTeX"
                    class="external-link button is-normal is-rounded is-light">
                   <span class="icon"><i class="fas fa-quote-right"></i></span>
                   <span>BibTeX</span>
                 </a>
-              </span> -->
+              </span>
             </div>
 
             <!-- TOC -->
@@ -177,26 +224,35 @@
 
       <!-- Text (left) + GIF (right) -->
       <div class="columns is-vcentered" style="margin-bottom: 1.5rem;">
-        <div class="column is-5">
+        <div class="column is-6">
           <p class="mini" style="margin-bottom: 0.75rem;">
-            A pool of autonomous LLM agents works on a shared task without predefined roles, control flow, or communication constraints - each operating <strong>independently and non-deterministically</strong>, interacting through emergent cooperative strategies. In practice, such unstructured interactions lead to redundant work and <strong>cascading failures</strong> that are hard to interpret or correct.
+            DIG represents emergent LLM-agent collaboration. Emergent means nothing is predefined:
+            no protocol, workflow, role structure, or communication constraints. DIG records whatever
+            actually happens at run time.
           </p>
           <p class="mini" style="margin-bottom: 0.75rem;">
-            We introduce the <strong>Dynamic Interaction Graph (DIG)</strong> - a time-evolving interaction network of agent activations and events that makes emergent cooperation <strong>observable, explainable, and healable</strong> in a protocol-agnostic manner, without any assumptions on agent internals or task structure.
+            A pool of autonomous LLM agents works on a shared task, each operating
+            <strong>independently and non-deterministically</strong>. Coordination and decomposition
+            emerge from local decisions, so unstructured interactions can produce redundant work and
+            <strong>cascading failures</strong>.
+          </p>
+          <p class="mini" style="margin-bottom: 0.75rem;">
+            We introduce the <strong>Dynamic Interaction Graph (DIG)</strong> - a time-evolving graph of <strong>events</strong> flowing between agents and <strong>activations</strong> where agents consume inputs and produce outputs. DIG is LLM-agnostic, environment-agnostic, and framework-agnostic: it can monitor an existing agent framework or provide its own event delivery layer.
           </p>
           <div style="margin-top: 0.5rem;">
             <span class="tagish">General-purpose agents</span>
             <span class="tagish">Emergent collaboration</span>
-            <span class="tagish">Observable &amp; explainable</span>
+            <span class="tagish">Events &amp; activations</span>
+            <span class="tagish">Framework-agnostic</span>
             <span class="tagish">Real-time correction</span>
           </div>
         </div>
 
-        <div class="column is-7">
+        <div class="column is-6">
           <div class="figure">
             <img src="figs/realtime_dig.gif" alt="DIG in action" style="width:100%; display:block; border-radius: 6px;" />
             <div class="cap">
-              <strong>DIG in action.</strong> Agent activations and interaction events evolve as an interaction graph in real time - failures are detected and healed as execution unfolds.
+              <strong>DIG in action.</strong> Events and agent activations evolve as an interaction graph in real time - failures are detected and healed as execution unfolds.
             </div>
           </div>
         </div>
@@ -230,8 +286,8 @@
         <div class="column is-6">
           <p class="mini">
             We consider <strong>cooperative problem solving</strong> in systems of multiple <em>general-purpose agents</em> that interact
-            asynchronously via message passing, with no predefined roles, control flow, or communication protocols.
-            Coordination and task decomposition emerge solely from local agent decisions.
+            asynchronously via message passing, with no predefined roles, workflow, or communication protocols.
+            DIG records the collaboration that emerges as one observable graph, rather than assuming the structure in advance.
           </p>
           <div style="background: rgba(37,99,235,0.03); border-left: 3px solid rgba(37,99,235,0.25); border-radius: 0 8px 8px 0; padding: 0.7rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
             <p class="mini" style="margin: 0;">
@@ -241,7 +297,7 @@
               <strong>Agents</strong> are modeled as autonomous decision-making units with no predefined role. We abstract away agent internals and model only observable interaction behavior: $f_a : I_a \to O_a$, where $I_a, O_a \subseteq \mathcal{E}$. Each agent maintains a local event buffer $B_a(t)$; activation occurs when the buffer changes while the agent is idle.
             </p>
             <p class="mini" style="margin: 0;">
-              <strong>Events</strong> $e = (p_e, \pi_e)$ are the messages that trigger agents to activate and act. Each event carries a payload $p_e$ (e.g., a task assignment, a question, a code snippet, or a file artifact) and a delivery policy $\pi_e$ that determines recipients $R_t(e) \subseteq \mathcal{A}$ at each logical time. For example, a user request "<em>Implement a sorting algorithm</em>" is delivered as an initial event $e_0$; an agent responding with code produces a new event carrying that code to downstream agents. The event expires when $\pi_e'$ is empty.
+              <strong>Events</strong> $e = (p_e, \pi_e)$ are the things that flow between agents: messages, subproblems, results, code snippets, or file artifacts. Each event carries a payload $p_e$ and a delivery policy $\pi_e$ that determines recipients $R_t(e) \subseteq \mathcal{A}$ at each logical time. For example, a user request "<em>Implement a sorting algorithm</em>" is delivered as an initial event $e_0$; an agent responding with code produces a new event carrying that code to downstream agents. The event expires when $\pi_e'$ is empty.
             </p>
             <p class="mini" style="margin: 0;">
               <strong>Execution trace</strong> $\mathcal{T} = \{(a_t, e_t, t)\}_{t \in \mathbb{Z}}$ records the activated agent and generated/delivered event at each logical time step.
@@ -250,7 +306,7 @@
           <p class="mini" style="margin-top: 0.75rem;">
             Failures may arise from intermediate interaction structure - stalled activations, lost subproblems, duplicated work, or premature termination.
             We study the <strong>inference problem</strong>: given only an observable trace $\mathcal{T}$, infer a diagnosis $\Phi : \mathcal{T} \to \mathcal{F}$
-            operating solely on observable interaction structure, without access to agent internals.
+            operating solely on observable interaction structure, without access to agent internals or payload semantics.
           </p>
         </div>
 
@@ -264,7 +320,7 @@
           <div class="figure" style="margin-top: 1rem;">
             <img src="figs/fig1-1-new.png" alt="Agent interaction illustration" style="width:100%; display:block;" />
             <div class="cap">
-              <strong>Agent interaction.</strong> <strong>Circle nodes</strong> represent agent activations; <strong>rectangular nodes</strong> represent events. Agents interact with each other through event passing, where each <strong>event</strong> can carry an arbitrary payload such as a <strong>message</strong>. Agents are triggered whenever they receive new event(s), transforming a set of input events to a set of output events.
+              <strong>Agent interaction.</strong> <strong>Circle nodes</strong> represent agent activations; <strong>rectangular nodes</strong> represent events. Agents interact through event passing, where each event can carry an arbitrary payload. Agents are triggered whenever they receive new events, transforming input events into output events.
             </div>
           </div>
         </div>
@@ -339,7 +395,7 @@
           <div class="figure">
             <img src="figs/fig2_new.png" alt="DIG definition and rewrites" style="width:100%; display:block;" />
             <div class="cap">
-              <strong>DIG construction.</strong> (1-2) Agent activation node and event node representations. (3) Canonical rewrite operators applied at each activation. (4-5) Resulting graph structures capturing observable cooperation dynamics.
+              <strong>DIG construction.</strong> (1-2) Agent activation node and event node representations. (3) Canonical rewrite operators applied at each activation. (4-5) Resulting graph structures capturing observable collaboration dynamics.
             </div>
           </div>
         </div>
@@ -504,98 +560,148 @@
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered section-title">Results</h2>
 
-      <!-- Intro -->
-      <div class="columns">
-        <div class="column">
-          <p class="mini" style="margin-bottom: 0.75rem;">
-            We evaluate on <strong>CountFrequency</strong> and <strong>20Newsgroups</strong> across three difficulty levels and 1, 3, and 6 agents,
-            reporting detected error counts, prediction accuracy (RMSE), runtime, and valid output rate - averaged over multiple runs.
-            We compare <em>MAS-Only</em>, <em>MAS+LLM Judge</em>, and <em>MAS+DIG</em>.
-          </p>
+      <p class="mini" style="margin-bottom: 0.75rem;">
+        We evaluate DIG on two verifiable task structures with agent capability constraints:
+        <strong>Count Frequency (CF)</strong>, a fully parallelizable task, and <strong>Research Job (RJ)</strong>,
+        a dependency-constrained task with staged processing and merging.
+        Results report detected structural failures, final task error, and runtime, with mean +/- standard deviation over
+        10 runs. We compare <em>MAS-Only</em> with <em>MAS+DIG</em>, and use <em>MAS+LLM Judge</em> as a qualitative
+        baseline for real-time intervention overhead.
+      </p>
+
+      <div class="metric-strip">
+        <div class="metric">
+          <div class="value">83%</div>
+          <div class="label">CF error reduction in the homogeneous 6-agent, load-6000 setting.</div>
+        </div>
+        <div class="metric">
+          <div class="value">33%</div>
+          <div class="label">CF error reduction in the heterogeneous 6-agent, load-222222 setting.</div>
+        </div>
+        <div class="metric">
+          <div class="value">44%</div>
+          <div class="label">RJ error reduction in the homogeneous dependency-constrained setting.</div>
+        </div>
+        <div class="metric">
+          <div class="value">20</div>
+          <div class="label">Agent case study completed with DIG after MAS-Only failed within 120 s.</div>
         </div>
       </div>
 
-      <!-- Key findings cards -->
-      <div class="columns" style="margin-top: 0.5rem; margin-bottom: 1.25rem;">
-        <div class="column is-4">
-          <div class="card rounded" style="height: 100%;">
-            <div class="card-content">
-              <p class="title is-6" style="margin-bottom: 0.4rem;">Reliability at Scale</p>
-              <p class="mini" style="color: rgba(0,0,0,0.7);">
-                MAS+DIG generally achieves the lowest RMSE and higher valid output rates, especially on hard tasks.
-                As agent count and task difficulty increase, DIG more frequently enables the system to complete with valid and accurate results -
-                whereas MAS-Only and MAS+LLM Judge frequently fail to produce valid outputs at all.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card rounded" style="height: 100%;">
-            <div class="card-content">
-              <p class="title is-6" style="margin-bottom: 0.4rem;">Detection Overhead is Intentional</p>
-              <p class="mini" style="color: rgba(0,0,0,0.7);">
-                Higher detected error counts and longer runtimes for MAS+DIG reflect active healing, not worse performance:
-                healing keeps the system running longer, exposing and resolving additional failures.
-                MAS-Only appears faster with fewer errors only because failures go undetected and unresolved.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card rounded" style="height: 100%;">
-            <div class="card-content">
-              <p class="title is-6" style="margin-bottom: 0.4rem;">LLM Judge Overhead</p>
-              <p class="mini" style="color: rgba(0,0,0,0.7);">
-                The LLM Judge baseline incurs high healing overhead, making real-time intervention impractical.
-                Despite this cost, it often yields higher RMSE and lower valid output rates - not every intervention improves performance.
-                DIG-based interventions are structure-driven, not semantic, and incur negligible overhead.
-              </p>
-            </div>
-          </div>
-        </div>
+      <div class="content">
+        <h3 class="title is-5">Count Frequency: Parallelizable Tasks with Capability Constraints</h3>
+        <p class="mini">
+          DIG consistently reduces final error across CF settings. Although CF is parallelizable, each agent has a
+          capability limit, so larger loads must be decomposed and assigned across agents. The improvement is largest
+          when coordination is harder: more agents, larger loads, or heterogeneous capabilities create more opportunities
+          for incomplete coverage, redundant work, and premature submission.
+        </p>
       </div>
 
-      <!-- Execution traces -->
+      <div class="table-wrap" style="margin-bottom: 1.5rem;">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Setting</th>
+              <th>Method</th>
+              <th>Agents</th>
+              <th>Load</th>
+              <th># Failure</th>
+              <th>Error</th>
+              <th>Time (s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="group-row"><td colspan="7">Homogeneous agents, capability 1000</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num">4</td><td class="num">4000</td><td class="num best">2.11 +/- 0.31</td><td class="num">0.083 +/- 0.118</td><td class="num">13.0 +/- 9.1</td></tr>
+            <tr><td><span class="delta-good">Error -70%</span></td><td>MAS+DIG</td><td class="num">4</td><td class="num">4000</td><td class="num">2.60 +/- 1.80</td><td class="num best">0.025 +/- 0.075</td><td class="num best">10.7 +/- 7.8</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num">4</td><td class="num">8000</td><td class="num best">2.60 +/- 0.66</td><td class="num">0.688 +/- 0.084</td><td class="num best">14.3 +/- 8.4</td></tr>
+            <tr><td><span class="delta-good">Error -15%</span></td><td>MAS+DIG</td><td class="num">4</td><td class="num">8000</td><td class="num">9.10 +/- 1.45</td><td class="num best">0.588 +/- 0.138</td><td class="num">20.1 +/- 9.4</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num">6</td><td class="num">6000</td><td class="num best">2.50 +/- 1.50</td><td class="num">0.100 +/- 0.249</td><td class="num best">9.2 +/- 1.0</td></tr>
+            <tr><td><span class="delta-good">Error -83%</span></td><td>MAS+DIG</td><td class="num">6</td><td class="num">6000</td><td class="num">2.60 +/- 1.80</td><td class="num best">0.017 +/- 0.050</td><td class="num">10.4 +/- 2.8</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num">6</td><td class="num">12000</td><td class="num best">3.50 +/- 1.03</td><td class="num">0.850 +/- 0.033</td><td class="num best">19.4 +/- 12.7</td></tr>
+            <tr><td><span class="delta-good">Error -9%</span></td><td>MAS+DIG</td><td class="num">6</td><td class="num">12000</td><td class="num">8.80 +/- 0.98</td><td class="num best">0.775 +/- 0.065</td><td class="num">19.7 +/- 9.1</td></tr>
+            <tr class="group-row"><td colspan="7">Heterogeneous agents, capabilities [..., 1000, 100, 10, 1]</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num">4</td><td class="num">1111</td><td class="num best">1.80 +/- 0.40</td><td class="num best">0.000 +/- 0.000</td><td class="num best">8.9 +/- 0.9</td></tr>
+            <tr><td><span class="delta-neutral">Error approx. 0</span></td><td>MAS+DIG</td><td class="num">4</td><td class="num">1111</td><td class="num">2.50 +/- 1.86</td><td class="num">0.001 +/- 0.003</td><td class="num">9.4 +/- 2.5</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num">4</td><td class="num">2222</td><td class="num best">2.60 +/- 0.80</td><td class="num">0.735 +/- 0.266</td><td class="num best">33.0 +/- 7.9</td></tr>
+            <tr><td><span class="delta-good">Error -27%</span></td><td>MAS+DIG</td><td class="num">4</td><td class="num">2222</td><td class="num">8.60 +/- 1.63</td><td class="num best">0.533 +/- 0.357</td><td class="num">42.9 +/- 8.6</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num">6</td><td class="num">111111</td><td class="num best">2.10 +/- 0.30</td><td class="num">0.100 +/- 0.268</td><td class="num best">12.2 +/- 8.1</td></tr>
+            <tr><td><span class="delta-good">Error -8%</span></td><td>MAS+DIG</td><td class="num">6</td><td class="num">111111</td><td class="num">5.30 +/- 3.49</td><td class="num best">0.092 +/- 0.209</td><td class="num">16.8 +/- 9.4</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num">6</td><td class="num">222222</td><td class="num best">2.70 +/- 1.10</td><td class="num">0.847 +/- 0.279</td><td class="num best">32.5 +/- 13.2</td></tr>
+            <tr><td><span class="delta-good">Error -33%</span></td><td>MAS+DIG</td><td class="num">6</td><td class="num">222222</td><td class="num">10.10 +/- 1.64</td><td class="num best">0.568 +/- 0.372</td><td class="num">43.8 +/- 11.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="content">
+        <h3 class="title is-5">Research Job: Dependency and Capability Constraints</h3>
+        <p class="mini">
+          RJ adds staged dependencies on top of capability constraints, so errors can arise from invalid processing,
+          invalid merging, overloaded assignment, and dependency violations. DIG catches these structural failures before
+          they propagate to later stages.
+        </p>
+      </div>
+
+      <div class="table-wrap" style="margin-bottom: 1.5rem;">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Setting</th>
+              <th>Method</th>
+              <th># Failure</th>
+              <th>Error</th>
+              <th>Time (s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="group-row"><td colspan="5">Homogeneous agents, stage load 4000</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num best">6.20 +/- 2.96</td><td class="num">0.50 +/- 0.30</td><td class="num">24.8 +/- 31.8</td></tr>
+            <tr><td><span class="delta-good">Error -44%</span></td><td>MAS+DIG</td><td class="num">8.40 +/- 1.69</td><td class="num best">0.28 +/- 0.28</td><td class="num best">17.9 +/- 2.2</td></tr>
+            <tr class="group-row"><td colspan="5">Heterogeneous agents, stage load 1111</td></tr>
+            <tr><td></td><td>MAS-Only</td><td class="num best">3.50 +/- 1.43</td><td class="num">0.55 +/- 0.15</td><td class="num best">43.4 +/- 32.9</td></tr>
+            <tr><td><span class="delta-good">Error -18%</span></td><td>MAS+DIG</td><td class="num">8.70 +/- 1.85</td><td class="num best">0.45 +/- 0.15</td><td class="num">68.6 +/- 26.7</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mini" style="margin-bottom: 1rem;">
+        The apparent increase in detected failures is expected: DIG keeps execution active long enough to expose and
+        repair failures that MAS-Only may leave unresolved. Runtime can increase for the same reason, although RJ
+        homogeneous runs show that structure-driven repair can also reduce wall-clock time by preventing wasted work.
+      </p>
+
       <div class="columns" style="margin-top: 1rem;">
         <div class="column is-4">
           <div class="figure">
-            <img src="figs/fig4.png" alt="3-agent DIG trace" style="width:100%; display:block;" />
-            <div class="cap"><strong>3 agents.</strong> Stable coordination and clean convergence.</div>
+            <img src="figs/fig4.png" alt="MAS plus DIG 3-agent execution trace" style="width:100%; display:block;" />
+            <div class="cap"><strong>MAS+DIG, 3 agents.</strong> Stable coordination, interpretable edge-level rewrites, and clean task termination.</div>
           </div>
         </div>
 
         <div class="column is-4">
           <div class="figure">
-            <img src="figs/fig5.png" alt="LLM-judge trace" style="width:100%; display:block;" />
-            <div class="cap"><strong>LLM judge.</strong> Intervention overhead can stall progress and destabilize trajectories.</div>
+            <img src="figs/fig5.png" alt="MAS plus LLM judge execution trace" style="width:100%; display:block;" />
+            <div class="cap"><strong>MAS+LLM Judge.</strong> Delayed semantic judging introduces overhead and can lead to unstable waiting and rerouting.</div>
           </div>
         </div>
 
         <div class="column is-4">
           <div class="figure">
-            <img src="figs/fig6.png" alt="20-agent DIG trace" style="width:100%; display:block;" />
-            <div class="cap"><strong>20 agents.</strong> DIG maintains coherent interaction structure even with dense interactions.</div>
+            <img src="figs/fig6.png" alt="MAS plus DIG 20-agent execution trace" style="width:100%; display:block;" />
+            <div class="cap"><strong>MAS+DIG, 20 agents.</strong> Structured task propagation and stable convergence under dense interactions.</div>
           </div>
         </div>
       </div>
 
       <p class="mini" style="margin-top: 1.25rem; margin-bottom: 0.75rem;">
         <strong>Case study: 20-agent scale.</strong>
-        A 20-agent run on CountFrequency with 100,000 elements (10× the hard setting) demonstrates DIG's scalability.
-        The baseline MAS fails to produce any result within 120 s without healing; MAS+DIG produces a valid answer within 70 s
-        (RMSE 5812.69, ~5.8% relative error), detecting 1 missing completion, 8 repeated-effort incidents, 2 dependency warnings, 1 orphaned event, and 4 early termination errors.
-        MAS+LLM Judge shows increasingly fragmented interaction patterns as system size grows.
+        On CF with load 100,000, MAS-Only fails to produce a result within 120 s. With DIG, the same 20-agent system
+        produces a valid answer within 70 s using 92 calls. During the run, DIG detects 1 missing completion error,
+        8 repeated-effort incidents, 2 dependency warnings, 1 orphaned event, and 4 early termination errors. This
+        highlights that adding agents alone does not guarantee reliable collaboration; the interaction structure itself
+        needs real-time monitoring and repair.
       </p>
-
-      <!-- Results table -->
-      <div class="columns" style="margin-top: 1.5rem;">
-        <div class="column">
-          <div class="figure">
-            <img src="figs/results.png" alt="Results table" style="width:100%; display:block;" />
-            <div class="cap"><strong>Table 1.</strong> Evaluation across baselines, domains (CountFrequency & 20Newsgroups), difficulty levels, and agent counts. Detected Error and RMSE averaged over three runs; Valid Output Rate over ten runs.</div>
-          </div>
-        </div>
-      </div>
 
     </div>
   </section>
@@ -605,10 +711,10 @@
     <div class="container is-max-desktop content">
       <h2 class="title is-3 has-text-centered section-title">BibTeX</h2>
       <pre><code>@article{yang2026dig,
-  title   = {DIG to Heal: Scaling General-purpose Agent Cooperation via Explainable Dynamic Decision Paths},
+  title   = {DIG to Heal: Scaling General-purpose Agent Collaboration via Explainable Dynamic Decision Paths},
   author  = {Yang, Hanqing and Lee, Hyungwoo and Yao, Yuhang and Liu, Zhiwei and Liu, Kay and Chen, Jingdi and Joe-Wong, Carlee},
-  year    = {2026},
-  note    = {Preprint}
+  journal = {arXiv preprint arXiv:2603.00309},
+  year    = {2026}
 }</code></pre>
       <p class="mini" style="text-align:center; margin-top: 1rem;">
         <a href="#top">Back to top</a>
