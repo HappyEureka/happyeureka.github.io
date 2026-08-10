@@ -3,34 +3,137 @@ layout: archive
 title: "Publications"
 permalink: /publications/
 author_profile: true
+excerpt: "Publications on multi-agent collaboration, human-in-the-loop systems, and applied machine learning."
 ---
 
-{% if site.author.googlescholar %}
-  <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
-{% endif %}
+<div class="publications-page">
+  <section class="publication-year" aria-labelledby="publications-2026">
+    <h2 id="publications-2026">2026</h2>
+    <div class="publication-list">
+      <article class="publication-entry">
+        <h3>Auditing Emergent LLM-Agent Collaboration through Cooperation-Obligation Coupling</h3>
+        <p class="publication-authors">Z. Zhang*, <strong>H. Yang*</strong>, C. Joe-Wong, and T. Lan</p>
+        <p class="publication-venue">arXiv preprint, 2026.</p>
+        <p class="publication-links"><a href="https://arxiv.org/abs/2607.27429">Paper</a></p>
+      </article>
 
-{% include base_path %}
+      <article class="publication-entry">
+        <h3>COOP<sup>2</sup>: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems</h3>
+        <p class="publication-authors"><strong>H. Yang</strong>, N. Nourzad, S. Chen, M. Siew, J. Chen, and C. Joe-Wong</p>
+        <p class="publication-venue">arXiv preprint, 2026.</p>
+        <p class="publication-links"><a href="https://arxiv.org/abs/2603.00349">Paper</a><a href="/coop2/">Project page</a></p>
+      </article>
 
-<!-- New style rendering if publication categories are defined -->
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
-      {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
-  {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
-  {% endfor %}
-{% endif %}
+      <article class="publication-entry">
+        <h3>DIG to Heal: Scaling General-purpose Agent Collaboration via Explainable Dynamic Decision Paths</h3>
+        <p class="publication-authors"><strong>H. Yang</strong>, H. Lee, Y. Yao, Z. Liu, K. Liu, J. Chen, and C. Joe-Wong</p>
+        <p class="publication-venue">arXiv preprint, 2026.</p>
+        <p class="publication-links"><a href="https://arxiv.org/abs/2603.00309">Paper</a><a href="/dig/">Project page</a></p>
+      </article>
 
+      <article class="publication-entry">
+        <h3>The Five Ws of Multi-Agent Communication: Who Talks to Whom, When, What, and Why—A Survey from MARL to Emergent Language and LLMs</h3>
+        <p class="publication-authors">J. Chen, <strong>H. Yang</strong>, Z. Liu, and C. Joe-Wong</p>
+        <p class="publication-venue">Transactions on Machine Learning Research, Survey Certification, 2026.</p>
+        <p class="publication-links"><a href="https://openreview.net/forum?id=LGsed0QQVq">Paper</a></p>
+      </article>
+    </div>
+  </section>
 
+  <section class="publication-year" aria-labelledby="publications-2025">
+    <h2 id="publications-2025">2025</h2>
+    <div class="publication-list">
+      <article class="publication-entry">
+        <h3>DR. WELL: Dynamic Reasoning and Learning with Symbolic World Model for Embodied LLM-Based Multi-Agent Collaboration</h3>
+        <p class="publication-authors">N. Nourzad*, <strong>H. Yang*</strong>, S. Chen, and C. Joe-Wong</p>
+        <p class="publication-venue">NeurIPS Workshop on Bridging Language, Agent, and World Models for Reasoning and Planning, 2025.</p>
+        <p class="publication-links"><a href="https://arxiv.org/abs/2511.04646">Paper</a></p>
+      </article>
 
+      <article class="publication-entry">
+        <h3>CUBE: Collaborative Multi-Agent Block-Pushing Environment for Collective Planning with LLM Agents</h3>
+        <p class="publication-authors"><strong>H. Yang*</strong>, N. Nourzad*, S. Chen, and C. Joe-Wong</p>
+        <p class="publication-venue">NeurIPS Workshop on Scaling Environments for Agents (SEA), 2025.</p>
+        <p class="publication-links"><a href="https://openreview.net/forum?id=T7OoS6t11c">Paper</a><a href="/cube/">Project page</a></p>
+      </article>
+
+      <article class="publication-entry">
+        <h3>LLM-Powered Decentralized Generative Agents with Adaptive Hierarchical Knowledge Graph for Cooperative Planning</h3>
+        <p class="publication-authors"><strong>H. Yang</strong>, J. Chen, M. Siew, T. Lorido-Botran, and C. Joe-Wong</p>
+        <p class="publication-venue">AAAI Workshop on Multi-Agent AI in the Real World (MARW), 2025.</p>
+        <p class="publication-links"><a href="https://arxiv.org/abs/2502.05453">Paper</a><a href="/damcs/">Project page</a></p>
+      </article>
+
+      <article class="publication-entry">
+        <h3>Towards Adversarially Robust Human-in-the-Loop Learning for HVAC Systems</h3>
+        <p class="publication-authors">A. Kumar, <strong>H. Yang</strong>, L. W. Shun, G. J. Wei, C. Joe-Wong, and M. Siew</p>
+        <p class="publication-venue">AAAI Workshop on Artificial Intelligence for Wireless Communications and Networking (AI4WCN), 2025.</p>
+        <p class="publication-links"><a href="https://openreview.net/forum?id=4Cdf8XL1YC">Paper</a></p>
+      </article>
+
+      <article class="publication-entry">
+        <h3>Contextual Bandits with LLM-Derived Priors and Adaptive Calibration</h3>
+        <p class="publication-authors">C. Huang, J. Wu, <strong>H. Yang</strong>, X. Liu, L. Shi, T. Yu, S. Kim, C. Joe-Wong, J. McAuley, Q. Z. Sheng, and L. Yao</p>
+        <p class="publication-venue">Manuscript, 2025.</p>
+        <p class="publication-links"><a href="https://openreview.net/forum?id=ho9wXjiKN4">Paper</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="publication-year" aria-labelledby="publications-2024">
+    <h2 id="publications-2024">2024</h2>
+    <div class="publication-list">
+      <article class="publication-entry">
+        <h3>An LLM-Based Digital Twin for Optimizing Human-in-the-Loop Systems</h3>
+        <p class="publication-authors"><strong>H. Yang</strong>, M. Siew, and C. Joe-Wong</p>
+        <p class="publication-venue">IEEE International Workshop on Foundation Models for Cyber-Physical Systems (FMSys), 2024.</p>
+        <p class="publication-links"><a href="https://arxiv.org/abs/2403.16809">Paper</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="publication-year" aria-labelledby="publications-2023">
+    <h2 id="publications-2023">2023</h2>
+    <div class="publication-list">
+      <article class="publication-entry">
+        <h3>Validation of Extracorporeal Membrane Oxygenation Mortality Prediction and Severity of Illness Scores in an International COVID-19 Cohort</h3>
+        <p class="publication-authors">N. Shah, B. Xue, Z. Xu, <strong>H. Yang</strong>, E. Marwali, H. Dalton, P. P. R. Payne, C. Lu, A. S. Said, and the ISARIC Clinical Characterisation Group</p>
+        <p class="publication-venue">Artificial Organs, 47(9): 1490–1502, 2023.</p>
+        <p class="publication-links"><a href="https://doi.org/10.1111/aor.14542">Paper</a></p>
+      </article>
+
+      <article class="publication-entry">
+        <h3>Assisting Clinical Decisions for Scarcely Available Treatment via Disentangled Latent Representation</h3>
+        <p class="publication-authors">B. Xue, A. S. Said, Z. Xu, H. Liu, N. Shah, <strong>H. Yang</strong>, P. R. O. Payne, and C. Lu</p>
+        <p class="publication-venue">Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining, 5360–5371, 2023.</p>
+        <p class="publication-links"><a href="https://doi.org/10.1145/3580305.3599774">Paper</a></p>
+      </article>
+
+      <article class="publication-entry">
+        <h3>Multimodal Speech Emotion Recognition Based on Multi-Scale MFCCs and Multi-View Attention Mechanism</h3>
+        <p class="publication-authors">L. Feng, L.-Y. Liu, S. Liu, J. Zhou, <strong>H.-Q. Yang</strong>, and J. Yang</p>
+        <p class="publication-venue">Multimedia Tools and Applications, 82(19): 28917–28935, 2023.</p>
+        <p class="publication-links"><a href="https://doi.org/10.1007/s11042-023-14600-0">Paper</a></p>
+      </article>
+
+      <article class="publication-entry">
+        <h3>Multi-Horizon Predictive Models for Guiding Extracorporeal Resource Allocation in Critically Ill COVID-19 Patients</h3>
+        <p class="publication-authors">B. Xue, N. Shah, <strong>H. Yang</strong>, T. Kannampallil, P. R. O. Payne, C. Lu, and A. S. Said</p>
+        <p class="publication-venue">Journal of the American Medical Informatics Association, 30(4): 656–667, 2023.</p>
+        <p class="publication-links"><a href="https://doi.org/10.1093/jamia/ocac256">Paper</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="publication-year" aria-labelledby="publications-2020">
+    <h2 id="publications-2020">2020</h2>
+    <div class="publication-list">
+      <article class="publication-entry">
+        <h3>An Xception Based Convolutional Neural Network for Scene Image Classification with Transfer Learning</h3>
+        <p class="publication-authors">X. Wu*, R. Liu*, <strong>H. Yang*</strong>, and Z. Chen*</p>
+        <p class="publication-venue">2020 2nd International Conference on Information Technology and Computer Application (ITCA), 262–267.</p>
+        <p class="publication-links"><a href="https://doi.org/10.1109/ITCA52113.2020.00063">Paper</a></p>
+      </article>
+    </div>
+  </section>
+</div>
