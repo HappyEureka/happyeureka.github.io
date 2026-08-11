@@ -178,7 +178,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
           <h3>LLM-Powered Decentralized Generative Agents with Adaptive Hierarchical Knowledge Graph for Cooperative Planning</h3>
           <p class="research-work-recognition"><a href="https://rdi.berkeley.edu/llm-agents-hackathon/">First Place (tie), Decentralized and Multi-Agents Track</a> &middot; Berkeley RDI LLM Agents MOOC Hackathon</p>
           <p>Introduces DAMCS, whose adaptive hierarchical knowledge graph organizes multimodal experience into shared and local memory. Decentralized agents can reason from past interactions while sharing relevant knowledge rather than entire histories during long-horizon planning under dependency constraints.</p>
-          <p class="research-work-links"><a href="https://arxiv.org/abs/2502.05453">Paper</a><a href="/damcs/">Project page</a></p>
+          <p class="research-work-links"><a href="https://github.com/13RENDA/Mcrafter_LLM_Agent">Repository</a><a href="https://arxiv.org/abs/2502.05453">Paper</a><a href="/damcs/">Project page</a></p>
         </div>
         <figure class="research-work-figure">
           <img src="/damcs/static/images/abstract.png" alt="Agents in Multi-Agent Crafter cooperate through structured memory and communication." loading="lazy">
@@ -190,7 +190,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
           <p class="research-work-meta">2024 &middot; IEEE International Workshop on Foundation Models (FMSys) &middot; Co-located with CPS-IoT Week</p>
           <h3>An LLM-Based Digital Twin for Optimizing Human-in-the-Loop Systems</h3>
           <p>Uses an LLM-based digital twin to simulate heterogeneous human feedback for adaptive HVAC control. Aggregated occupant preferences enter the reward objective, making collective preference part of what the controller learns to optimize.</p>
-          <p class="research-work-links"><a href="https://arxiv.org/abs/2403.16809">Paper</a></p>
+          <p class="research-work-links"><a href="https://github.com/HappyEureka/LLM_digital_twin">Repository</a><a href="https://arxiv.org/abs/2403.16809">Paper</a></p>
         </div>
         <figure class="research-work-figure research-work-figure--digital-twin">
           <img src="/assets/images/research/digital-twin-figure-1.png" alt="Figure 1 from the digital-twin paper: simulated population dynamics and aggregated thermal preferences train an agent-in-the-loop controller for comfort and energy savings." loading="lazy">
