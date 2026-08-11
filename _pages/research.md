@@ -59,7 +59,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <p>Interdependence, collective capability, and collaborative primitives</p>
       </header>
       <p class="research-lens-question">What constitutes collaboration among intelligent entities, and which primitives distinguish it from mere group behavior?</p>
-      <p>Definition begins with candidate primitives rather than a settled checklist. The <a href="#work-digital-twin">LLM-based digital twin</a> placed heterogeneous human feedback into a shared reward objective. <a href="#work-damcs">Decentralized generative agents</a> organized shared and local memory for planning under dependency constraints. <a href="#work-cube">CUBE</a> made collective capability a property of the task: some goals are individually infeasible. <a href="#work-coop2">COOP<sup>2</sup></a> then formalized collaborative tasks through verifiable cooperative requirements. The <a href="#work-five-ws">Five Ws survey</a> situated these questions across communication structures in MARL, emergent language, and LLM-based multi-agent systems.</p>
+      <p>Definition begins with candidate primitives rather than a settled checklist. The <a href="https://arxiv.org/abs/2403.16809">LLM-based digital twin</a> placed heterogeneous human feedback into a shared reward objective. <a href="https://arxiv.org/abs/2502.05453">Decentralized generative agents</a> organized shared and local memory for planning under dependency constraints. <a href="https://openreview.net/forum?id=T7OoS6t11c">CUBE</a> made collective capability a property of the task: some goals are individually infeasible. <a href="https://arxiv.org/abs/2603.00349">COOP<sup>2</sup></a> then formalized collaborative tasks through verifiable cooperative requirements. The <a href="https://openreview.net/forum?id=LGsed0QQVq">Five Ws survey</a> situated these questions across communication structures in MARL, emergent language, and LLM-based multi-agent systems.</p>
       <p>Across these systems, interdependencies emerge as agents interact and share, while heterogeneous capabilities can yield collective capabilities for individually infeasible tasks or efficiency gains. These are candidate collaborative primitives, not a finished definition; which others matter remains open.</p>
     </article>
 
@@ -69,8 +69,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <p>Expressiveness, generalizability, and scalability</p>
       </header>
       <p class="research-lens-question">What representational structure can capture emergent collaboration across tasks, teams, and scales—and under what assumptions?</p>
-      <p><a href="#work-dig">DIG</a> represents agent interaction as event passing between activations in a bipartite graph, with minimal assumptions about organization or execution. <a href="#work-coop2">COOP<sup>2</sup></a> represents multi-agent interaction with the environment as an interplay between symbolic reasoning and grounded transitions. <a href="#work-drwell">DR. WELL</a> makes a related symbolic-grounded structure explicit through roles, plans, and a shared world model that changes as agents act.</p>
-      <p>At a more abstract level, <a href="#work-icore">iCORE</a> couples a graph of observed cooperation with a graph of evolving obligations and the evidence connecting them. Each step exposes a different tradeoff: <i>expressiveness</i> asks how much unconstrained, adaptive collaboration is captured; <i>generalizability</i>, what transfers versus must be redefined; and <i>scalability</i>, how complexity grows with system size. Their balance—and the assumptions each representation requires—remains open.</p>
+      <p><a href="https://arxiv.org/abs/2603.00309">DIG</a> represents agent interaction as event passing between activations in a bipartite graph, with minimal assumptions about organization or execution. <a href="https://arxiv.org/abs/2603.00349">COOP<sup>2</sup></a> represents multi-agent interaction with the environment as an interplay between symbolic reasoning and grounded transitions. <a href="https://arxiv.org/abs/2511.04646">DR. WELL</a> makes a related symbolic-grounded structure explicit through roles, plans, and a shared world model that changes as agents act.</p>
+      <p>At a more abstract level, <a href="https://arxiv.org/abs/2607.27429">iCORE</a> couples a graph of observed cooperation with a graph of evolving obligations and the evidence connecting them. Each step exposes a different tradeoff: <i>expressiveness</i> asks how much unconstrained, adaptive collaboration is captured; <i>generalizability</i>, what transfers versus must be redefined; and <i>scalability</i>, how complexity grows with system size. Their balance—and the assumptions each representation requires—remains open.</p>
     </article>
 
     <article class="research-lens">
@@ -79,8 +79,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <p>Formal properties, evaluation, and optimization</p>
       </header>
       <p class="research-lens-question">What can be derived, evaluated, and optimized once collaboration is represented, and at what computational cost?</p>
-      <p>A representation becomes useful when it supports questions that final task success cannot answer. <a href="#work-dig">DIG</a> turns recurring structural patterns into diagnostics for lost, duplicated, stalled, or prematurely terminated work. <a href="#work-coop2">COOP<sup>2</sup></a> moves from diagnosis to intervention by testing cooperative constraints and opening targeted repair when a plan is likely to fail. <a href="#work-drwell">DR. WELL</a> shows a complementary possibility: symbolic operations can be reused, synchronized, and refined across episodes without requiring agents to align every movement.</p>
-      <p><a href="#work-icore">iCORE</a> moves further toward formal guarantees: it asks whether active work is soundly justified and whether assignments are stable, and connects local checks to global properties under stated conditions. Together these projects trace a progression from observing failure, to repairing it, to determining what can be certified or optimized—and when those computations remain tractable. Failed evaluations and guarantees feed back again, exposing what is missing from the representation and sharpening the definition of collaboration.</p>
+      <p>A representation becomes useful when it supports questions that final task success cannot answer. <a href="https://arxiv.org/abs/2603.00309">DIG</a> makes reachability and progress failures visible in an event-activation graph, then supports online healing through information injection and rerouting. <a href="https://arxiv.org/abs/2603.00349">COOP<sup>2</sup></a> uses grounded task transitions to evaluate constraints; predicted violations open targeted communication channels for replanning. <a href="https://arxiv.org/abs/2607.27429">iCORE</a> formalizes work soundness and assignment stability in coupled cooperation-obligation graphs; their joint satisfaction quantifies state quality and yields a conditional performance bound.</p>
+      <p>Together, these projects sharpen three roles for computation. <i>Formal properties</i> characterize feasibility, optimality, guarantees, and complexity. <i>Evaluation</i> quantifies collaborative states and links contributions to collective outcomes. <i>Optimization</i> acts on the representation to improve those outcomes. The open question is which claims and interventions remain tractable as tasks, teams, and representations grow. Failures of evaluation or guarantees also expose what a representation is missing and feed back into the definition of collaboration.</p>
     </article>
   </section>
 
@@ -92,7 +92,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2026 &middot; Preprint, under review</p>
           <h3>Auditing Emergent LLM-Agent Collaboration through Cooperation-Obligation Coupling</h3>
-          <p>Represents emergent collaboration through two coupled graphs: observed cooperation and evolving obligations. Their evidence-backed coupling makes local responsibility explicit enough to ask when assignments, transitions, and collective execution are sound.</p>
+          <p>Represents emergent collaboration through coupled cooperation-obligation graphs that formalize work soundness and assignment stability. Their joint satisfaction quantifies state quality and yields a conditional performance bound.</p>
           <p class="research-work-links"><a href="https://arxiv.org/abs/2607.27429">Paper</a></p>
         </div>
         <figure class="research-work-figure research-work-figure--icore" aria-labelledby="icore-figure-caption">
@@ -116,7 +116,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2026 &middot; Preprint, under review</p>
           <h3>COOP<sup>2</sup>: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems</h3>
-          <p>Defines collaborative tasks through verifiable requirements and connects symbolic agent communication to grounded environment transitions. The resulting constraints support both observation and targeted repair when cooperation breaks down.</p>
+          <p>Defines collaborative tasks through verifiable requirements and connects symbolic agent communication to grounded environment transitions. Predicted constraint violations open targeted communication channels for replanning.</p>
           <p class="research-work-links"><a href="https://arxiv.org/abs/2603.00349">Paper</a><a href="/coop2/">Project page</a></p>
         </div>
         <figure class="research-work-figure">
@@ -128,7 +128,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2026 &middot; Preprint, under review</p>
           <h3>DIG to Heal: Scaling General-Purpose Agent Collaboration via Explainable Dynamic Decision Paths</h3>
-          <p>Represents asynchronous multi-agent execution as a time-evolving graph of agent activations and events. The graph is used to locate structural patterns associated with lost, duplicated, stalled, or prematurely terminated work.</p>
+          <p>Represents asynchronous multi-agent execution as a time-evolving graph of agent activations and events. The graph exposes reachability and progress failures and supports online healing through information injection and rerouting.</p>
           <p class="research-work-links"><a href="https://arxiv.org/abs/2603.00309">Paper</a><a href="/dig/">Project page</a></p>
         </div>
         <figure class="research-work-figure">
