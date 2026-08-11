@@ -1,0 +1,157 @@
+/* ==========================================================================
+   OPEN SOURCE PAGE
+   ========================================================================== */
+
+.open-source-page {
+  max-width: 920px;
+  color: var(--global-text-color);
+}
+
+.open-source-page a {
+  color: var(--global-link-color);
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.open-source-intro {
+  margin-bottom: 2.5rem;
+}
+
+.open-source-intro h1 {
+  margin: 0 0 0.9rem;
+  color: var(--global-text-color);
+  font-size: clamp(1.9rem, 3.2vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.03em;
+}
+
+.open-source-summary {
+  max-width: 53ch;
+  margin: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--global-border-color);
+  color: var(--global-text-color);
+  font-size: clamp(1rem, 1.45vw, 1.15rem) !important;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+}
+
+.open-source-description {
+  max-width: 66ch;
+  margin: 0.85rem 0 0 !important;
+  color: var(--global-text-color);
+  font-size: 1rem !important;
+  line-height: 1.62;
+}
+
+.open-source-release {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(15rem, 0.8fr);
+  gap: 2rem;
+  align-items: center;
+  padding: 1.7rem 0;
+  border-top: 1px solid var(--global-border-color);
+  border-bottom: 1px solid var(--global-border-color);
+}
+
+.open-source-release-meta {
+  margin: 0 0 0.45rem !important;
+  color: var(--global-text-color-light);
+  font-size: 0.72rem !important;
+}
+
+.open-source-release h2 {
+  margin: 0 0 0.7rem;
+  color: var(--global-text-color);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.open-source-release h2 span {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.open-source-release-copy > p:not(.open-source-release-meta):not(.open-source-links) {
+  margin: 0 0 1rem;
+  color: var(--global-text-color);
+  font-size: 0.88rem;
+  line-height: 1.62;
+}
+
+.open-source-capabilities {
+  margin: 1rem 0;
+}
+
+.open-source-capabilities > div {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 0.6rem;
+  padding: 0.48rem 0;
+  border-top: 1px solid var(--global-border-color);
+}
+
+.open-source-capabilities > div:last-child {
+  border-bottom: 1px solid var(--global-border-color);
+}
+
+.open-source-capabilities dt,
+.open-source-capabilities dd {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.open-source-capabilities dt {
+  color: var(--global-text-color);
+  font-weight: 650;
+}
+
+.open-source-capabilities dd {
+  color: var(--global-text-color);
+}
+
+.open-source-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0 !important;
+  font-size: 0.82rem !important;
+}
+
+.open-source-release-figure {
+  width: 100%;
+  margin: 0;
+}
+
+.open-source-release-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+.open-source-release-figure figcaption {
+  margin-top: 0.55rem;
+  color: var(--global-text-color-light);
+  font-size: 0.66rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 48em) {
+  .open-source-release {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.35rem;
+  }
+
+  .open-source-release-figure {
+    max-width: 31rem;
+  }
+
+}

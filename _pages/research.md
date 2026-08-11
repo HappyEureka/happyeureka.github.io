@@ -80,7 +80,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
       </header>
       <p class="research-lens-question">What can be derived, evaluated, and optimized once collaboration is represented, and at what computational cost?</p>
       <p>A representation becomes useful when it supports questions that final task success cannot answer. <a href="https://arxiv.org/abs/2603.00309">DIG</a> makes reachability and progress failures visible in an event-activation graph, then supports online healing through information injection and rerouting. <a href="https://arxiv.org/abs/2603.00349">COOP<sup>2</sup></a> uses grounded task transitions to evaluate constraints; predicted violations open targeted communication channels for replanning. <a href="https://arxiv.org/abs/2607.27429">iCORE</a> formalizes work soundness and assignment stability in coupled cooperation-obligation graphs; their joint satisfaction quantifies state quality and yields a conditional performance bound.</p>
-      <p>Together, these projects sharpen three roles for computation. <i>Formal properties</i> characterize feasibility, optimality, guarantees, and complexity. <i>Evaluation</i> quantifies collaborative states and links contributions to collective outcomes. <i>Optimization</i> acts on the representation to improve those outcomes. The open question is which claims and interventions remain tractable as tasks, teams, and representations grow. Failures of evaluation or guarantees also expose what a representation is missing and feed back into the definition of collaboration.</p>
+      <p>Together, these projects sharpen three roles for computation. <i>Formal properties</i> characterize feasibility, optimality, guarantees, and complexity. <i>Evaluation</i> quantifies collaborative states and links contributions to collective outcomes. <i>Optimization</i> improves outcomes at both agent and collective levels. The open question is which claims and interventions remain tractable as tasks, teams, and representations grow. Failures of evaluation or guarantees also expose what a representation is missing and feed back into the definition of collaboration.</p>
     </article>
   </section>
 
@@ -129,7 +129,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
           <p class="research-work-meta">2026 &middot; Preprint, under review</p>
           <h3>DIG to Heal: Scaling General-Purpose Agent Collaboration via Explainable Dynamic Decision Paths</h3>
           <p>Represents asynchronous multi-agent execution as a time-evolving graph of agent activations and events. The graph exposes reachability and progress failures and supports online healing through information injection and rerouting.</p>
-          <p class="research-work-links"><a href="https://arxiv.org/abs/2603.00309">Paper</a><a href="/dig/">Project page</a></p>
+          <p class="research-work-links"><a href="https://github.com/HappyEureka/dig">Repository</a><a href="https://arxiv.org/abs/2603.00309">Paper</a><a href="/dig/">Project page</a></p>
         </div>
         <figure class="research-work-figure">
           <img src="/dig/figs/fig2_new.png" alt="Dynamic Interaction Graph representation of agent activations and events." loading="lazy">
@@ -176,7 +176,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2025 &middot; AAAI MARW Workshop</p>
           <h3>LLM-Powered Decentralized Generative Agents with Adaptive Hierarchical Knowledge Graph for Cooperative Planning</h3>
-          <p class="research-work-recognition"><a href="https://rdi.berkeley.edu/llm-agents-hackathon/">1st Place (tie), Multi-Agents Track</a> &middot; Berkeley RDI LLM Agents MOOC Hackathon</p>
+          <p class="research-work-recognition"><a href="https://rdi.berkeley.edu/llm-agents-hackathon/">First Place (tie), Decentralized and Multi-Agents Track</a> &middot; Berkeley RDI LLM Agents MOOC Hackathon</p>
           <p>Introduces DAMCS, whose adaptive hierarchical knowledge graph organizes multimodal experience into shared and local memory. Decentralized agents can reason from past interactions while sharing relevant knowledge rather than entire histories during long-horizon planning under dependency constraints.</p>
           <p class="research-work-links"><a href="https://arxiv.org/abs/2502.05453">Paper</a><a href="/damcs/">Project page</a></p>
         </div>
@@ -203,7 +203,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
     <header class="research-healthcare-intro">
       <h2 id="healthcare-heading">Earlier Work</h2>
       <p class="research-healthcare-subtitle">Machine Learning for Healthcare</p>
-      <p>Before focusing on multi-agent systems, I worked closely with clinicians on decision support and scarce-resource allocation across international, national, and local datasets. These projects moved from validating risk scores, to aligning predictions with clinical decision horizons, to estimating treatment effects when a potentially beneficial intervention cannot be given to every eligible patient. The model was never the endpoint; the question was how evidence should enter a consequential decision.</p>
+      <p>Before focusing on multi-agent systems, I worked closely with clinicians on decision support and scarce-resource allocation across international, national, and local datasets. These projects moved from validating risk scores, to aligning predictions with clinical decision horizons, to estimating treatment effects when a potentially beneficial intervention cannot be given to every eligible patient.</p>
     </header>
 
     <div class="research-work-list research-work-list--healthcare">
