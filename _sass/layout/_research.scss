@@ -307,11 +307,21 @@
   font-size: 0.65em;
 }
 
-.research-work-copy > p:not(.research-work-meta):not(.research-work-links) {
+.research-work-copy > p:not(.research-work-meta):not(.research-work-links):not(.research-work-recognition) {
   margin-bottom: 0.7rem;
   color: var(--global-text-color);
   font-size: 0.86rem;
   line-height: 1.62;
+}
+
+.research-work-recognition {
+  margin: -0.15rem 0 0.75rem !important;
+  padding-left: 0.55rem;
+  border-left: 2px solid var(--global-link-color);
+  color: var(--global-text-color);
+  font-size: 0.72rem !important;
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 .research-work-figure {

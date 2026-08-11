@@ -11,7 +11,7 @@ redirect_from:
 
 I am a Ph.D. student in Electrical and Computer Engineering at [Carnegie Mellon University](https://www.cmu.edu/), advised by [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/) in the [LIONS research group](https://research.ece.cmu.edu/lions/).
 
-**When does group behavior become collaboration?** My work asks how collaboration among intelligent entities can be defined, represented, and used to explain, evaluate, and improve collective outcomes—currently through LLM agents.
+I study collaboration among intelligent decision-making entities: **what defines collaboration, how to represent it, and what becomes computationally possible once collaboration itself is represented**. Rather than assuming a known organizational structure, I examine how collaboration unfolds as agents interact, tasks are transformed, interdependencies emerge, and individual contributions become collectively consequential. My current work focuses on these questions through LLM-based multi-agent systems.
 
 Before CMU, I worked on machine learning for healthcare in [CPSL](https://wsn.cse.wustl.edu/index.php/Cyber-Physical_Systems_Laboratory) at [Washington University in St. Louis](https://washu.edu/), advised by [Prof. Chenyang Lu](https://www.cse.wustl.edu/~lu/).
 
@@ -23,11 +23,9 @@ Before CMU, I worked on machine learning for healthcare in [CPSL](https://wsn.cs
 
 ## Research Interests
 
-I am drawn to questions about **what collaboration is—and what becomes possible once we can represent it.**
-
 - **Definition:** What constitutes collaboration among intelligent entities, and which primitives distinguish it from mere group behavior?
-- **Representation:** What representational structure can capture emergent collaboration across tasks, teams, and scales—and under what assumptions?
-- **Computation:** Once collaboration is represented, what can be explained, evaluated, guaranteed, repaired, or optimized—and at what computational cost?
+- **Representation:** What representational structure can capture emergent collaboration across tasks, teams, and scales, and under what assumptions?
+- **Computation:** Once collaboration is represented, what can be explained, evaluated, guaranteed, repaired, or optimized, and at what computational cost?
 
 ## Teaching Experience
 

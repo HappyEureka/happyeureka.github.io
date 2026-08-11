@@ -10,7 +10,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
 <div class="research-page">
   <h1 class="research-program-title">Collaboration among intelligent entities</h1>
   <section class="research-intro">
-    <p class="research-summary">From asking what constitutes collaboration, to representing emergent structure, to exploring what becomes computationally possible.</p>
+    <p class="research-summary">From exploring what constitutes collaboration, to representing emergent structure, to examining what becomes computationally possible.</p>
     <p class="research-description">
       I approach collaboration through how it unfolds: agents interact, tasks evolve, interdependencies emerge, and individual contributions become collectively consequential. These questions are agnostic to entity type; my current work studies how they play out among LLM agents.
     </p>
@@ -176,6 +176,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2025 &middot; AAAI MARW Workshop</p>
           <h3>LLM-Powered Decentralized Generative Agents with Adaptive Hierarchical Knowledge Graph for Cooperative Planning</h3>
+          <p class="research-work-recognition"><a href="https://rdi.berkeley.edu/llm-agents-hackathon/">1st Place (tie), Multi-Agents Track</a> &middot; Berkeley RDI LLM Agents MOOC Hackathon</p>
           <p>Introduces DAMCS, whose adaptive hierarchical knowledge graph organizes multimodal experience into shared and local memory. Decentralized agents can reason from past interactions while sharing relevant knowledge rather than entire histories during long-horizon planning under dependency constraints.</p>
           <p class="research-work-links"><a href="https://arxiv.org/abs/2502.05453">Paper</a><a href="/damcs/">Project page</a></p>
         </div>
