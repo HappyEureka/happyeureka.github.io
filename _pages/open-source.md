@@ -10,8 +10,7 @@ excerpt: "Tools and environments from my research, released for others to inspec
 <div class="open-source-page">
   <header class="open-source-intro">
     <h1>Open Source</h1>
-    <p class="open-source-summary">Talk is cheap...</p>
-    <p class="open-source-description">I am constantly inspired by open-source projects and grateful for the openness behind them. Many of my projects began with ideas and tools shared by others. I hope something here can become a starting point for someone else.</p>
+    <p class="open-source-description">I love how open-source work lets ideas travel. Many of my projects grew from things others shared, and I hope something here is useful, sparks an idea, or gives someone something to build on.</p>
   </header>
 
   <section class="open-source-coming" aria-label="Future open-source releases">
@@ -20,6 +19,36 @@ excerpt: "Tools and environments from my research, released for others to inspec
 
   <main>
     <div class="open-source-releases">
+      <article class="open-source-release" aria-labelledby="coop2-release-title">
+        <div class="open-source-release-copy">
+          <p class="open-source-release-meta">Python &middot; MIT License</p>
+          <h2 id="coop2-release-title">COOP<sup>2</sup> <span>Observable cooperation in LLM multi-agent systems</span></h2>
+          <p>Code for connecting the cognitive activity of LLM agents to grounded environment actions and cooperative task progress.</p>
+
+          <dl class="open-source-capabilities">
+            <div>
+              <dt>Define</dt>
+              <dd>Model agent dynamics across cognitive and primitive layers alongside the task requirements that guard progress.</dd>
+            </div>
+            <div>
+              <dt>Observe</dt>
+              <dd>Measure task progress, coordination cost, and constraint deficits as cooperation unfolds.</dd>
+            </div>
+            <div>
+              <dt>Explore</dt>
+              <dd>Run CUBE and MA-Crafter experiments, including the paper's COOP<sup>2</sup>-Repair case study.</dd>
+            </div>
+          </dl>
+
+          <p class="open-source-links"><a href="https://github.com/HappyEureka/coop2-llm-mas">Repository</a><a href="https://arxiv.org/abs/2603.00349">Paper</a><a href="/coop2/">Project page</a></p>
+        </div>
+
+        <figure class="open-source-release-figure">
+          <img src="/coop2/figs/overview.png" alt="COOP squared connects cognitive agent activity, grounded environment actions, and cooperative task requirements." loading="lazy">
+          <figcaption>Agent dynamics and task requirements make the cooperation process observable.</figcaption>
+        </figure>
+      </article>
+
       <article class="open-source-release" aria-labelledby="dig-release-title">
         <div class="open-source-release-copy">
           <p class="open-source-release-meta">Python &middot; MIT License</p>
