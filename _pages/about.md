@@ -23,7 +23,7 @@ Before CMU, I worked on machine learning for healthcare in [CPSL](https://wsn.cs
 
 ## Research Interests
 
-What does **collaboration** mean among intelligent entities—and what turns a group into a team?
+What does **collaboration** mean for intelligent entities, and what turns a group into a team?
 
 - **Definition:** What constitutes collaboration among intelligent entities, and which primitives distinguish it from mere group behavior?
 - **Representation:** What representational structure can capture emergent collaboration across tasks, teams, and scales, and under what assumptions?
