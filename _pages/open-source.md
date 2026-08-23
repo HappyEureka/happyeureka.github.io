@@ -10,7 +10,7 @@ excerpt: "Tools and environments from my research, released for others to inspec
 <div class="open-source-page">
   <header class="open-source-intro">
     <h1>Open Source</h1>
-    <p class="open-source-description">I am constantly inspired by open-source projects and grateful for the openness behind them. Many of my projects began with ideas and tools shared by others. I hope something here can also help!</p>
+    <p class="open-source-description">I am constantly inspired by open-source projects and grateful for the openness behind them. Many of my projects began with ideas and tools shared by others. Hope something here can also help!</p>
   </header>
 
   <section class="open-source-coming" aria-label="Future open-source releases">
