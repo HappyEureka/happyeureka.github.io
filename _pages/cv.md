@@ -5,6 +5,7 @@ permalink: /cv/
 author_profile: true
 redirect_from:
   - /resume
+published: false   # keep the template; not built or reachable publicly
 ---
 
 {% include base_path %}

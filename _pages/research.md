@@ -92,8 +92,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2026 &middot; Preprint, under review</p>
           <h3>Auditing Emergent LLM-Agent Collaboration through Cooperation-Obligation Coupling</h3>
-          <p>Represents emergent collaboration through coupled cooperation-obligation graphs that formalize work soundness and assignment stability. Their joint satisfaction quantifies state quality and yields a conditional performance bound.</p>
-          <p class="research-work-links"><a href="https://arxiv.org/abs/2607.27429">Paper</a></p>
+          <p class="research-work-authors">Z. Zhang*, <strong>H. Yang*</strong>, C. Joe-Wong, and T. Lan</p>
+          <p>Represents emergent collaboration through coupled cooperation-obligation graphs that formalize work soundness and assignment stability. Their joint satisfaction quantifies state quality and yields a conditional performance bound. <span class="research-work-inline-links">[<a href="https://arxiv.org/abs/2607.27429">Paper</a>]</span></p>
         </div>
         <figure class="research-work-figure research-work-figure--icore" aria-labelledby="icore-figure-caption">
           <div class="icore-mini" aria-hidden="true">
@@ -116,8 +116,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2026 &middot; Preprint, under review</p>
           <h3>COOP<sup>2</sup>: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems</h3>
-          <p>Formalizes cooperation from two connected sides: what cooperative tasks require and how LLM agents reason, communicate, use tools, and act across cognitive and primitive layers. Aligning both makes cooperation observable, while the COOP<sup>2</sup>-Repair case study highlights how the formulation can support targeted replanning.</p>
-          <p class="research-work-links"><a href="https://github.com/HappyEureka/coop2-llm-mas">Repository</a><a href="https://arxiv.org/abs/2603.00349">Paper</a><a href="/coop2/">Project page</a></p>
+          <p class="research-work-authors"><strong>H. Yang</strong>, N. Nourzad, S. Chen, M. Siew, J. Chen, and C. Joe-Wong</p>
+          <p>Formalizes cooperation from two connected sides: what cooperative tasks require and how LLM agents reason, communicate, use tools, and act across cognitive and primitive layers. Aligning both makes cooperation observable, while the COOP<sup>2</sup>-Repair case study highlights how the formulation can support targeted replanning. <span class="research-work-inline-links">[<a href="https://arxiv.org/abs/2603.00349">Paper</a>] [<a href="/coop2/">Project page</a>]</span></p>
         </div>
         <figure class="research-work-figure">
           <img src="/coop2/figs/overview.png" alt="COOP squared connects symbolic agent activity with grounded environment execution." loading="lazy">
@@ -128,8 +128,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2026 &middot; Preprint, under review</p>
           <h3>DIG to Heal: Scaling General-Purpose Agent Collaboration via Explainable Dynamic Decision Paths</h3>
-          <p>Represents asynchronous multi-agent execution as a time-evolving graph of agent activations and events. The graph exposes reachability and progress failures and supports online healing through information injection and rerouting.</p>
-          <p class="research-work-links"><a href="https://github.com/HappyEureka/dig">Repository</a><a href="https://arxiv.org/abs/2603.00309">Paper</a><a href="/dig/">Project page</a></p>
+          <p class="research-work-authors"><strong>H. Yang</strong>, H. Lee, Y. Yao, Z. Liu, K. Liu, J. Chen, and C. Joe-Wong</p>
+          <p>Represents asynchronous multi-agent execution as a time-evolving graph of agent activations and events. The graph exposes reachability and progress failures and supports online healing through information injection and rerouting. <span class="research-work-inline-links">[<a href="https://arxiv.org/abs/2603.00309">Paper</a>] [<a href="/dig/">Project page</a>]</span></p>
         </div>
         <figure class="research-work-figure">
           <img src="/dig/figs/fig2_new.png" alt="Dynamic Interaction Graph representation of agent activations and events." loading="lazy">
@@ -140,8 +140,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2026 &middot; TMLR &middot; Survey Certification</p>
           <h3>The Five Ws of Multi-Agent Communication: Who Talks to Whom, When, What, and Why: A Survey from MARL to Emergent Language and LLMs</h3>
-          <p>Surveys communication structures across MARL, emergent language, and LLM-based multi-agent systems through who talks to whom, when, what, and why. It reveals how organizational assumptions are often built into communication mechanisms rather than collaboration examined directly.</p>
-          <p class="research-work-links"><a href="https://openreview.net/forum?id=LGsed0QQVq">Paper</a></p>
+          <p class="research-work-authors">J. Chen, <strong>H. Yang</strong>, Z. Liu, and C. Joe-Wong</p>
+          <p>Surveys communication structures across MARL, emergent language, and LLM-based multi-agent systems through who talks to whom, when, what, and why. It reveals how organizational assumptions are often built into communication mechanisms rather than collaboration examined directly. <span class="research-work-inline-links">[<a href="https://openreview.net/forum?id=LGsed0QQVq">Paper</a>]</span></p>
         </div>
         <figure class="research-work-figure research-work-figure--five-ws">
           <img src="/assets/images/research/five-ws-figure-11.png" alt="Figure 11 from the Five Ws survey: an overview of LLM-agent components, multi-agent communication designs, applications, and challenges." loading="lazy">
@@ -152,8 +152,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2025 &middot; NeurIPS LAW Workshop</p>
           <h3>DR. WELL: Dynamic Reasoning and Learning with Symbolic World Model for Embodied LLM-Based Multi-Agent Collaboration</h3>
-          <p>Coordinates embodied agents through two phases: agents negotiate and commit to roles, then independently execute symbolic plans grounded in a shared world model. Working above raw trajectories makes collaboration more reusable and interpretable while allowing the world model to improve across episodes.</p>
-          <p class="research-work-links"><a href="https://arxiv.org/abs/2511.04646">Paper</a><a href="https://narjesno.github.io/DR.WELL/">Project page</a></p>
+          <p class="research-work-authors">N. Nourzad*, <strong>H. Yang*</strong>, S. Chen, and C. Joe-Wong</p>
+          <p>Coordinates embodied agents through two phases: agents negotiate and commit to roles, then independently execute symbolic plans grounded in a shared world model. Working above raw trajectories makes collaboration more reusable and interpretable while allowing the world model to improve across episodes. <span class="research-work-inline-links">[<a href="https://arxiv.org/abs/2511.04646">Paper</a>] [<a href="https://narjesno.github.io/DR.WELL/">Project page</a>]</span></p>
         </div>
         <figure class="research-work-figure research-work-figure--drwell">
           <img src="/assets/images/research/drwell-overview.png" alt="DR. WELL overview: agents negotiate roles, execute symbolic plans, revise a shared world model, and validate plans in the environment." loading="lazy">
@@ -164,8 +164,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2025 &middot; NeurIPS SEA Workshop</p>
           <h3>CUBE: Collaborative Multi-Agent Block-Pushing Environment for Collective Planning with LLM Agents</h3>
-          <p>Designs weighted blocks, force, congestion, collisions, and timing so task-induced dependencies and collective capability become explicit. Some goals are individually infeasible, allowing collaboration to be studied as a property of the task rather than only of the policy.</p>
-          <p class="research-work-links"><a href="https://openreview.net/forum?id=T7OoS6t11c">Paper</a><a href="/cube/">Project page</a></p>
+          <p class="research-work-authors"><strong>H. Yang*</strong>, N. Nourzad*, S. Chen, and C. Joe-Wong</p>
+          <p>Designs weighted blocks, force, congestion, collisions, and timing so task-induced dependencies and collective capability become explicit. Some goals are individually infeasible, allowing collaboration to be studied as a property of the task rather than only of the policy. <span class="research-work-inline-links">[<a href="https://openreview.net/forum?id=T7OoS6t11c">Paper</a>] [<a href="/cube/">Project page</a>]</span></p>
         </div>
         <figure class="research-work-figure">
           <img src="/cube/static/images/embodied_constraints.png" alt="Physical constraints in the CUBE block-pushing environment." loading="lazy">
@@ -176,9 +176,9 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2025 &middot; AAAI MARW Workshop</p>
           <h3>LLM-Powered Decentralized Generative Agents with Adaptive Hierarchical Knowledge Graph for Cooperative Planning</h3>
+          <p class="research-work-authors"><strong>H. Yang</strong>, J. Chen, M. Siew, T. Lorido-Botran, and C. Joe-Wong</p>
           <p class="research-work-recognition"><a href="https://rdi.berkeley.edu/llm-agents-hackathon/">First Place (tie), Decentralized and Multi-Agents Track</a> &middot; Berkeley RDI LLM Agents MOOC Hackathon</p>
-          <p>Introduces DAMCS, whose adaptive hierarchical knowledge graph organizes multimodal experience into shared and local memory. Decentralized agents can reason from past interactions while sharing relevant knowledge rather than entire histories during long-horizon planning under dependency constraints.</p>
-          <p class="research-work-links"><a href="https://github.com/13RENDA/Mcrafter_LLM_Agent">Repository</a><a href="https://arxiv.org/abs/2502.05453">Paper</a><a href="/damcs/">Project page</a></p>
+          <p>Introduces DAMCS, whose adaptive hierarchical knowledge graph organizes multimodal experience into shared and local memory. Decentralized agents can reason from past interactions while sharing relevant knowledge rather than entire histories during long-horizon planning under dependency constraints. <span class="research-work-inline-links">[<a href="https://arxiv.org/abs/2502.05453">Paper</a>] [<a href="/damcs/">Project page</a>]</span></p>
         </div>
         <figure class="research-work-figure">
           <img src="/damcs/static/images/abstract.png" alt="Agents in Multi-Agent Crafter cooperate through structured memory and communication." loading="lazy">
@@ -189,8 +189,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2024 &middot; IEEE International Workshop on Foundation Models (FMSys) &middot; Co-located with CPS-IoT Week</p>
           <h3>An LLM-Based Digital Twin for Optimizing Human-in-the-Loop Systems</h3>
-          <p>Uses an LLM-based digital twin to simulate heterogeneous human feedback for adaptive HVAC control. Aggregated occupant preferences enter the reward objective, making collective preference part of what the controller learns to optimize.</p>
-          <p class="research-work-links"><a href="https://github.com/HappyEureka/LLM_digital_twin">Repository</a><a href="https://arxiv.org/abs/2403.16809">Paper</a></p>
+          <p class="research-work-authors"><strong>H. Yang</strong>, M. Siew, and C. Joe-Wong</p>
+          <p>Uses an LLM-based digital twin to simulate heterogeneous human feedback for adaptive HVAC control. Aggregated occupant preferences enter the reward objective, making collective preference part of what the controller learns to optimize. <span class="research-work-inline-links">[<a href="https://arxiv.org/abs/2403.16809">Paper</a>]</span></p>
         </div>
         <figure class="research-work-figure research-work-figure--digital-twin">
           <img src="/assets/images/research/digital-twin-figure-1.png" alt="Figure 1 from the digital-twin paper: simulated population dynamics and aggregated thermal preferences train an agent-in-the-loop controller for comfort and energy savings." loading="lazy">
@@ -211,8 +211,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2023 &middot; Journal of the American Medical Informatics Association</p>
           <h3>Multi-Horizon Predictive Models for Guiding Extracorporeal Resource Allocation in Critically Ill COVID-19 Patients</h3>
-          <p>Developed calibrated predictions at multiple time horizons for critically ill COVID-19 patients, aligning risk estimates with when scarce ECMO allocation decisions must be made.</p>
-          <p class="research-work-links"><a href="https://doi.org/10.1093/jamia/ocac256">Paper</a></p>
+          <p class="research-work-authors">B. Xue, N. Shah, <strong>H. Yang</strong>, T. Kannampallil, P. R. O. Payne, C. Lu, and A. S. Said</p>
+          <p>Developed calibrated predictions at multiple time horizons for critically ill COVID-19 patients, aligning risk estimates with when scarce ECMO allocation decisions must be made. <span class="research-work-inline-links">[<a href="https://doi.org/10.1093/jamia/ocac256">Paper</a>]</span></p>
         </div>
       </article>
 
@@ -220,8 +220,8 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2023 &middot; ACM SIGKDD</p>
           <h3>Assisting Clinical Decisions for Scarcely Available Treatment via Disentangled Latent Representation</h3>
-          <p>Used disentangled latent representations to separate prognostic factors from heterogeneous treatment effects, supporting decisions when treatment capacity is limited.</p>
-          <p class="research-work-links"><a href="https://doi.org/10.1145/3580305.3599774">Paper</a></p>
+          <p class="research-work-authors">B. Xue, A. S. Said, Z. Xu, H. Liu, N. Shah, <strong>H. Yang</strong>, P. R. O. Payne, and C. Lu</p>
+          <p>Used disentangled latent representations to separate prognostic factors from heterogeneous treatment effects, supporting decisions when treatment capacity is limited. <span class="research-work-inline-links">[<a href="https://doi.org/10.1145/3580305.3599774">Paper</a>]</span></p>
         </div>
       </article>
 
@@ -229,12 +229,11 @@ excerpt: "Definition, representation, and computation of collaboration among int
         <div class="research-work-copy">
           <p class="research-work-meta">2023 &middot; Artificial Organs</p>
           <h3>Validation of ECMO Mortality Prediction and Severity-of-Illness Scores in an International COVID-19 Cohort</h3>
-          <p>Evaluated mortality prediction and severity-of-illness scores in an international COVID-19 cohort, testing how established tools behave across a diverse clinical population.</p>
-          <p class="research-work-links"><a href="https://doi.org/10.1111/aor.14542">Paper</a></p>
+          <p class="research-work-authors">N. Shah, B. Xue, Z. Xu, <strong>H. Yang</strong>, E. Marwali, H. Dalton, P. P. R. Payne, C. Lu, A. S. Said, and the ISARIC Clinical Characterisation Group</p>
+          <p>Evaluated mortality prediction and severity-of-illness scores in an international COVID-19 cohort, testing how established tools behave across a diverse clinical population. <span class="research-work-inline-links">[<a href="https://doi.org/10.1111/aor.14542">Paper</a>]</span></p>
         </div>
       </article>
     </div>
   </section>
 
-  <p class="research-complete-record">Complete publication record on <a href="https://scholar.google.com/citations?hl=en&amp;user=HnhN3tYAAAAJ">Google Scholar</a>.</p>
 </div>

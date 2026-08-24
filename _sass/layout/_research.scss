@@ -46,8 +46,7 @@
   line-height: 1.62;
 }
 
-.research-links,
-.research-work-links {
+.research-links {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -147,15 +146,16 @@
   height: 0.5rem;
   border-right: 1.5px solid var(--global-text-color);
   border-bottom: 1.5px solid var(--global-text-color);
-  transform: translateY(50%) rotate(45deg);
 }
 
 .research-cycle-return-arrow--start {
   left: -0.28rem;
+  transform: translateY(50%) rotate(135deg);
 }
 
 .research-cycle-return-arrow--end {
   right: -0.28rem;
+  transform: translateY(50%) rotate(-45deg);
 }
 
 .research-cycle-node {
@@ -307,7 +307,29 @@
   font-size: 0.65em;
 }
 
-.research-work-copy > p:not(.research-work-meta):not(.research-work-links):not(.research-work-recognition) {
+.research-work-authors {
+  margin: -0.2rem 0 0.6rem !important;
+  color: var(--global-text-color-light);
+  font-size: 0.78rem !important;
+  line-height: 1.5;
+}
+
+.research-work-authors strong {
+  color: var(--global-text-color);
+  font-weight: 650;
+}
+
+.research-work-inline-links {
+  display: inline;
+  margin-left: 0.4rem;
+  white-space: nowrap;
+}
+
+.research-work-inline-links a {
+  font-size: 0.82rem;
+}
+
+.research-work-copy > p:not(.research-work-meta):not(.research-work-recognition):not(.research-work-authors) {
   margin-bottom: 0.7rem;
   color: var(--global-text-color);
   font-size: 0.86rem;
@@ -493,13 +515,6 @@ html[data-theme="dark"] .research-work-recognition {
   line-height: 1.4;
 }
 
-.research-complete-record {
-  margin: -1.15rem 0 0 !important;
-  color: var(--global-text-color-light);
-  font-size: 0.82rem !important;
-  line-height: 1.55;
-}
-
 @media (max-width: 700px) {
   .research-intro {
     margin-bottom: 2.75rem;
@@ -614,16 +629,17 @@ html[data-theme="dark"] .research-work-recognition {
     bottom: auto;
     border-right: 1.5px solid var(--global-text-color);
     border-bottom: 1.5px solid var(--global-text-color);
-    transform: translateX(-50%) rotate(135deg);
   }
 
   .research-cycle-return-arrow--start {
     top: -0.28rem;
+    transform: translateX(-50%) rotate(-135deg);
   }
 
   .research-cycle-return-arrow--end {
     top: auto;
     bottom: -0.28rem;
+    transform: translateX(-50%) rotate(45deg);
   }
 
   .research-work-figure--icore {

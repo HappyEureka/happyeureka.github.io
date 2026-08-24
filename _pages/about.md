@@ -7,8 +7,6 @@ redirect_from:
   - /about.html
 ---
 
-# Hanqing Yang
-
 I am a Ph.D. student in Electrical and Computer Engineering at [Carnegie Mellon University](https://www.cmu.edu/), advised by [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/) in the [LIONS research group](https://research.ece.cmu.edu/lions/).
 
 I study collaboration among intelligent decision-making entities: **what defines collaboration, how to represent it, and what becomes computationally possible once collaboration itself is represented**. Rather than assuming a known organizational structure, I examine how collaboration unfolds as agents interact, tasks are transformed, interdependencies emerge, and individual contributions become collectively consequential. My current work focuses on these questions through LLM-based multi-agent systems.
