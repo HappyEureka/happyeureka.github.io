@@ -104,9 +104,9 @@
   <div class="controls">
     <button id="play">Play</button>
     <button id="replay">Replay</button>
-    <input id="seek" type="range" min="0" max="14" value="0"
+    <input id="seek" type="range" min="0" max="6.5" value="0"
            step="0.01" aria-label="Animation position">
-    <span id="clock">0.0 / 14 s</span>
+    <span id="clock">0.0 / 6.5 s</span>
     <label>Speed
       <select id="speed">
         <option value="0.5">0.5×</option>
@@ -219,12 +219,12 @@ function edgePath(a,b,bend,p) {
 
 const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let time=0,playing=!reduceMotion,last=null,phase=-1;
-const duration=14;
+const duration=6.5;
 function render(t) {
-  const move=smooth((t-2)/5);
-  const combine=smooth((t-7)/3);
-  const fade=smooth((t-2)/1.5);
-  const agentFade=smooth((t-6.1)/0.9);
+  const move=smooth((t-1)/2.5);
+  const combine=smooth((t-3.5)/1.5);
+  const fade=smooth((t-1)/0.75);
+  const agentFade=smooth((t-3.05)/0.45);
   const positions=nodes.map(n=>{
     const target=targets[n.agent];
     return {x:lerp(n.x,target.x,move),y:lerp(n.y,target.y,move)};
@@ -258,7 +258,7 @@ function render(t) {
     g.text.style.opacity=combine;
   });
 
-  const nextPhase=t<2?0:t<7?1:t<10?2:3;
+  const nextPhase=t<1?0:t<3.5?1:t<5?2:3;
   if(nextPhase!==phase) {
     phase=nextPhase;
     $("status").textContent=[
@@ -287,8 +287,8 @@ $("seek").oninput=e=>{
 };
 function frame(now) {
   if(last!==null && playing) {
-    time=Math.min(duration,time+(now-last)/1000*Number($("speed").value));
-    if(time>=duration) setPlaying(false);
+    time+=(now-last)/1000*Number($("speed").value);
+    if(time>=duration) time%=duration;
     render(time);
   }
   last=now;
