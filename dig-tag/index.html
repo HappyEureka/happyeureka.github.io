@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>DIG-TAG: Representing Open-Ended Collaboration in LLM-Based Multi-Agent Systems Structurally</title>
+  <meta name="description" content="DIG-TAG makes open-ended multi-agent collaboration explicit by coupling a Dynamic Interaction Graph with a Task Activity Graph and the shared environment." />
+  <meta name="keywords" content="DIG-TAG, Dynamic Interaction Graph, Task Activity Graph, LLM agents, multi-agent systems, open-ended collaboration, task evolution, provenance" />
+
+  <meta property="og:title" content="DIG-TAG: Representing Open-Ended Collaboration Structurally" />
+  <meta property="og:description" content="A structural representation of agent interaction, evolving task activity, evidence, and shared-environment state." />
+  <meta property="og:url" content="https://happyeureka.github.io/dig-tag/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DIG-TAG: Representing Open-Ended Collaboration Structurally" />
+  <meta name="twitter:description" content="Making emergent LLM-agent collaboration explicit, comparable, and optimizable without prescribing a workflow." />
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,700|Castoro:400,700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma-carousel.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma-slider.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/fontawesome.all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/index.css" />
+
+  <style>
+    :root {
+      --accent: #c4552d;
+      --accent-dark: #913919;
+      --task: #fff3dc;
+      --interaction: #eef3f7;
+      --environment: #e9f0fb;
+    }
+    html { scroll-behavior: smooth; }
+    .hero.is-gradient {
+      background:
+        radial-gradient(900px circle at 12% 15%, rgba(244, 166, 92, 0.18), transparent 48%),
+        radial-gradient(900px circle at 88% 8%, rgba(50, 94, 146, 0.13), transparent 46%),
+        linear-gradient(180deg, #fffdfa 0%, #f7f8fa 100%);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .publication-title { font-size: 2.75rem !important; line-height: 1.13; }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 0.9rem;
+      color: var(--accent-dark);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hero-answer {
+      max-width: 830px;
+      margin: 0.8rem auto 0;
+      color: rgba(0, 0, 0, 0.68);
+      font-size: 1.12rem;
+      line-height: 1.55;
+    }
+    .review-note {
+      margin-top: 0.95rem;
+      color: rgba(0, 0, 0, 0.58);
+      font-size: 0.96rem;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.7rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      color: rgba(0, 0, 0, 0.8);
+      font-size: 0.9rem;
+    }
+    .pill:hover { color: var(--accent-dark); border-color: rgba(196, 85, 45, 0.28); }
+    .toc { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.45rem; }
+    .section-title { margin-bottom: 1.25rem; }
+    .mini { color: rgba(0, 0, 0, 0.76); font-size: 0.95rem; line-height: 1.62; }
+    .figure {
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 8px 26px rgba(32, 40, 52, 0.06);
+    }
+    .figure img { width: 100%; display: block; }
+    .figure .cap { padding: 0.85rem 1rem; color: rgba(0, 0, 0, 0.7); font-size: 0.9rem; line-height: 1.5; }
+    .animation-frame {
+      display: block;
+      width: 100%;
+      height: 610px;
+      border: 0;
+      background: #fff;
+    }
+    .layer-card {
+      height: 100%;
+      padding: 1.15rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      background: #fff;
+    }
+    .layer-card.task { border-top: 4px solid #ef8a48; background: linear-gradient(180deg, var(--task), #fff 55%); }
+    .layer-card.interaction { border-top: 4px solid #7990a9; background: linear-gradient(180deg, var(--interaction), #fff 55%); }
+    .layer-card.environment { border-top: 4px solid #37689d; background: linear-gradient(180deg, var(--environment), #fff 55%); }
+    .layer-label {
+      color: rgba(0, 0, 0, 0.48);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .layer-card h3 { margin: 0.35rem 0 0.5rem; font-size: 1.25rem; font-weight: 700; }
+    .layer-card p { margin: 0; color: rgba(0, 0, 0, 0.7); font-size: 0.91rem; line-height: 1.55; }
+    .principle {
+      margin: 1.25rem 0;
+      padding: 1rem 1.15rem;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      background: rgba(196, 85, 45, 0.055);
+      color: rgba(0, 0, 0, 0.78);
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+    .tool {
+      padding: 0.6rem 0.7rem;
+      border: 1px solid rgba(196, 85, 45, 0.16);
+      border-radius: 7px;
+      background: #fff;
+    }
+    .tool code { color: var(--accent-dark); font-size: 0.82rem; font-weight: 700; }
+    .tool p { margin: 0.18rem 0 0; color: rgba(0, 0, 0, 0.65); font-size: 0.76rem; line-height: 1.3; }
+    #task-interface.section { padding-top: 2.25rem; padding-bottom: 2.25rem; }
+    #task-interface .section-title { margin-bottom: 0.75rem; }
+    #task-interface .principle { margin-bottom: 0; }
+    .result-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .result-card {
+      padding: 0.7rem 0.8rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+    .result-card .value { color: var(--accent-dark); font-size: 1.35rem; font-weight: 800; line-height: 1.05; }
+    .result-card .label { margin-top: 0.25rem; color: rgba(0, 0, 0, 0.65); font-size: 0.78rem; line-height: 1.3; }
+    .comparison {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .comparison th, .comparison td { padding: 0.75rem; border-bottom: 1px solid rgba(0, 0, 0, 0.07); vertical-align: top; }
+    .comparison th { background: rgba(55, 104, 157, 0.075); color: rgba(0, 0, 0, 0.72); text-align: left; }
+    .comparison td:first-child { width: 22%; font-weight: 700; }
+    .footer { border-top: 1px solid rgba(0, 0, 0, 0.06); }
+
+    @media (max-width: 768px) {
+      .publication-title { font-size: 2rem !important; }
+      .hero-body { padding: 2.3rem 1rem; }
+      .result-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .comparison { min-width: 650px; }
+      .table-wrap { overflow-x: auto; }
+      .animation-frame { height: 520px; }
+    }
+    @media (max-width: 480px) {
+      .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .animation-frame { height: 560px; }
+    }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="../damcs/static/js/fontawesome.all.min.js"></script>
+  <script src="../damcs/static/js/bulma-carousel.min.js"></script>
+  <script src="../damcs/static/js/bulma-slider.min.js"></script>
+  <script src="../damcs/static/js/index.js"></script>
+</head>
+
+<body>
+  <section class="hero is-gradient" id="top">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <span class="eyebrow">Dynamic Interaction Graph + Task Activity Graph</span>
+            <h1 class="title is-1 publication-title">
+              DIG-TAG: Representing Open-Ended Collaboration in LLM-Based Multi-Agent Systems Structurally
+            </h1>
+            <p class="hero-answer">
+              A shared computational record of how agents interact, how their tasks evolve, what evidence supports those changes,
+              and how all of it connects to the environment - without prescribing a fixed workflow or exposing private reasoning.
+            </p>
+            <p class="review-note"><strong>Anonymous authors</strong> &middot; Under review at ICLR 2026</p>
+
+            <div class="publication-links" style="margin-top: 1.25rem;">
+              <span class="link-block">
+                <a href="paper.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+            </div>
+
+            <nav class="toc" aria-label="Page sections" style="margin-top: 1.35rem;">
+              <a class="pill" href="#overview">Overview</a>
+              <a class="pill" href="#representation">Representation</a>
+              <a class="pill" href="#task-interface">Task Interface</a>
+              <a class="pill" href="#capabilities">Capabilities</a>
+              <a class="pill" href="#experiments">Experiments</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="overview">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Collaboration Is More Than Environment State</h2>
+      <div class="columns is-vcentered">
+        <div class="column is-5">
+          <div class="content mini">
+            <p>
+              Open-ended agent teams create and transform work while they act: they propose tasks, revise objectives,
+              split and join subtasks, exchange evidence, and reorganize after failures. Environment state alone does not
+              capture this collaborative state, while transcripts entangle it with surface language and incidental ordering.
+            </p>
+            <p>
+              <strong>DIG-TAG</strong> makes the consequential structure created by interaction a first-class object.
+              Its two linked views preserve both the flow of information and the evolving identity, version history,
+              and evidence of shared work.
+            </p>
+          </div>
+        </div>
+        <div class="column is-7">
+          <figure class="figure">
+            <img src="figs/overview.png" alt="DIG-TAG overview showing task activity, agent interactions, and shared environment aligned over time" />
+            <figcaption class="cap">
+              <strong>DIG-TAG at a glance.</strong> The Task Activity Graph (top), Dynamic Interaction Graph (middle),
+              and environment state (bottom) remain aligned through agent-issued tool calls and returned events.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="principle">
+        <strong>The key separation:</strong> DIG records interaction flow; TAG records task flow. They share task actions and
+        provenance, but TAG is not merely a causal subgraph of DIG. This factorization exposes structure useful for
+        reconstruction, comparison, assessment, and optimization.
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light" id="representation">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">The DIG-TAG Collaboration Interface</h2>
+      <p class="mini has-text-centered" style="max-width: 780px; margin: 0 auto 1.35rem;">
+        A DIG-TAG instance combines a Dynamic Interaction Graph, a Task Activity Graph, the shared environment,
+        and the available task, environment, and information tools. Persistent agent identities connect the views.
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <article class="layer-card interaction">
+            <span class="layer-label">D</span>
+            <h3>Dynamic Interaction Graph</h3>
+            <p>A directed bipartite graph of information events and agent activations. It records input events, ordered tool-call occurrences, returned events, deliveries, timing, and routing dependencies.</p>
+          </article>
+        </div>
+        <div class="column">
+          <article class="layer-card task">
+            <span class="layer-label">T</span>
+            <h3>Task Activity Graph</h3>
+            <p>A versioned graph of task nodes, occurrence-identified task actions, and evidence attachments. It preserves task identity, specification, reported state, ancestry, frontier, and lifecycle.</p>
+          </article>
+        </div>
+        <div class="column">
+          <article class="layer-card environment">
+            <span class="layer-label">Z</span>
+            <h3>Shared Environment</h3>
+            <p>The external world agents observe and change. Environment tools return fresh DIG events, allowing task declarations and evidence to remain connected to externally verifiable effects.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="columns is-vcentered" style="margin-top: 1.3rem;">
+        <div class="column is-6">
+          <h3 class="title is-4">One realized execution, two relations</h3>
+          <div class="content mini">
+            <p>
+              An activation is one invocation of an agent. Its input set is fixed at activation start, and its ordered calls
+              may return new events. Repeated invocations and repeated calls remain distinct occurrences, so cycles,
+              retries, concurrency, and dynamic routing are preserved rather than collapsed.
+            </p>
+            <p>
+              Task versions are immutable. Every update appends a version; evidence targets an exact version and does not
+              silently carry forward. Provenance records where a claim came from, while validity remains a separate,
+              domain-specific judgment.
+            </p>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="table-wrap">
+            <table class="comparison">
+              <thead><tr><th>View</th><th>What it answers</th></tr></thead>
+              <tbody>
+                <tr><td>DIG</td><td>Who acted, what information reached them, which tools they called, and where outputs flowed.</td></tr>
+                <tr><td>TAG</td><td>What work exists, how it was revised or decomposed, which version is current, and what evidence supports it.</td></tr>
+                <tr><td>DIG + TAG</td><td>Who produced a task version, from which inputs, with what evidence and interaction context.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="task-interface">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">A Small Vocabulary for Evolving Work</h2>
+      <p class="mini has-text-centered" style="max-width: 770px; margin: 0 auto 1.25rem;">
+        TAG uses six structural task operations. Applications supply the meaning of goals, states, evaluation rules,
+        and domain effects; the interface captures how work changes without fixing what the work must be.
+      </p>
+
+      <div class="tool-grid">
+        <article class="tool"><code>OPEN</code><p>Create a fresh task identity and its initial version with status open.</p></article>
+        <article class="tool"><code>EDIT</code><p>Append a version that revises the task specification while preserving reported state.</p></article>
+        <article class="tool"><code>UPDATE</code><p>Append a version that changes reported state while preserving the task specification.</p></article>
+        <article class="tool"><code>SPLIT</code><p>Decompose one version into multiple versions with distinct task identities.</p></article>
+        <article class="tool"><code>JOIN</code><p>Integrate versions from distinct task identities into a single successor version.</p></article>
+        <article class="tool"><code>CLOSE</code><p>Declare that an identity needs no further work; closure does not certify success.</p></article>
+      </div>
+
+      <div class="principle">
+        <strong>Designed for honest histories.</strong> Transformations can use historical versions, concurrent edits create
+        distinct tasks rather than overwriting one another, and closure never erases lineage or pretends a goal was satisfied.
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light" id="capabilities">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">What the Representation Makes Observable</h2>
+
+      <figure class="figure" style="margin-bottom: 1.5rem;">
+        <iframe
+          class="animation-frame"
+          src="figs/interaction-to-topology.html"
+          title="Interactive animation from an occurrence-level interaction record to a weighted agent topology"
+          loading="lazy"
+        ></iframe>
+        <figcaption class="cap">
+          <strong>From interaction trace to topology.</strong> Two rounds of hub-worker interaction produce seven activations
+          across three agents and eight routed deliveries. Aggregating by agent identity yields three nodes and four directed
+          edges, each with delivery count two; repeated interactions become weights while activation timing is omitted.
+        </figcaption>
+      </figure>
+
+      <div class="columns is-vcentered">
+        <div class="column is-6">
+          <figure class="figure">
+            <img src="figs/patterns.png" alt="Seven collaboration patterns and their corresponding DIG execution records" />
+            <figcaption class="cap">
+              <strong>Collaboration patterns.</strong> Sequential, hierarchical, supervisor, mesh, parallel fan-out/fan-in,
+              cyclic, and dynamically instantiated worker structures all admit a common occurrence-level record.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="column is-6">
+          <div class="content mini">
+            <h3 class="title is-4">From traces back to structure</h3>
+            <p>
+              DIG can encode any finite graph execution whose occurrences and relations are recorded. Aggregating activations
+              by agent identity reconstructs realized interaction graphs; retaining occurrence-level records preserves
+              repeated calls, parallel overlap, branch choices, and dynamically created workers.
+            </p>
+            <h3 class="title is-4" style="margin-top: 1.2rem;">From versions back to decisions</h3>
+            <p>
+              TAG reconstructs finite histories of task introduction, revision, decomposition, integration, and closure.
+              Because task actions are attributed to DIG call occurrences, a query can follow a result through its version
+              lineage to the responsible activation, its available context, and attached evidence.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns" style="margin-top: 1.35rem;">
+        <div class="column"><article class="layer-card"><h3>Adaptive coordination</h3><p>Compare interaction structures and routing patterns by task, phase, or agent group to inform recipient selection, review assignment, or revised decomposition.</p></article></div>
+        <div class="column"><article class="layer-card"><h3>Targeted verification &amp; repair</h3><p>Use failed checks, task lineage, information flow, and call attribution to identify what should be rechecked or revised.</p></article></div>
+        <div class="column"><article class="layer-card"><h3>Learning collaboration policies</h3><p>Relate public context and call choices to observations, task effects, assessed outcomes, and costs to learn transferable policies.</p></article></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experiments">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Structural Validation</h2>
+      <p class="mini has-text-centered" style="max-width: 800px; margin: 0 auto 1rem;">
+        The paper evaluates whether DIG-TAG faithfully records known collaboration structures, recovers stochastic routing,
+        tracks changes across phases, scales to larger teams, and transfers across distinct task domains.
+        It also reports that directly optimizing over the collaborative state exposed by DIG-TAG improves grounded task
+        completion over baselines across diverse environments.
+      </p>
+
+      <div class="result-strip">
+        <div class="result-card"><div class="value">7</div><div class="label">Sequential, branching, cyclic, parallel, hierarchical, mesh, and dynamic patterns represented.</div></div>
+        <div class="result-card"><div class="value">0.09</div><div class="label">Maximum routing-frequency deviation after 600 steps in the eight-agent experiment.</div></div>
+        <div class="result-card"><div class="value">50</div><div class="label">Workers in the large supervisor topology used for the scale demonstration.</div></div>
+        <div class="result-card"><div class="value">40</div><div class="label">Agents in the hierarchical topology reconstructed from the execution record.</div></div>
+      </div>
+
+      <div class="columns">
+        <div class="column is-6">
+          <figure class="figure">
+            <img src="figs/recovery.png" alt="Routing probability recovery over a 600-step eight-agent trajectory" />
+            <figcaption class="cap">
+              <strong>Routing recovery.</strong> Empirical transition frequencies converge toward the defined probabilities;
+              the maximum absolute deviation falls from 0.70 after 10 steps to 0.09 after 600.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="column is-6">
+          <figure class="figure">
+            <img src="figs/scalability.png" alt="Aggregated DIG records for a 50-worker supervisor topology and a 40-agent hierarchy" />
+            <figcaption class="cap">
+              <strong>Scaling up.</strong> A 50-worker supervisor topology and a 40-agent hierarchy aggregate into readable
+              interaction structures while their occurrence-level records retain the underlying deliveries.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="columns is-vcentered" style="margin-top: 1.35rem;">
+        <div class="column is-7">
+          <figure class="figure">
+            <img src="figs/domains.png" alt="Aligned DIG-TAG records across survey, software, analysis, and proof domains" />
+            <figcaption class="cap">
+              <strong>Domain-agnostic records.</strong> The same planner-worker-reviewer policy produces aligned interaction
+              and task-activity records in survey, software, analysis, and proof tasks.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="column is-5">
+          <h3 class="title is-4">A general interface, not a prescribed workflow</h3>
+          <p class="mini">
+            Agents need not reason in graphs or reveal chain-of-thought. They may call task tools directly, or a wrapper or
+            evaluated parser may emit equivalent typed effects from observable behavior. Unsuccessful, conflicting, and
+            irrelevant behavior remains representable; cooperation and correctness are assessed downstream.
+          </p>
+        </div>
+      </div>
+
+      <p class="mini has-text-centered" style="margin-top: 1.6rem;"><a href="#top">Back to top</a></p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p class="mini">This page is based on the Academic Project Page Template.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
