@@ -392,13 +392,14 @@
       <h2 class="title is-3 has-text-centered section-title">Structural Validation</h2>
       <p class="mini has-text-centered" style="max-width: 800px; margin: 0 auto 1rem;">
         The paper evaluates whether DIG-TAG faithfully records known collaboration structures, recovers stochastic routing,
-        tracks changes across phases, scales to larger teams, and transfers across distinct task domains.
+        reconstructs a long-horizon trace when supplied with perfect phase chunking, scales to larger teams, and transfers
+        across distinct task domains.
         It also reports that directly optimizing over the collaborative state exposed by DIG-TAG improves grounded task
         completion over baselines across diverse environments.
       </p>
 
       <div class="result-strip">
-        <div class="result-card"><div class="value">7</div><div class="label">Sequential, branching, cyclic, parallel, hierarchical, mesh, and dynamic patterns represented.</div></div>
+        <div class="result-card"><div class="value">525</div><div class="label">Steps reconstructed across three perfectly chunked topology phases.</div></div>
         <div class="result-card"><div class="value">0.09</div><div class="label">Maximum routing-frequency deviation after 600 steps in the eight-agent experiment.</div></div>
         <div class="result-card"><div class="value">50</div><div class="label">Workers in the large supervisor topology used for the scale demonstration.</div></div>
         <div class="result-card"><div class="value">40</div><div class="label">Agents in the hierarchical topology reconstructed from the execution record.</div></div>
@@ -422,6 +423,31 @@
               interaction structures while their occurrence-level records retain the underlying deliveries.
             </figcaption>
           </figure>
+        </div>
+      </div>
+
+      <div class="columns is-vcentered" style="margin-top: 1.35rem;">
+        <div class="column is-7">
+          <figure class="figure">
+            <img src="figs/long-horizon-recovery.png" alt="A 525-step interaction trace split at known boundaries into tree, cluster, and gated topology phases, with ground-truth and reconstructed routing matrices" />
+            <figcaption class="cap">
+              <strong>Long-horizon recovery with perfect chunking.</strong> Given the true phase boundaries at steps 140
+              and 360, DIG-TAG reconstructs the tree, cluster, and gated routing structures from the corresponding chunks.
+              The phase reconstructions recover 10/10, 14/14, and 8/9 edges; the missing gated edge never fires in the trace.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="column is-5">
+          <h3 class="title is-4">Reconstructing structure phase by phase</h3>
+          <p class="mini">
+            A single 525-step execution changes topology twice. With perfect chunking - the known boundaries supplied to
+            the analysis - DIG-TAG aggregates the occurrence-level records inside each phase and recovers that phase's
+            realized interaction graph and routing frequencies. Aggregating the full trace recovers 23 of 24 combined edges.
+          </p>
+          <div class="principle" style="margin-bottom: 0; font-size: 0.9rem;">
+            <strong>Scope of the result:</strong> the experiment evaluates reconstruction given correct segmentation;
+            phase-boundary discovery is not part of this claim.
+          </div>
         </div>
       </div>
 
