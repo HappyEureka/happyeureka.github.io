@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From interaction record to agent topology</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: white; color: #202631;
+    font-family: system-ui, sans-serif;
+  }
+  main {
+    max-width: 1400px; margin: 0 auto; padding: 20px 22px 16px;
+    background: white;
+  }
+  h1 { margin: 0 0 5px; font-size: 22px; font-weight: 650; }
+  .intro { margin: 0; color: #667085; }
+  svg { width: 100%; height: auto; display: block; margin-top: 10px; }
+  svg text { font-family: Georgia, serif; fill: #252831; }
+  .caption { font-size: 22px; font-weight: bold; }
+  .status {
+    min-height: 48px; padding: 11px 14px; background: #f2f5fa;
+    border-radius: 9px; line-height: 1.5;
+  }
+  .controls {
+    display: flex; align-items: center; flex-wrap: wrap;
+    gap: 10px; margin-top: 13px;
+  }
+  button, select {
+    font: inherit; padding: 7px 12px; border: 1px solid #cbd2dd;
+    border-radius: 7px; background: white; cursor: pointer;
+  }
+  #play { background: #304f80; color: white; border-color: #304f80; }
+  input[type=range] { flex: 1; min-width: 160px; accent-color: #304f80; }
+  #clock { font-variant-numeric: tabular-nums; color: #667085; }
+  button:focus-visible, select:focus-visible, input:focus-visible {
+    outline: 3px solid rgba(48, 79, 128, 0.3); outline-offset: 2px;
+  }
+  footer { color: #667085; font-size: 13px; margin-top: 16px; }
+  @media(max-width: 700px) {
+    main { padding: 14px; }
+    h1 { font-size: 18px; }
+    .intro { font-size: 13px; }
+    .status { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>From interaction record to agent topology</h1>
+  <p class="intro">Group activations by agent, then aggregate deliveries by directed agent pair.</p>
+
+  <svg id="scene" viewBox="0 0 1240 500"
+       role="img" aria-label="Seven activations merge into three agents.
+       Eight deliveries merge into four directed edges with weight two.">
+    <defs id="defs"></defs>
+
+    <text x="35" y="35" class="caption">Interaction record</text>
+    <text x="835" y="35" class="caption">Agent topology</text>
+
+    <g id="record">
+      <rect x="30" y="80" width="705" height="320"
+            rx="5" fill="#eef0f5"/>
+      <g font-size="23" font-style="italic">
+        <text x="43" y="148">hub</text>
+        <text x="43" y="248">w1</text>
+        <text x="43" y="348">w2</text>
+      </g>
+      <g stroke="#d8dde7" stroke-dasharray="4 6">
+        <path d="M100 140H710"/>
+        <path d="M100 240H710"/>
+        <path d="M100 340H710"/>
+      </g>
+      <path d="M100 430H720" stroke="#252831" stroke-width="2"
+            marker-end="url(#timeArrow)"/>
+      <text x="380" y="461" font-size="23" font-style="italic">Time</text>
+      <circle cx="114" cy="140" r="7" fill="white" stroke="#555"/>
+      <path d="M121 140H140" stroke="#536781" stroke-width="2"
+            marker-end="url(#timeArrow)"/>
+    </g>
+
+    <g id="edges" fill="none"></g>
+    <g id="activations"></g>
+    <g id="agents"></g>
+    <g id="counts"></g>
+
+    <g id="legend" transform="translate(40 483)" font-size="15">
+      <rect x="0" y="-12" width="20" height="14" rx="3"
+            fill="#e2e7ef" stroke="#9aa5b6"/>
+      <text x="28">activation</text>
+      <rect x="125" y="-10" width="10" height="10"
+            fill="#5c80b8" stroke="#555"/>
+      <text x="143">environment tool (publish)</text>
+      <rect x="340" y="-10" width="10" height="10"
+            fill="white" stroke="#555"/>
+      <text x="358">send</text>
+      <circle cx="423" cy="-5" r="6" fill="white" stroke="#555"/>
+      <text x="438">event</text>
+    </g>
+  </svg>
+
+  <div id="status" class="status" aria-live="polite"></div>
+  <div class="controls">
+    <button id="play">Play</button>
+    <button id="replay">Replay</button>
+    <input id="seek" type="range" min="0" max="14" value="0"
+           step="0.01" aria-label="Animation position">
+    <span id="clock">0.0 / 14 s</span>
+    <label>Speed
+      <select id="speed">
+        <option value="0.5">0.5×</option>
+        <option value="1" selected>1×</option>
+        <option value="1.5">1.5×</option>
+        <option value="2">2×</option>
+      </select>
+    </label>
+  </div>
+  <footer>Edge counts represent recorded deliveries. The topology shows observed interactions.</footer>
+</main>
+
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const $ = id => document.getElementById(id);
+function make(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  parent.appendChild(e);
+  return e;
+}
+function label(parent, x, y, content, attrs={}) {
+  const e = make("text", {x,y,...attrs}, parent);
+  e.textContent = content;
+  return e;
+}
+const clamp = x => Math.max(0,Math.min(1,x));
+const smooth = x => { x=clamp(x); return x*x*(3-2*x); };
+const lerp = (a,b,p) => a+(b-a)*p;
+function marker(id,color) {
+  const m=make("marker", {
+    id, viewBox:"0 0 10 10", refX:9, refY:5,
+    markerWidth:7, markerHeight:7, orient:"auto",
+    markerUnits:"userSpaceOnUse"
+  }, $("defs"));
+  make("path",{d:"M0 0L10 5L0 10Z",fill:color},m);
+}
+marker("timeArrow","#252831");
+
+const targets = {
+  hub:{x:1110,y:245},
+  w1:{x:865,y:115},
+  w2:{x:865,y:375}
+};
+const nodes = [
+  {id:"h1",agent:"hub",x:180,y:140},
+  {id:"h2",agent:"w1", x:275,y:240},
+  {id:"h3",agent:"w2", x:350,y:340},
+  {id:"h4",agent:"hub",x:405,y:140},
+  {id:"h5",agent:"w1", x:500,y:240},
+  {id:"h6",agent:"w2", x:570,y:340},
+  {id:"h7",agent:"hub",x:665,y:140}
+];
+// Each entry is one directed agent pair, with its two recorded deliveries.
+const groups = [
+  {color:"#bc442f", links:[[0,1],[3,4]], bend:-115, count:[1018,112]},
+  {color:"#509561", links:[[1,3],[4,6]], bend:  80, count:[980,230]},
+  {color:"#2f76a7", links:[[0,2],[3,5]], bend:-100, count:[981,313]},
+  {color:"#8150a5", links:[[2,3],[5,6]], bend: 110, count:[1020,405]}
+];
+
+groups.forEach((g,i)=>{
+  marker("arrow"+i,g.color);
+  g.paths=g.links.map(()=>make("path",{
+    stroke:g.color,"stroke-width":3,"stroke-linecap":"round",
+    "marker-end":"url(#arrow"+i+")"
+  },$("edges")));
+  g.text=label($("counts"),...g.count,"2",{
+    "font-size":28,"font-weight":"bold","text-anchor":"middle"
+  });
+  g.text.style.fill=g.color;
+});
+
+nodes.forEach(n=>{
+  n.el=make("g",{},$("activations"));
+  n.rect=make("rect",{
+    x:-39,y:-23,width:78,height:46,rx:8,
+    fill:"#e2e7ef",stroke:"#9aa5b6","stroke-width":2
+  },n.el);
+  n.title=label(n.el,-36,-31,n.id,{"font-size":23});
+  n.icons=make("g",{},n.el);
+  make("rect",{x:-17,y:-6,width:12,height:12,
+    fill:"#5c80b8",stroke:"#666","stroke-width":1.5},n.icons);
+  make("circle",{cx:3,cy:0,r:7,fill:"white",
+    stroke:"#666","stroke-width":1.5},n.icons);
+  if(n.id!=="h7") make("rect",{x:12,y:-6,width:12,height:12,
+    fill:"white",stroke:"#666","stroke-width":1.5},n.icons);
+});
+
+Object.entries(targets).forEach(([name,p])=>{
+  const g=make("g",{transform:`translate(${p.x} ${p.y})`},$("agents"));
+  make("rect",{
+    x:-39,y:-30,width:78,height:60,rx:25,
+    fill:"#e7edf6",stroke:"#365b93","stroke-width":2.5
+  },g);
+  label(g,0,9,name,{"font-size":29,"text-anchor":"middle"});
+});
+
+function edgePath(a,b,bend,p) {
+  const c={x:(a.x+b.x)/2,y:(a.y+b.y)/2+bend};
+  function toward(o,t,r) {
+    const dx=t.x-o.x,dy=t.y-o.y,d=Math.hypot(dx,dy)||1;
+    return {x:o.x+dx*r/d,y:o.y+dy*r/d};
+  }
+  // Keep arrowheads outside the activation and agent shapes.
+  const start=toward(a,c,lerp(25,40,p));
+  const end=toward(b,c,lerp(27,43,p));
+  return `M${start.x},${start.y} Q${c.x},${c.y} ${end.x},${end.y}`;
+}
+
+const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let time=0,playing=!reduceMotion,last=null,phase=-1;
+const duration=14;
+function render(t) {
+  const move=smooth((t-2)/5);
+  const combine=smooth((t-7)/3);
+  const fade=smooth((t-2)/1.5);
+  const agentFade=smooth((t-6.1)/0.9);
+  const positions=nodes.map(n=>{
+    const target=targets[n.agent];
+    return {x:lerp(n.x,target.x,move),y:lerp(n.y,target.y,move)};
+  });
+
+  $("record").style.opacity=1-fade;
+  $("legend").style.opacity=1-fade;
+  $("agents").style.opacity=agentFade;
+
+  nodes.forEach((n,i)=>{
+    const p=positions[i];
+    n.el.setAttribute("transform",`translate(${p.x} ${p.y})`);
+    n.el.style.opacity=1-agentFade;
+    n.title.style.opacity=1-fade;
+    n.icons.style.opacity=1-fade;
+    n.rect.setAttribute("rx",lerp(8,25,move));
+    n.rect.setAttribute("height",lerp(46,60,move));
+    n.rect.setAttribute("y",-lerp(23,30,move));
+  });
+
+  groups.forEach((g,i)=>{
+    g.links.forEach(([from,to],j)=>{
+      // Keep the two deliveries visibly distinct until aggregation.
+      const separation=(j===0?-17:17)*move*(1-combine);
+      const bend=g.bend*move+separation;
+      const path=g.paths[j];
+      path.setAttribute("d",edgePath(positions[from],positions[to],bend,move));
+      path.setAttribute("stroke-width",lerp(3,4,combine));
+      path.style.opacity=j===1 ? 1-combine : 1;
+    });
+    g.text.style.opacity=combine;
+  });
+
+  const nextPhase=t<2?0:t<7?1:t<10?2:3;
+  if(nextPhase!==phase) {
+    phase=nextPhase;
+    $("status").textContent=[
+      "1. Start with the record: 7 activations of 3 agents, connected by 8 deliveries.",
+      "2. Merge activations by agent: {h1, h4, h7} → hub; {h2, h5} → w1; {h3, h6} → w2.",
+      "3. Merge deliveries with the same source and destination agents. Each pair contributes two deliveries.",
+      "4. Recovered topology: 3 agent nodes and 4 directed edges, each with count 2."
+    ][phase];
+  }
+  $("seek").value=t;
+  $("clock").textContent=`${t.toFixed(1)} / ${duration} s`;
+}
+function setPlaying(value) {
+  playing=value;
+  $("play").textContent=value?"Pause":"Play";
+}
+$("play").onclick=()=>{
+  if(time>=duration) time=0;
+  setPlaying(!playing);
+};
+$("replay").onclick=()=>{time=0;render(time);setPlaying(true);};
+$("seek").oninput=e=>{
+  time=Number(e.target.value);
+  setPlaying(false);
+  render(time);
+};
+function frame(now) {
+  if(last!==null && playing) {
+    time=Math.min(duration,time+(now-last)/1000*Number($("speed").value));
+    if(time>=duration) setPlaying(false);
+    render(time);
+  }
+  last=now;
+  requestAnimationFrame(frame);
+}
+// Avoid jumping forward after switching browser tabs.
+document.addEventListener("visibilitychange",()=>{last=null;});
+render(0);
+setPlaying(playing);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
