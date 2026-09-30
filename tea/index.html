@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>TEA: Structurally Representing Arbitrary LLM Agents Collaboration</title>
+  <meta name="description" content="TEA (Task-Environment-Agents) is a flexible structural representation that makes evolving LLM-agent collaboration explicit by coupling an Agent Interaction Graph to a Task Activity Graph and the shared environment. Infuse uses TEA records to recover, assess, and improve collaboration policies." />
+  <meta name="keywords" content="TEA, Task-Environment-Agents, Agent Interaction Graph, Task Activity Graph, Infuse, LLM agents, multi-agent systems, collaboration policy, open-ended collaboration, topology recovery" />
+
+  <meta property="og:title" content="TEA: Structurally Representing Arbitrary LLM Agents Collaboration" />
+  <meta property="og:description" content="A structural representation of task evolution, environmental outcomes, and agent interactions - and Infuse, which learns better collaboration policies from it." />
+  <meta property="og:url" content="https://happyeureka.github.io/tea/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="TEA: Structurally Representing Arbitrary LLM Agents Collaboration" />
+  <meta name="twitter:description" content="Making open-ended LLM-agent collaboration explicit, recoverable, and improvable without prescribing agent reasoning, behavior, or communication order." />
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,700|Castoro:400,700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma-carousel.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/bulma-slider.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/fontawesome.all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="../damcs/static/css/index.css" />
+
+  <style>
+    :root {
+      --accent: #3f7f55;
+      --accent-dark: #2c5a3c;
+      --task: #fff3dc;
+      --task-line: #ef8a48;
+      --interaction: #eef3f7;
+      --interaction-line: #7990a9;
+      --environment: #e9f0fb;
+      --environment-line: #37689d;
+      --infuse: #e8f3ea;
+    }
+    html { scroll-behavior: smooth; }
+    .hero.is-gradient {
+      background:
+        radial-gradient(900px circle at 12% 15%, rgba(63, 127, 85, 0.16), transparent 48%),
+        radial-gradient(900px circle at 88% 8%, rgba(244, 166, 92, 0.16), transparent 46%),
+        linear-gradient(180deg, #fbfdf9 0%, #f7f8fa 100%);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .publication-title { font-size: 2.75rem !important; line-height: 1.13; }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 0.9rem;
+      color: var(--accent-dark);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hero-answer {
+      max-width: 830px;
+      margin: 0.8rem auto 0;
+      color: rgba(0, 0, 0, 0.68);
+      font-size: 1.12rem;
+      line-height: 1.55;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.7rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      color: rgba(0, 0, 0, 0.8);
+      font-size: 0.9rem;
+    }
+    a.pill:hover { color: var(--accent-dark); border-color: rgba(63, 127, 85, 0.35); }
+    .pill.is-soon { color: rgba(0, 0, 0, 0.5); border-style: dashed; background: rgba(255, 255, 255, 0.5); cursor: default; }
+    .pill.is-soon .soon {
+      padding: 0.05rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(63, 127, 85, 0.12);
+      color: var(--accent-dark);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .toc { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.45rem; }
+    .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.45rem; margin-top: 1.2rem; }
+    .section-title { margin-bottom: 1.25rem; }
+    .subsection-title { margin: 2rem 0 0.9rem; }
+    .mini { color: rgba(0, 0, 0, 0.76); font-size: 0.95rem; line-height: 1.62; }
+    .mini code, .tool code, .comparison code { color: var(--accent-dark); background: rgba(63, 127, 85, 0.07); font-size: 0.86em; }
+    .takeaway { margin: 1rem 0 0; color: var(--accent-dark); font-size: 0.98rem; font-style: italic; font-weight: 500; }
+    .figure {
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 8px 26px rgba(32, 40, 52, 0.06);
+    }
+    .figure img { width: 100%; height: auto; display: block; }
+    .figure.is-padded img { width: calc(100% - 2rem); margin: 1rem auto 0; }
+    .figure .cap { padding: 0.85rem 1rem; color: rgba(0, 0, 0, 0.7); font-size: 0.9rem; line-height: 1.5; }
+    .formula {
+      margin: 0 auto 1.4rem;
+      padding: 0.7rem 1rem;
+      max-width: 620px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      background: #fff;
+      color: rgba(0, 0, 0, 0.8);
+      font-family: 'Castoro', Georgia, serif;
+      font-size: 1.05rem;
+      text-align: center;
+    }
+    .formula .sym { display: inline-block; padding: 0 0.15rem; font-style: italic; }
+    .formula .sym.t { color: #c9682a; }
+    .formula .sym.d { color: #55708c; }
+    .formula .sym.z { color: var(--environment-line); }
+    .layer-card {
+      height: 100%;
+      padding: 1.15rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      background: #fff;
+    }
+    .layer-card.task { border-top: 4px solid var(--task-line); background: linear-gradient(180deg, var(--task), #fff 55%); }
+    .layer-card.interaction { border-top: 4px solid var(--interaction-line); background: linear-gradient(180deg, var(--interaction), #fff 55%); }
+    .layer-card.environment { border-top: 4px solid var(--environment-line); background: linear-gradient(180deg, var(--environment), #fff 55%); }
+    .layer-card.infuse { border-top: 4px solid var(--accent); background: linear-gradient(180deg, var(--infuse), #fff 55%); }
+    .layer-label {
+      color: rgba(0, 0, 0, 0.48);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .layer-card h3 { margin: 0.35rem 0 0.5rem; font-size: 1.25rem; font-weight: 700; }
+    .layer-card h3 small { display: block; margin-top: 0.15rem; color: rgba(0, 0, 0, 0.5); font-size: 0.82rem; font-weight: 500; }
+    .layer-card p { margin: 0; color: rgba(0, 0, 0, 0.7); font-size: 0.91rem; line-height: 1.55; }
+    .layer-card ul { margin: 0.4rem 0 0 1.1rem; color: rgba(0, 0, 0, 0.7); font-size: 0.9rem; line-height: 1.5; }
+    .principle {
+      margin: 1.25rem 0;
+      padding: 1rem 1.15rem;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      background: rgba(63, 127, 85, 0.06);
+      color: rgba(0, 0, 0, 0.78);
+    }
+    .principle.task { border-left-color: var(--task-line); background: rgba(239, 138, 72, 0.08); }
+    .contrib-strip {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+      height: 100%;
+    }
+    .contrib {
+      padding: 0.85rem 0.95rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .contrib .num { color: var(--accent); font-family: 'Castoro', Georgia, serif; font-size: 1.4rem; font-weight: 700; line-height: 1; }
+    .contrib h4 { margin: 0.35rem 0 0.3rem; font-size: 0.98rem; font-weight: 700; }
+    .contrib p { margin: 0; color: rgba(0, 0, 0, 0.66); font-size: 0.84rem; line-height: 1.45; }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+    .tool {
+      padding: 0.6rem 0.7rem;
+      border: 1px solid rgba(239, 138, 72, 0.35);
+      border-radius: 7px;
+      background: #fff;
+    }
+    .tool.comm { border-color: rgba(63, 127, 85, 0.3); }
+    .tool code { font-size: 0.82rem; font-weight: 700; background: transparent; padding: 0; }
+    .tool .effect { display: block; margin-top: 0.1rem; color: rgba(0, 0, 0, 0.55); font-family: 'Castoro', Georgia, serif; font-size: 0.8rem; }
+    .tool p { margin: 0.22rem 0 0; color: rgba(0, 0, 0, 0.65); font-size: 0.76rem; line-height: 1.3; }
+    .result-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .result-card {
+      padding: 0.7rem 0.8rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+    .result-card .value { color: var(--accent-dark); font-size: 1.35rem; font-weight: 800; line-height: 1.05; }
+    .result-card .value small { color: rgba(0, 0, 0, 0.45); font-size: 0.85rem; font-weight: 600; }
+    .result-card .label { margin-top: 0.25rem; color: rgba(0, 0, 0, 0.65); font-size: 0.78rem; line-height: 1.3; }
+    .comparison {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .comparison th, .comparison td { padding: 0.6rem 0.7rem; border-bottom: 1px solid rgba(0, 0, 0, 0.07); vertical-align: top; }
+    .comparison th { background: rgba(63, 127, 85, 0.08); color: rgba(0, 0, 0, 0.72); text-align: left; font-weight: 700; }
+    .comparison th.group { text-align: center; background: rgba(63, 127, 85, 0.13); }
+    .comparison td.num, .comparison th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .comparison td.updated { background: rgba(63, 127, 85, 0.12); color: var(--accent-dark); font-weight: 700; }
+    .comparison td.same { color: rgba(0, 0, 0, 0.45); }
+    .comparison td.label { font-weight: 700; white-space: nowrap; }
+    .comparison .sd { display: block; color: rgba(0, 0, 0, 0.45); font-size: 0.72rem; font-weight: 400; }
+    .comparison tr.divider td { border-top: 2px solid rgba(0, 0, 0, 0.12); }
+    .comparison.is-compact { font-size: 0.84rem; }
+    .comparison.is-compact th, .comparison.is-compact td { padding: 0.45rem 0.5rem; }
+    .comparison .math { font-family: 'Castoro', Georgia, serif; font-style: italic; }
+    .table-wrap { overflow-x: auto; }
+    .table-title { margin: 0 0 0.5rem; color: rgba(0, 0, 0, 0.62); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.6rem;
+      margin: 1rem 0 0.4rem;
+    }
+    .step {
+      position: relative;
+      padding: 0.95rem 1rem 0.95rem 1rem;
+      border: 1px solid rgba(63, 127, 85, 0.25);
+      border-radius: 10px;
+      background: linear-gradient(180deg, var(--infuse), #fff 60%);
+    }
+    .step .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+    .step h4 { margin: 0.5rem 0 0.2rem; font-size: 1rem; font-weight: 700; }
+    .step .eq { margin: 0 0 0.4rem; color: var(--accent-dark); font-family: 'Castoro', Georgia, serif; font-size: 0.95rem; }
+    .step p { margin: 0; color: rgba(0, 0, 0, 0.68); font-size: 0.86rem; line-height: 1.45; }
+    .rule-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.5rem;
+      margin-top: 1.1rem;
+    }
+    .rule {
+      padding: 0.7rem 0.8rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-top: 3px solid var(--interaction-line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .rule h4 { margin: 0 0 0.3rem; font-size: 0.92rem; font-weight: 700; }
+    .rule p { margin: 0; color: rgba(0, 0, 0, 0.66); font-size: 0.78rem; line-height: 1.4; }
+    .mechanisms { margin: 0.6rem 0 0; padding: 0; list-style: none; counter-reset: mech; }
+    .mechanisms li {
+      position: relative;
+      margin: 0.4rem 0;
+      padding-left: 2rem;
+      color: rgba(0, 0, 0, 0.74);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      counter-increment: mech;
+    }
+    .mechanisms li::before {
+      content: counter(mech);
+      position: absolute;
+      left: 0;
+      top: 0.15rem;
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: 50%;
+      background: rgba(63, 127, 85, 0.14);
+      color: var(--accent-dark);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.35rem;
+    }
+    .math { font-family: 'Castoro', Georgia, serif; font-style: italic; }
+    .footer { border-top: 1px solid rgba(0, 0, 0, 0.06); }
+
+    @media (max-width: 1023px) {
+      .rule-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 768px) {
+      .publication-title { font-size: 2rem !important; }
+      .hero-body { padding: 2.3rem 1rem; }
+      .result-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .step-grid { grid-template-columns: 1fr; }
+      .rule-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .comparison.is-wide { min-width: 640px; }
+    }
+    @media (max-width: 480px) {
+      .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .contrib-strip, .rule-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="../damcs/static/js/fontawesome.all.min.js"></script>
+  <script src="../damcs/static/js/bulma-carousel.min.js"></script>
+  <script src="../damcs/static/js/bulma-slider.min.js"></script>
+  <script src="../damcs/static/js/index.js"></script>
+</head>
+
+<body>
+  <section class="hero is-gradient" id="top">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <span class="eyebrow">Task &middot; Environment &middot; Agents</span>
+            <h1 class="title is-1 publication-title">
+              TEA: Structurally Representing Arbitrary LLM Agents Collaboration
+            </h1>
+            <p class="hero-answer">
+              A flexible structural representation that makes evolving collaboration explicit - coupling an Agent Interaction
+              Graph to a Task Activity Graph and the shared environment - without prescribing agent reasoning, behavior, or
+              communication order. <strong>Infuse</strong> builds on TEA to recover, assess, and improve collaboration policies.
+            </p>
+            <div class="links" aria-label="Paper and code">
+              <span class="pill is-soon"><i class="fas fa-file-alt" aria-hidden="true"></i> Paper <span class="soon">coming soon</span></span>
+              <span class="pill is-soon"><i class="fab fa-github" aria-hidden="true"></i> Code <span class="soon">coming soon</span></span>
+            </div>
+            <nav class="toc" aria-label="Page sections" style="margin-top: 0.9rem;">
+              <a class="pill" href="#overview">Overview</a>
+              <a class="pill" href="#representation">Representation</a>
+              <a class="pill" href="#policies">Policies</a>
+              <a class="pill" href="#infuse">Infuse</a>
+              <a class="pill" href="#experiments">Experiments</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="overview">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Collaboration Structure Emerges During Execution</h2>
+      <div class="columns is-vcentered">
+        <div class="column is-5">
+          <div class="content mini">
+            <p>
+              Giving multiple agents a joint task in a shared environment does not automatically make them collaborate.
+              Collaboration emerges when agents <em>coordinate their contributions</em>: LLM agents create tasks, communicate
+              progress, and divide and carry out work. Understanding and improving such collaboration requires tracking the
+              relationships between agents' interactions, task changes, and effects on the environment - without
+              constraining execution.
+            </p>
+            <p>
+              In practice, a <em>collaboration policy</em> guides these interactions, as an executable graph or as code and
+              instructions. It may be fully specified, partially specified (an orchestrator decomposes and assigns work on
+              the fly), or open-ended (agents organize collaboration by themselves). Flexible policies exploit agents'
+              ability to adapt, but they make collaboration hard to track - and agents may deviate even from a predefined
+              workflow.
+            </p>
+            <p>
+              <strong>TEA (Task-Environment-Agents)</strong> connects an event-based model of asynchronous agent interactions
+              to a task graph that agents create and modify, grounding both in the shared environment. It preserves task
+              identities and versions, attributes task changes to agent activations, and lets agents attach evidence to task
+              versions as signals of progress.
+            </p>
+          </div>
+        </div>
+        <div class="column is-7">
+          <div class="contrib-strip">
+            <article class="contrib">
+              <div class="num">1</div>
+              <h4>TEA representation</h4>
+              <p>An Agent Interaction Graph coupled to a Task Activity Graph and the environment, forming a collaboration state that supports analysis and optimization.</p>
+            </article>
+            <article class="contrib">
+              <div class="num">2</div>
+              <h4>Representation capabilities</h4>
+              <p>A formal definition of collaboration policies; TEA represents a large class of agent interactions and supports policy recovery and discovery through topology reconstruction, inferred execution rules, and cross-layer queries.</p>
+            </article>
+            <article class="contrib">
+              <div class="num">3</div>
+              <h4>Representation experiments</h4>
+              <p>TEA records diverse interaction and task structures and correctly recovers their topology and policy properties.</p>
+            </article>
+            <article class="contrib">
+              <div class="num">4</div>
+              <h4>Improving open-ended collaboration</h4>
+              <p>TEA doubles as an interface for agent collaboration. Infuse recovers a policy from TEA traces, assesses it against task progress and environmental outcomes, and updates it.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <figure class="figure" style="margin-top: 1.4rem;">
+        <img src="figs/overview.png" alt="TEA and Infuse overview: a collaboration policy is executed, TEA records task evolution, environment outcomes, and agent interactions, a policy is inferred from the record, analyzed, and an updated policy is proposed for the next episode" />
+        <figcaption class="cap">
+          <strong>TEA and Infuse.</strong> (1) A collaboration policy <span class="math">&Gamma;</span> may fully,
+          partially, or minimally specify coordination, leaving room for agents to make decisions. (2) TEA combines views
+          of <strong>T</strong>ask evolution, <strong>E</strong>nvironmental outcomes, and <strong>A</strong>gent
+          interactions; solid edges are prescribed by the policy, dashed edges emerge from agents. (3) Aggregation and
+          trace analysis <strong>recover</strong> and <strong>discover</strong> the topology and candidate execution rules
+          from the collaboration process captured in TEA. (4) Infuse queries these records to assess coordination against
+          task progress and environmental outcomes, and (5) proposes an updated policy <span class="math">&Gamma;&prime;</span>
+          to execute.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section hero is-light" id="representation">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Task-Environment-Agents</h2>
+      <p class="mini has-text-centered" style="max-width: 780px; margin: 0 auto 1.1rem;">
+        A TEA record of a collaboration process ties together three layers, an evidence relation, and the tools that connect them.
+        Agents are the common actors across all three layers.
+      </p>
+      <div class="formula">
+        DT = (<span class="sym d">D</span>, <span class="sym t">T</span>, <span class="sym z">Z</span>, <span class="sym">&Phi;</span>, <span class="sym">U</span>)
+        &nbsp;&nbsp;<span style="font-family: 'Noto Sans', sans-serif; font-size: 0.82rem; color: rgba(0,0,0,0.55);">
+          interaction graph &middot; task graph &middot; environment &middot; evidence attachments &middot; tool space</span>
+      </div>
+
+      <div class="columns">
+        <div class="column">
+          <article class="layer-card task">
+            <span class="layer-label">T</span>
+            <h3>Task Activity Graph <small>TAG</small></h3>
+            <p>A directed bipartite graph of task versions and task actions. A version <span class="math">q = (k, &delta;, &sigma;)</span> carries a persistent task identity, a specification of goal and evaluation rule, and a state. Versions are immutable: every revision appends a new version linked to its inputs, so branching and merging work keeps its history.</p>
+          </article>
+        </div>
+        <div class="column">
+          <article class="layer-card interaction">
+            <span class="layer-label">D</span>
+            <h3>Agent Interaction Graph <small>AIG</small></h3>
+            <p>A directed bipartite graph of events and activations. An activation is one reasoning cycle of an agent: it records the reasoning interval, received events, and ordered tool calls with their results. Events carry any payload, including tool results and messages, and can wake other agents into new activations.</p>
+          </article>
+        </div>
+        <div class="column">
+          <article class="layer-card environment">
+            <span class="layer-label">Z</span>
+            <h3>Shared Environment <small>Env</small></h3>
+            <p>The world agents observe and change through environment tools. Environment calls return fresh events into the AIG, so task declarations and evidence stay connected to externally verifiable effects.</p>
+          </article>
+        </div>
+      </div>
+
+      <figure class="figure" style="margin-top: 1.3rem;">
+        <img src="figs/layers.png" alt="The three layers of TEA: task rows with versions and actions on top, agent activations exchanging events in the middle, and environment state transitions at the bottom, aligned over time" />
+        <figcaption class="cap">
+          <strong>The three layers of TEA, aligned over time.</strong> In the Task layer, horizontal rows are task identities,
+          orange circles are versions, and squares are actions such as <em>open</em>, <em>edit</em>, <em>split</em>,
+          <em>join</em>, and <em>update</em>. In the Interaction layer, wide rectangles are activations, inner squares are tool
+          calls, and circles are events. The Environment layer records the state transitions caused by environment tools.
+          Task tools and environment tools issued inside activations tie the layers together.
+        </figcaption>
+      </figure>
+
+      <div class="columns is-vcentered" style="margin-top: 1.3rem;">
+        <div class="column is-6">
+          <figure class="figure is-padded">
+            <img src="figs/activation.svg" alt="One AIG activation: input events, a time interval, and an ordered sequence of tool calls each paired with returned events" />
+            <figcaption class="cap">
+              <strong>One activation.</strong> Agent <span class="math">i</span>'s <span class="math">k</span>-th activation
+              <span class="math">h<sub>i,k</sub> = ([t:t&prime;], E<sub>h</sub>, U<sub>h</sub>)</span> records its input events,
+              its duration, and the ordered sequence of tool calls <span class="math">u<sub>r</sub></span>, each paired with the
+              events <span class="math">E<sub>r</sub></span> it returned.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="column is-6">
+          <h3 class="title is-4">Tools couple the layers</h3>
+          <div class="content mini">
+            <p>
+              Besides task tools and environment tools, TEA provides communication and evidence tools.
+              <code>send<sub>h</sub>(e, J)</code> delivers an event to agents <span class="math">J</span> - a new message or a
+              forwarded event. <code>attach<sub>h</sub>(&phi;)</code> attaches evidence <span class="math">&phi; = (h, x, q)</span>,
+              an arbitrary payload <span class="math">x</span> from activation <span class="math">h</span>, to an exact task version
+              <span class="math">q</span>. Evidence stays attached to that version and does not carry over to later revisions.
+            </p>
+            <p>
+              Every tool call is recorded in its issuing activation together with the events it returns, so the AIG is updated by
+              every call; task and environment calls additionally update the TAG and the environment.
+            </p>
+          </div>
+          <div class="table-wrap">
+            <table class="comparison is-compact">
+              <thead><tr><th>Tool call</th><th>AIG</th><th>TAG</th><th>Env.</th><th>Evidence</th></tr></thead>
+              <tbody>
+                <tr><td class="label">task tool <span class="math">u &isin; U<sub>T</sub></span></td><td class="updated">D&prime;</td><td class="updated">T&prime;</td><td class="same">Z</td><td class="same">&Phi;</td></tr>
+                <tr><td class="label">environment tool <span class="math">u &isin; U<sub>Z</sub></span></td><td class="updated">D&prime;</td><td class="same">T</td><td class="updated">Z&prime;</td><td class="same">&Phi;</td></tr>
+                <tr><td class="label">attach<sub>h</sub>(&phi;)</td><td class="updated">D&prime;</td><td class="same">T</td><td class="same">Z</td><td class="updated">&Phi;&prime;</td></tr>
+                <tr><td class="label">send<sub>h</sub>(e, J)</td><td class="updated">D&prime;</td><td class="same">T</td><td class="same">Z</td><td class="same">&Phi;</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mini" style="margin-top: 0.4rem; font-size: 0.82rem;">TEA transitions: highlighted cells are updated by the call.</p>
+        </div>
+      </div>
+
+      <h3 class="title is-4 subsection-title">A small vocabulary for evolving work</h3>
+      <p class="mini" style="max-width: 800px; margin: 0 0 1rem;">
+        Six task tools capture how agents act on tasks. Applications supply the meaning of goals, states, and evaluation rules;
+        the tools capture how work changes without fixing what the work must be.
+      </p>
+      <div class="tool-grid">
+        <article class="tool"><code>OPEN(&delta;, &sigma;)</code><span class="effect">&empty; &rarr; q</span><p>Create a fresh task identity with an initial version.</p></article>
+        <article class="tool"><code>EDIT<sub>&delta;</sub>(q, &delta;&prime;)</code><span class="effect">q &rarr; q&prime;</span><p>Revise the goal or evaluation rule while preserving the reported state.</p></article>
+        <article class="tool"><code>UPDATE<sub>&sigma;</sub>(q, &sigma;&prime;)</code><span class="effect">q &rarr; q&prime;</span><p>Change the reported state while preserving the task specification.</p></article>
+        <article class="tool"><code>SPLIT(q, {(k<sub>j</sub>, &delta;<sub>j</sub>, &sigma;<sub>j</sub>)})</code><span class="effect">q &rarr; {q<sub>1</sub>, &hellip;, q<sub>m</sub>}</span><p>Decompose one version into versions with distinct task identities.</p></article>
+        <article class="tool"><code>JOIN({q<sub>j</sub>}, k&prime;, &delta;&prime;, &sigma;&prime;)</code><span class="effect">{q<sub>1</sub>, &hellip;, q<sub>m</sub>} &rarr; q&prime;</span><p>Integrate versions from distinct identities into a single successor version.</p></article>
+        <article class="tool"><code>CLOSE(k)</code><span class="effect">propagate closure</span><p>Closure propagates backward through recorded ancestry; a split's parent closes only when all of its children are closed.</p></article>
+      </div>
+
+      <div class="principle">
+        <strong>Two representation properties.</strong> The AIG forms a temporal DAG over activations and events that can represent
+        any finite DAG of activation dependencies, with each output event having exactly one parent activation. The six task tools
+        can represent any finite DAG of task versions, keeping the original dependencies unchanged and adding at most one auxiliary
+        leaf per version with a single predecessor. In both, timestamps consistent with the dependencies are recorded as annotations.
+      </div>
+      <div class="principle task" style="margin-bottom: 0;">
+        <strong>Evidence and task progress.</strong> For a task version <span class="math">q</span>, the attached evidence
+        <span class="math">&Phi;<sub>q</sub></span>, its providers, and its content together provide signals of task progress.
+        Interpretations from different agents may agree, partially agree, or disagree, and different interpreters at different
+        times may weight evidence from distinct sources differently.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="policies">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Recovering and Discovering Collaboration Policies</h2>
+      <p class="mini has-text-centered" style="max-width: 800px; margin: 0 auto 1.2rem;">
+        Each agent follows its own policy, deciding from its available information and private state. For a given team, task,
+        and setup, the resulting collective behavior follows a joint distribution over <strong>when</strong> agents activate,
+        <strong>what</strong> they receive, <strong>which</strong> tools they call, and <strong>what</strong> they send to
+        <strong>whom</strong> and <strong>when</strong>.
+      </p>
+      <div class="principle">
+        <strong>Collaboration policy for LLM agents.</strong> For a fixed agent team, task, and execution setup, a collaboration
+        policy <span class="math">&Gamma;</span> is an interaction topology along with a set of coordination rules that together
+        guide or constrain task execution, shaping the joint distribution of agent activations, tool calls, and event exchanges
+        over time.
+      </div>
+
+      <div class="columns" style="margin-top: 1.2rem;">
+        <div class="column is-7">
+          <h3 class="title is-4">Topology recovery through aggregation</h3>
+          <div class="content mini">
+            <p>
+              Take the activations that start and finish within a window <span class="math">[t, t&prime;]</span> and merge them by
+              agent. The result is a weighted graph <span class="math">G<sub>[t,t&prime;]</sub> = (V, E, w)</span> whose edges
+              connect agents that exchanged messages, weighted by message counts. The full agent topology is recovered once the
+              selected records cover every edge that the policy <span class="math">&Gamma;</span> can create.
+            </p>
+          </div>
+          <h3 class="title is-4" style="margin-top: 1.2rem;">Inferring execution rules</h3>
+          <div class="content mini">
+            <p>
+              Starting from the recovered topology, TEA examines activation times, send and receipt records, and recorded decisions
+              in the trace. Consecutive activations whose starts fall within <span class="math">&tau;</span> of each other and whose
+              intervals share a common overlap are grouped. For completed activations on a common clock, with start
+              <span class="math">s<sub>h</sub></span> and finish <span class="math">f<sub>h</sub></span>:
+            </p>
+            <div class="formula" style="max-width: 100%; margin-bottom: 0.6rem;">
+              <span class="math">h &#8826; h&prime;</span> &nbsp;iff&nbsp; <span class="math">f<sub>h</sub> &le; s<sub>h&prime;</sub></span>
+              <span style="color: rgba(0,0,0,0.45); padding: 0 0.6rem;">(execution order)</span>
+              <span class="math">h &#8741;<sub>&tau;</sub> h&prime;</span> &nbsp;iff&nbsp; <span class="math">|s<sub>h</sub> &minus; s<sub>h&prime;</sub>| &le; &tau;</span>
+              <span style="color: rgba(0,0,0,0.45); padding-left: 0.6rem;">(overlap)</span>
+            </div>
+          </div>
+        </div>
+        <div class="column is-5">
+          <p class="table-title">Example trace</p>
+          <div class="table-wrap">
+            <table class="comparison is-compact">
+              <thead><tr><th>Activation</th><th>Interval</th><th>Receives from</th></tr></thead>
+              <tbody>
+                <tr><td class="math">h<sub>a,1</sub></td><td class="math">[0, 1]</td><td>Task input</td></tr>
+                <tr><td class="math">h<sub>b,1</sub></td><td class="math">[1, 4]</td><td class="math">h<sub>a,1</sub></td></tr>
+                <tr><td class="math">h<sub>c,1</sub></td><td class="math">[1.5, 7]</td><td class="math">h<sub>a,1</sub></td></tr>
+                <tr><td class="math">h<sub>a,2</sub></td><td class="math">[4, 5]</td><td class="math">h<sub>b,1</sub></td></tr>
+                <tr><td class="math">h<sub>b,2</sub></td><td class="math">[5, 6]</td><td class="math">h<sub>a,2</sub></td></tr>
+                <tr><td class="math">h<sub>a,3</sub></td><td class="math">[7, 8]</td><td class="math">h<sub>b,2</sub>, h<sub>c,1</sub></td></tr>
+                <tr><td class="math">h<sub>c,2</sub></td><td class="math">[8, 10]</td><td class="math">h<sub>a,3</sub></td></tr>
+                <tr><td class="math">h<sub>a,4</sub></td><td class="math">[10, 11]</td><td class="math">h<sub>c,2</sub></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mini" style="margin-top: 0.7rem; font-size: 0.88rem;">
+            Aggregation gives <span class="math">a &harr; b</span> and <span class="math">a &harr; c</span>, with two messages per
+            direction. With <span class="math">&tau; = 0.6</span>, <span class="math">h<sub>b,1</sub></span> and
+            <span class="math">h<sub>c,1</sub></span> are grouped, giving the order of activation starts
+            <span class="math">{a} &rarr; {b, c} &rarr; {a} &rarr; {b} &rarr; {a} &rarr; {c} &rarr; {a}</span>.
+          </p>
+        </div>
+      </div>
+
+      <div class="rule-grid">
+        <article class="rule"><h4>Sequential</h4><p>Apply <span class="math">&#8826;</span> along activation paths. Both <span class="math">h<sub>a,1</sub> &#8826; h<sub>c,1</sub> &#8826; h<sub>a,3</sub></span> and <span class="math">h<sub>a,3</sub> &#8826; h<sub>c,2</sub> &#8826; h<sub>a,4</sub></span> support the local order <span class="math">a &rarr; c &rarr; a</span>.</p></article>
+        <article class="rule"><h4>Parallel</h4><p>Apply <span class="math">&#8741;<sub>&tau;</sub></span>: <span class="math">h<sub>c,1</sub></span> overlaps <span class="math">h<sub>b,1</sub></span>, <span class="math">h<sub>a,2</sub></span>, and <span class="math">h<sub>b,2</sub></span>. Agent <span class="math">a</span> can receive <span class="math">b</span>'s result and send more work to <span class="math">b</span> while <span class="math">c</span> remains active.</p></article>
+        <article class="rule"><h4>Repetition</h4><p>Follow message paths that return to later activations of the same agent. The path <span class="math">h<sub>a,1</sub> &rarr; h<sub>b,1</sub> &rarr; h<sub>a,2</sub> &rarr; h<sub>b,2</sub> &rarr; h<sub>a,3</sub></span> contains <span class="math">a &rarr; b &rarr; a</span> twice.</p></article>
+        <article class="rule"><h4>Conditional</h4><p>The graph shows whom an agent sends to; the conditions behind each message are inferred from its input messages and subsequent sending behavior.</p></article>
+        <article class="rule"><h4>Joins</h4><p>Observe which senders provide inputs to an agent's activations and how consistently those sets recur. <span class="math">h<sub>a,3</sub></span> receives from both <span class="math">b</span> and <span class="math">c</span>: recurring both-inputs support an all-input rule, either alone an any-input rule.</p></article>
+      </div>
+
+      <div class="columns is-vcentered" style="margin-top: 1.6rem;">
+        <div class="column is-6">
+          <h3 class="title is-4">Analyzing relationships in TEA</h3>
+          <div class="content mini">
+            <p>
+              Agents' activities induce directed graph edges (<span class="math">&rarr;</span>) and implicit links
+              (<span class="math">&#8614;</span>) across TEA; a task tool call, for example, is recorded in the AIG and creates a
+              corresponding action node in the TAG.
+            </p>
+            <p>
+              <strong>Paths and queries.</strong> Queries traverse these edges and links in either direction, within or across
+              layers. Each path between two entities gives an interpretation of their relationship based on its link types and
+              traversal directions. Tracing task versions reveals who worked on a task, what they changed and in what order, and
+              the linked evidence and environmental feedback. Tracing further back to agent activations shows whom they interacted
+              with and what information they received, helping explain their actions.
+            </p>
+          </div>
+        </div>
+        <div class="column is-6">
+          <p class="table-title">Relations and tools in TEA</p>
+          <div class="table-wrap">
+            <table class="comparison is-compact">
+              <tbody>
+                <tr><td class="label" rowspan="2">AIG<br /><span style="font-weight: 400; color: rgba(0,0,0,0.5);">interaction</span></td><td>Actor</td><td class="math">(h, u) &#8614; h &#8614; i<sub>h</sub></td></tr>
+                <tr><td>Event flow</td><td class="math">e &rarr; h; &nbsp;h &rarr; e&prime;</td></tr>
+                <tr class="divider"><td class="label" rowspan="5">TAG<br /><span style="font-weight: 400; color: rgba(0,0,0,0.5);">task tools U<sub>T</sub></span></td><td>Identity</td><td class="math">q &#8614; k</td></tr>
+                <tr><td>Open / Close</td><td class="math">a &rarr; q; &nbsp;a &#8614; k</td></tr>
+                <tr><td>Edit / Update</td><td class="math">q &rarr; a &rarr; q&prime;</td></tr>
+                <tr><td>Split</td><td class="math">q &rarr; a &rarr; {q&prime;<sub>j</sub>}</td></tr>
+                <tr><td>Join</td><td class="math">{q<sub>j</sub>} &rarr; a &rarr; q&prime;</td></tr>
+                <tr class="divider"><td class="label" rowspan="6">TEA<br /><span style="font-weight: 400; color: rgba(0,0,0,0.5);">tools and links</span></td><td>Task action</td><td class="math">(h, u) &#8614; a, &nbsp;u &isin; U<sub>T</sub></td></tr>
+                <tr><td>Environment</td><td class="math">(h, u) &#8614; u, &nbsp;u &isin; U<sub>Z</sub></td></tr>
+                <tr><td>send<sub>h</sub></td><td class="math">(i<sub>h</sub>, e, j), &nbsp;j &isin; J</td></tr>
+                <tr><td>attach<sub>h</sub></td><td class="math">(h, u) &#8614; &phi;</td></tr>
+                <tr><td>Feedback</td><td class="math">(h, u) &#8614; E<sub>u</sub> &sube; E</td></tr>
+                <tr><td>Evidence</td><td class="math">&phi; &#8614; h; &nbsp;&phi; &#8614; q; &nbsp;&phi; &#8614; x</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light" id="infuse">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Infuse: Learning Collaboration Policies from TEA Records</h2>
+      <p class="mini has-text-centered" style="max-width: 800px; margin: 0 auto 1.4rem;">
+        TEA is not only a record. Instantiated as a collaboration framework, it is the interface through which agents communicate,
+        transform tasks, and act in the environment - and Infuse uses the resulting trace to propose a better collaboration policy.
+      </p>
+
+      <div class="columns">
+        <div class="column is-6">
+          <h3 class="title is-4">TEA as a collaboration framework</h3>
+          <div class="content mini">
+            <p>
+              A team of agents collaborates asynchronously through TEA. During an activation, an agent acts on its environment
+              view, its TAG view, received messages, and private memory. Its tool calls support communication, task
+              transformations, evidence attachment, and environmental actions - all recorded through TEA. Three mechanisms
+              control when agents activate:
+            </p>
+          </div>
+          <ol class="mechanisms">
+            <li>After each round of reasoning and tool use, the agent decides whether to continue its current activation or deactivate.</li>
+            <li>The <code>sleep</code> operation ends the current activation and schedules reactivation after a specified delay.</li>
+            <li>When sending a message, the agent specifies whether it should interrupt the recipient. Delivery activates an inactive recipient; if the recipient is active and interruption is requested, its current activation ends and a new one begins with the incoming message.</li>
+          </ol>
+        </div>
+        <div class="column is-6">
+          <h3 class="title is-4">Infuse</h3>
+          <div class="content mini">
+            <p>
+              Infuse improves the task performance of an LLM agent team in an open-ended setting, starting from an <em>empty</em>
+              collaboration policy. It refines how the agents collaborate by analyzing the resulting execution records and
+              proposing an updated policy. Because TEA grounds the AIG and TAG in environmental outcomes, Infuse can check the
+              recovered policy against the trace and assess its components, guiding what to keep, add, revise, or leave open.
+            </p>
+          </div>
+          <div class="principle" style="margin-bottom: 0;">
+            In the paper's implementation, a separate <code>gpt-6-sol</code> agent consolidates this guidance into global lessons
+            for the team and private lessons for individual agents, forming the proposed policy
+            <span class="math">&Gamma;&prime;</span>. Infuse itself is agnostic to the algorithm that produces
+            <span class="math">&Gamma;&prime;</span>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-grid">
+        <article class="step">
+          <span class="num">1</span>
+          <h4>Execute and record</h4>
+          <p class="eq">DT &larr; f<sub>execute</sub>(V, &Gamma;)</p>
+          <p>The agent team <span class="math">V</span> attempts the task under policy <span class="math">&Gamma;</span> - possibly empty - and TEA records the collaboration as it unfolds.</p>
+        </article>
+        <article class="step">
+          <span class="num">2</span>
+          <h4>Recover / discover</h4>
+          <p class="eq">&Gamma;&#770; &larr; f<sub>recover</sub>(DT)</p>
+          <p>Aggregate activations by agent to recover the observed interaction topology and infer candidate execution rules from the trace.</p>
+        </article>
+        <article class="step">
+          <span class="num">3</span>
+          <h4>Analyze and propose</h4>
+          <p class="eq">&Gamma;&prime; &larr; f<sub>analyze</sub>(&Gamma;, &Gamma;&#770;, DT)</p>
+          <p>Query the record to compare the recovered policy with the trace, assess coordination against task progress and environmental outcomes, and propose the next policy.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experiments">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Experiments</h2>
+      <p class="mini has-text-centered" style="max-width: 820px; margin: 0 auto 1.2rem;">
+        <strong>Representation experiments</strong> test whether TEA preserves agent interactions and task histories and supports
+        coordination recovery. <strong>Empirical experiments</strong> test whether TAG improves open-ended collaboration and whether
+        Infuse can discover and improve a collaboration policy.
+      </p>
+
+      <h3 class="title is-4 subsection-title">Representation experiments</h3>
+      <p class="mini" style="max-width: 820px; margin: 0 0 1rem;">
+        Different collaboration policies are implemented as LangGraph workflows that specify interaction graphs, coordination
+        rules, and how agents process tasks. The workflows are executed and the resulting TEA traces are visualized.
+      </p>
+
+      <figure class="figure is-padded" style="margin-bottom: 1.4rem;">
+        <img src="figs/patterns-git.svg" alt="Six collaboration patterns with their AIG traces, Git operations expressed as TAG task tools, and AIG records of a 50-worker supervisor and a 40-agent hierarchy" />
+        <figcaption class="cap">
+          <strong>Interactions and task history.</strong> (a) Interaction graphs and AIG traces for six collaboration patterns:
+          sequential, hierarchical, supervisor, network, parallel, and dynamic. (b) TAG is a general-purpose task representation:
+          individual or composed task actions express Git's collaborative coding semantics - commits, branches, merges, rebases,
+          reverts, amends, notes, and branch deletion. (c) AIG represents teams of any size, illustrated by a 50-worker supervisor
+          and a 40-agent hierarchy.
+        </figcaption>
+      </figure>
+
+      <figure class="figure is-padded" style="margin-bottom: 1.4rem;">
+        <img src="figs/record.svg" alt="A TEA trace generated by a hidden collaboration policy, the interaction graph recovered from it, and the execution rules inferred as the record grows" />
+        <figcaption class="cap">
+          <strong>Recovering a hidden policy.</strong> (a) Task evolution (<span class="math">T</span>), agent activity
+          (<span class="math">D</span>), and environment transitions (<span class="math">Z</span>) recorded under a hidden
+          collaboration policy. (b) The interaction graph recovered by aggregating activations by agent, with edges weighted by
+          interaction frequency. (c) Execution rules inferred as the record grows (P: planner; W: workers; V: verifier).
+        </figcaption>
+      </figure>
+
+      <div class="columns is-vcentered">
+        <div class="column is-6">
+          <figure class="figure is-padded">
+            <img src="figs/phases.svg" alt="Three collaboration graphs run in sequence, their execution trace, and the policies recovered with perfect chunking versus equal-length chunking" />
+            <figcaption class="cap">
+              <strong>Changes over time.</strong> (a) Collaboration policies for three milestones and (b) their execution trace.
+              (c) Perfect chunking and (d) equal-length chunking, with their recovered policies. Chunks that cross phases mix
+              interactions from different policies and distort the recovered topology.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="column is-6">
+          <h3 class="title is-4">Queries</h3>
+          <p class="mini">
+            In the recovered record, the inferred rules show repetition and execution order, and checking TAG states helps explain
+            conditional routing. Asking <em>"Who worked on task <span class="math">k<sub>2</sub></span>, and why?"</em>, the record
+            shows that the planner creates <span class="math">k<sub>2</sub></span> by splitting <span class="math">k<sub>1</sub></span>
+            and sends messages to both workers. In the first round, worker1 is the only worker that acts in the environment; it
+            updates <span class="math">k<sub>2</sub></span> and then sends a message to the verifier.
+          </p>
+          <h3 class="title is-4" style="margin-top: 1.2rem;">Policies that change mid-task</h3>
+          <p class="mini">
+            A task may have several milestones that benefit from different collaboration policies. Aggregating interactions over
+            reasonable chunks recovers the policy in each phase, while chunks that cross phases can greatly affect the recovered
+            topology. This opens up opportunities in detecting policy changes and selecting aggregation windows.
+          </p>
+          <figure class="figure is-padded" style="margin-top: 1.1rem;">
+            <img src="figs/routing-recovery.svg" alt="A stochastic routing policy, its edge-probability matrix, one execution's AIG, and the distance between recovered edge frequencies and the true matrix as the run proceeds" />
+            <figcaption class="cap">
+              <strong>Routing recovery.</strong> (a) A routing policy and (b) its weighted adjacency matrix of edge probabilities;
+              (c) one execution's AIG and (d) the <span class="math">L<sub>&infin;</sub></span> distance between the recovered
+              edge-frequency matrix and (b) as the run proceeds. Crosses mark edges not yet run.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <h3 class="title is-4 subsection-title">Empirical experiments</h3>
+      <p class="mini" style="max-width: 820px; margin: 0 0 1rem;">
+        Task performance is evaluated in two domains, using TEA as an open-ended collaboration framework and Infuse to improve the
+        collaboration policy. Both domains use five <code>gpt-5.6-terra</code> agents without predefined roles. A separate
+        <code>gpt-6-sol</code> agent derives Infuse guidance from execution records and outcomes.
+      </p>
+      <div class="columns">
+        <div class="column is-6">
+          <article class="layer-card environment">
+            <span class="layer-label">Domain 1</span>
+            <h3>Code refactoring</h3>
+            <p>Agents modularize a correct but redundant codebase; performance is LoC reduction while passing fixed tests. Six repositories span three difficulty levels by repository size. Agents share all files but may modify only source code, using <code>list_files</code>, <code>read_file</code>, <code>edit_file</code>, <code>measure</code>, and <code>run_tests</code>, with a budget of 100 total agent steps.</p>
+          </article>
+        </div>
+        <div class="column is-6">
+          <article class="layer-card environment">
+            <span class="layer-label">Domain 2</span>
+            <h3>Silo-Bench</h3>
+            <p>30 distributed reasoning tasks across three difficulty levels. Each agent accesses local information through <code>read_data</code> and uses <code>submit</code> to answer a query that requires information from across the team. Reported: task success rate (all agents correct), <span class="math">S</span> (fraction of exactly correct answers), and <span class="math">P</span> (mean score with partial credit).</p>
+          </article>
+        </div>
+      </div>
+
+      <h3 class="title is-5 subsection-title" style="margin-top: 1.6rem;">Understanding TEA as a collaboration framework</h3>
+      <p class="mini" style="margin-bottom: 1rem;">
+        To understand TEA's contribution to collaboration, access to TAG and to direct communication is ablated in four conditions:
+        TAG + comm, TAG only, communication only, and neither.
+      </p>
+      <div class="columns is-vcentered">
+        <div class="column is-7">
+          <div class="table-wrap">
+            <table class="comparison is-compact is-wide">
+              <thead>
+                <tr><th></th><th class="group" colspan="3">Code (<code>shop</code>)</th><th class="group" colspan="3">Silo-Bench</th></tr>
+                <tr><th>Setting</th><th class="num">Pass &uarr;</th><th class="num"><span class="math">R<sub>all</sub></span> &uarr;</th><th class="num"><span class="math">R<sub>pass</sub></span> &uarr;</th><th class="num">Success &uarr;</th><th class="num"><span class="math">S</span> &uarr;</th><th class="num"><span class="math">P</span> &uarr;</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="label">TAG + comm</td><td class="num"><strong>4/5</strong></td><td class="num"><strong>46.9</strong></td><td class="num"><strong>43.0</strong></td><td class="num"><strong>0.77</strong></td><td class="num"><strong>0.81</strong></td><td class="num"><strong>0.85</strong></td></tr>
+                <tr><td class="label">TAG only</td><td class="num">3/5</td><td class="num">35.3</td><td class="num">35.2</td><td class="num"><strong>0.77</strong></td><td class="num"><strong>0.81</strong></td><td class="num">0.83</td></tr>
+                <tr><td class="label">Comm only</td><td class="num">3/5</td><td class="num">20.2</td><td class="num">19.5</td><td class="num">0.60</td><td class="num">0.73</td><td class="num">0.78</td></tr>
+                <tr><td class="label">Neither</td><td class="num"><strong>4/5</strong></td><td class="num">21.3</td><td class="num">20.8</td><td class="num">0.03</td><td class="num">0.15</td><td class="num">0.20</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mini" style="margin-top: 0.5rem; font-size: 0.82rem;">
+            Code refactoring on <code>shop</code>: five runs per condition; Pass counts runs passing all tests;
+            <span class="math">R<sub>all</sub></span> and <span class="math">R<sub>pass</sub></span> are mean LoC reductions (%)
+            over all and passing runs. Silo-Bench: 30 tasks. Best values in bold.
+          </p>
+        </div>
+        <div class="column is-5">
+          <figure class="figure is-padded">
+            <img src="figs/loc-by-step.svg" alt="Mean LoC reduction over agent steps on the shop repository for the four ablation conditions, with standard-deviation shading" />
+            <figcaption class="cap">
+              <strong>LoC reduction over agent steps</strong> on <code>shop</code>. Curves show the mean across five runs per
+              condition; shading is &plusmn;1 standard deviation. The gap between the TAG conditions and the others widens
+              during execution.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="result-strip">
+        <div class="result-card"><div class="value">43.0<small>%</small></div><div class="label">LoC reduction among passing runs with TAG + comm on <code>shop</code>, against 19.5% with communication only and 20.8% with neither.</div></div>
+        <div class="result-card"><div class="value">35.2<small>%</small></div><div class="label">LoC reduction with TAG alone - the shared task graph helps even without direct communication.</div></div>
+        <div class="result-card"><div class="value">0.77</div><div class="label">Silo-Bench success with TAG, with or without communication, against 0.60 with communication only and 0.03 with neither.</div></div>
+        <div class="result-card"><div class="value">0.85</div><div class="label">Silo-Bench partial-credit score <span class="math">P</span> with TAG + comm, up from 0.83 with TAG only.</div></div>
+      </div>
+      <p class="takeaway">
+        TEA's shared task graph outperforms direct communication alone on both benchmarks, while combining the two yields the
+        strongest overall results.
+      </p>
+
+      <figure class="figure is-padded" style="margin-top: 1.3rem;">
+        <img src="figs/comm-ablation.svg" alt="Interaction graphs of the five agents summed over five seeds for the full, no-TAG, no-communication, and neither conditions; the last two are empty" />
+        <figcaption class="cap">
+          <strong>Who sent to whom under ablation.</strong> Interaction graphs of the five agents, summed over five seeds per
+          setting on one scale; a darker, thicker edge carried more events. Removing TAG raises traffic rather than lowering it:
+          244 events over 20 edges without TAG against 94 over 20 with it. Panels (c) and (d) are empty by construction - with
+          <code>send</code> removed, there is no edge to draw.
+        </figcaption>
+      </figure>
+
+      <h3 class="title is-5 subsection-title" style="margin-top: 1.8rem;">Infuse to discover and improve the collaboration policy</h3>
+      <p class="mini" style="margin-bottom: 1rem;">
+        Infuse uses a separate <code>gpt-6-sol</code> agent to generate global and agent-specific lessons and refactoring file
+        assignments from prior lessons, logs, and outcomes. TEA is compared with and without one Infuse update.
+      </p>
+
+      <p class="table-title">Code refactoring before (TEA) and after one Infuse update (Inf.)</p>
+      <div class="table-wrap">
+        <table class="comparison is-compact is-wide">
+          <thead>
+            <tr><th></th><th class="group" colspan="4">Easy</th><th class="group" colspan="4">Medium</th><th class="group" colspan="4">Hard</th><th class="group" colspan="2">Average</th></tr>
+            <tr><th>Codebase</th><th class="group" colspan="2"><code>shop</code></th><th class="group" colspan="2"><code>plan</code></th><th class="group" colspan="2"><code>ledger</code></th><th class="group" colspan="2"><code>freight</code></th><th class="group" colspan="2"><code>stay</code></th><th class="group" colspan="2"><code>payroll</code></th><th class="group" colspan="2"></th></tr>
+            <tr><th></th><th class="num">TEA</th><th class="num">Inf.</th><th class="num">TEA</th><th class="num">Inf.</th><th class="num">TEA</th><th class="num">Inf.</th><th class="num">TEA</th><th class="num">Inf.</th><th class="num">TEA</th><th class="num">Inf.</th><th class="num">TEA</th><th class="num">Inf.</th><th class="num">TEA</th><th class="num">Inf.</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label">Pass rate &uarr;</td>
+              <td class="num">0.80</td><td class="num">0.80</td>
+              <td class="num">0.80</td><td class="num">0.80</td>
+              <td class="num">0.60</td><td class="num"><strong>0.80</strong></td>
+              <td class="num">0.60</td><td class="num"><strong>0.80</strong></td>
+              <td class="num">0.40</td><td class="num"><strong>0.60</strong></td>
+              <td class="num"><strong>0.60</strong></td><td class="num">0.40</td>
+              <td class="num">0.63</td><td class="num"><strong>0.70</strong></td>
+            </tr>
+            <tr>
+              <td class="label">LoC reduction (%) &uarr;</td>
+              <td class="num">43.0<span class="sd">&plusmn;10.2</span></td><td class="num"><strong>56.6</strong><span class="sd">&plusmn;8.9</span></td>
+              <td class="num">28.3<span class="sd">&plusmn;5.9</span></td><td class="num"><strong>31.6</strong><span class="sd">&plusmn;3.7</span></td>
+              <td class="num">22.1<span class="sd">&plusmn;3.4</span></td><td class="num"><strong>25.1</strong><span class="sd">&plusmn;1.7</span></td>
+              <td class="num">20.6<span class="sd">&plusmn;4.0</span></td><td class="num"><strong>22.1</strong><span class="sd">&plusmn;3.5</span></td>
+              <td class="num">20.2<span class="sd">&plusmn;2.6</span></td><td class="num"><strong>24.8</strong><span class="sd">&plusmn;4.4</span></td>
+              <td class="num">18.8<span class="sd">&plusmn;2.5</span></td><td class="num"><strong>22.2</strong><span class="sd">&plusmn;9.0</span></td>
+              <td class="num">25.5<span class="sd">&plusmn;9.2</span></td><td class="num"><strong>30.4</strong><span class="sd">&plusmn;13.3</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mini" style="margin-top: 0.5rem; font-size: 0.82rem;">
+        Five runs per repository and condition. Average is the unweighted repository mean; &plusmn; denotes sample SD across passing
+        runs, or across repositories for Average. Better paired values in bold; ties unbolded.
+      </p>
+
+      <div class="columns is-vcentered" style="margin-top: 1.2rem;">
+        <div class="column is-6">
+          <p class="table-title">Silo-Bench before (TEA) and after one Infuse update (Inf.), 30 tasks</p>
+          <div class="table-wrap">
+            <table class="comparison is-compact is-wide">
+              <thead>
+                <tr><th></th><th class="group" colspan="2">TAG + comm</th><th class="group" colspan="2">TAG only</th><th class="group" colspan="2">Comm only</th><th class="group" colspan="2">Neither</th></tr>
+                <tr><th></th><th class="num">TEA</th><th class="num">Inf.</th><th class="num">TEA</th><th class="num">Inf.</th><th class="num">TEA</th><th class="num">Inf.</th><th class="num">TEA</th><th class="num">Inf.</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="label">Success &uarr;</td><td class="num">0.77</td><td class="num"><strong>0.83</strong></td><td class="num">0.77</td><td class="num">0.73</td><td class="num">0.60</td><td class="num">0.67</td><td class="num">0.03</td><td class="num">0.17</td></tr>
+                <tr><td class="label"><span class="math">S</span> &uarr;</td><td class="num">0.81</td><td class="num"><strong>0.86</strong></td><td class="num">0.81</td><td class="num">0.75</td><td class="num">0.73</td><td class="num">0.79</td><td class="num">0.15</td><td class="num">0.19</td></tr>
+                <tr><td class="label"><span class="math">P</span> &uarr;</td><td class="num">0.85</td><td class="num"><strong>0.88</strong></td><td class="num">0.83</td><td class="num">0.78</td><td class="num">0.78</td><td class="num">0.82</td><td class="num">0.20</td><td class="num">0.24</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mini" style="margin-top: 0.5rem; font-size: 0.82rem;">Bold marks the best value in each row.</p>
+        </div>
+        <div class="column is-6">
+          <div class="content mini">
+            <p>
+              <strong>Code refactoring.</strong> After one Infuse update, the average pass rate rises from 0.63 to 0.70. Mean LoC
+              reduction among passing runs increases in all six repositories, with the repository average rising from 25.5% to
+              30.4%. Pass rates rise on <code>ledger</code>, <code>freight</code>, and <code>stay</code>, remain unchanged on
+              <code>shop</code> and <code>plan</code>, and only fall on <code>payroll</code>.
+            </p>
+            <p>
+              <strong>Silo-Bench.</strong> Infuse increases success rates in three of four settings. With TAG + comm, success rises
+              from 0.77 to 0.83 and exact correctness from 0.81 to 0.86. Communication-only success rises from 0.60 to 0.67. With
+              neither TAG nor communication, success rises from 0.03 to 0.17 but remains below the other settings. TAG-only success
+              slightly falls from 0.77 to 0.73.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-strip">
+        <div class="result-card"><div class="value">0.63 <small>&rarr;</small> 0.70</div><div class="label">Average pass rate across the six refactoring repositories after one Infuse update.</div></div>
+        <div class="result-card"><div class="value">25.5 <small>&rarr;</small> 30.4<small>%</small></div><div class="label">Repository-average LoC reduction among passing runs; it increases in all six repositories.</div></div>
+        <div class="result-card"><div class="value">0.77 <small>&rarr;</small> 0.83</div><div class="label">Silo-Bench success with TAG + comm after one Infuse update.</div></div>
+        <div class="result-card"><div class="value">0.81 <small>&rarr;</small> 0.86</div><div class="label">Silo-Bench exact correctness <span class="math">S</span> with TAG + comm after one Infuse update.</div></div>
+      </div>
+      <p class="takeaway">
+        Infuse enables TEA to refine its collaboration policy from experience and improve overall task performance.
+      </p>
+
+      <figure class="figure is-padded" style="margin-top: 1.3rem;">
+        <img src="figs/infuse-rounds.svg" alt="Five rounds of Infuse updates: the team's interaction graph in each round and score, steps, and LoC reduction relative to the vanilla setting" />
+        <figcaption class="cap">
+          <strong>Iterating Infuse over five rounds.</strong> Top: the team's interaction graph in each round as it inherits the
+          previous round's lessons. Bottom: score, steps, and LoC reduction relative to the vanilla setting.
+        </figcaption>
+      </figure>
+
+      <p class="mini has-text-centered" style="margin-top: 1.6rem;"><a href="#top">Back to top</a></p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p class="mini">This page is based on the Academic Project Page Template.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
