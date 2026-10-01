@@ -55,7 +55,7 @@
     <button class="chip" data-scene="1">2 Recover</button>
     <button class="chip" data-scene="2">3 Infuse</button>
     <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Timeline">
-    <span id="clock">0:00 / 0:26</span>
+    <span id="clock">0:00 / 0:18</span>
   </div>
 </main>
 
@@ -83,7 +83,8 @@ const C = {
   task: "#e8735a", taskEv: "#f0a04b", env: "#7b93c9", envEv: "#3b5998", comm: "#ffffff",
   gen: "#7c4dbd", def: "#2f5aa8", ink: "#4a5568", paper: "#fdf9f0", paperEdge: "#d9cdb4",
   wood: "#6b4a2b", woodDark: "#3d2614", woodLight: "#a67c52", green: "#3f7f55", tea: "#b8863b",
-  bandT: "#fff3dc", bandD: "#eef3f7", bandZ: "#e9f0fb", act: "#f3f5f9", actOn: "#e4edfb"
+  bandT: "#fff3dc", bandD: "#eef3f7", bandZ: "#e9f0fb", act: "#f3f5f9", actOn: "#e4edfb",
+  good: "#3f7f55", bad: "#c0392b", open: "#d08a1e", gray: "#9aa3ad"
 };
 const X0 = 135, XS = 102, UMAX = 9.6;
 const xOf = u => X0 + XS * u;
@@ -130,24 +131,24 @@ const TEV = [
 ];
 const ZEV = [[1.7, ""], [1.9, ""], [2.0, ""], [4.1, "run tests"], [6.4, "edit"], [7.7, "run tests"]];
 const BEATS = [
-  [0.0, "P wakes up: one activation, ready to act."],
-  [0.2, "P opens task k1 with a task tool - the call is recorded in D, the version appears in T."],
-  [0.6, "P splits k1 into k2, k3, k4."],
-  [1.0, "P messages W1, W2, W3. Dashed: agent-generated - nothing in the policy said so."],
-  [1.7, "The workers edit files (env tools change Z) and update their tasks."],
-  [2.7, "W1 pings W2 mid-task: an interaction the policy never prescribed."],
-  [3.2, "The workers report to V."],
-  [4.1, "V runs the tests and attaches fail to k1 as evidence."],
-  [4.8, "V sends to P. Solid: this edge is defined in the policy (if fail, go to P)."],
-  [5.6, "P sends the failure back to W3."],
-  [6.4, "W3 edits again and updates k4."],
-  [7.7, "V runs the tests: pass."],
-  [8.9, "P joins k2-k4 back into k1 and closes it. The scroll is complete."]
+  [0.0, "P activates."],
+  [0.2, "P opens k1."],
+  [0.6, "P splits k1 → k2, k3, k4."],
+  [1.0, "P → workers. Dashed: not in the policy."],
+  [1.7, "Workers edit files, update tasks."],
+  [2.7, "W1 → W2: unprescribed."],
+  [3.2, "Workers → V."],
+  [4.1, "V tests: fail, attached to k1."],
+  [4.8, "V → P. Solid: defined in the policy."],
+  [5.6, "P → W3: fix it."],
+  [6.4, "W3 edits again."],
+  [7.7, "V tests: pass."],
+  [8.9, "P joins and closes k1. Done."]
 ];
-const NODE = { P: [985, 180], W1: [885, 290], W2: [985, 290], W3: [1085, 290], V: [985, 400] };
+const NODE = { P: [1000, 175], W1: [900, 275], W2: [1000, 275], W3: [1100, 275], V: [1000, 375] };
 const NODE2 = { P: [960, 150], W1: [890, 225], W2: [960, 225], W3: [1030, 225], V: [960, 300] };
 
-const S1 = 10.5, S2 = 6.5, S3 = 9.0, TOTAL = S1 + S2 + S3;
+const S1 = 2.7, S2 = 5.7, S3 = 9.6, TOTAL = S1 + S2 + S3;   // Recover: 4.2 s roll + 1.5 s hold; Infuse paced by S3_MAP below
 
 /* ---------- build the scene ---------- */
 const svg = $("scene"), defs = $("defs");
@@ -157,6 +158,7 @@ function marker(id, color, w) {
   el("path", { d: "M0,0 L10,5 L0,10 Z", fill: color }, m);
 }
 marker("mGen", C.gen, 9); marker("mDef", C.def, 9); marker("mInk", C.ink, 10); marker("mBlue", C.def, 8);
+marker("mGood", C.good, 8); marker("mBad", C.bad, 8); marker("mOpen", C.open, 8); marker("mGray", C.gray, 8);
 const clip = el("clipPath", { id: "paperClip" }, defs);
 const clipRect = el("rect", { x: PAPER_X, y: PAPER_Y - 6, width: 10, height: PAPER_H + 12 }, clip);
 const cupClip = el("clipPath", { id: "cupClip" }, defs);
@@ -182,7 +184,9 @@ legendItem(900, g => el("path", { d: "M0,0 H20", stroke: C.ink, "stroke-width": 
 
 /* --- the scroll (卷轴) --- */
 const gScroll = el("g", { id: "scroll" }, svg);
-const gPaper = el("g", { "clip-path": "url(#paperClip)" }, gScroll);
+const ghostPaper = el("use", { href: "#paperContent", opacity: 0 }, gScroll);   // faint full record left behind while rolling up
+const gPaperClip = el("g", { "clip-path": "url(#paperClip)" }, gScroll);
+const gPaper = el("g", { id: "paperContent" }, gPaperClip);
 el("rect", { x: PAPER_X, y: PAPER_Y, width: 1200, height: PAPER_H, fill: C.paper, stroke: C.paperEdge }, gPaper);
 el("rect", { x: PAPER_X, y: 108, width: 1200, height: 92, fill: C.bandT }, gPaper);
 el("rect", { x: PAPER_X, y: 208, width: 1200, height: 210, fill: C.bandD }, gPaper);
@@ -255,6 +259,21 @@ function roller(x) {
 roller(70);
 const rollerR = roller(0);
 
+/* --- episode clock (scene 1): the scroll is painted as time passes, not unrolled from a finished record --- */
+const SEC_PER_U = 20;                 // one scroll unit = 20 s of episode time
+const CLK = { x: 1160, y: 64 };
+const gClock = el("g", { id: "wallclock", opacity: 0 }, svg);
+const clockDigits = el("text", { x: CLK.x, y: CLK.y, text: "0:00", "font-size": 30, "text-anchor": "end", fill: "#2f3542",
+  style: "font-variant-numeric: tabular-nums" }, gClock);
+el("text", { x: CLK.x, y: CLK.y - 32, text: "live", "font-size": 14, "font-style": "italic", "text-anchor": "end", fill: "#6b7686" }, gClock);
+const liveDot = el("circle", { cx: CLK.x - 34, cy: CLK.y - 36.5, r: 5, fill: "#c0392b" }, gClock);
+function setClock(u, opacity) {
+  const sec = u * SEC_PER_U;
+  clockDigits.textContent = `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, "0")}`;
+  liveDot.setAttribute("opacity", 0.5 + 0.5 * Math.sin(u * Math.PI * 0.5) ** 2);
+  gClock.setAttribute("opacity", opacity);
+}
+
 /* --- recovered topology (scene 2) --- */
 const gTopo = el("g", { id: "topo", opacity: 0 }, svg);
 function buildGraph(parent, nodes, edges, r, style) {
@@ -291,12 +310,17 @@ function buildGraph(parent, nodes, edges, r, style) {
 function toward(x, y, cx, cy, dist) { const dx = cx - x, dy = cy - y, L = Math.hypot(dx, dy); return [x + dx / L * dist, y + dy / L * dist]; }
 const EDGES = [];
 for (const m of MSGS) { let e = EDGES.find(e => e.f === m.f && e.t === m.t); if (!e) { e = { f: m.f, t: m.t, msgs: [] }; EDGES.push(e); } e.msgs.push(m); }
-for (const e of EDGES) if (e.f === "V" && e.t === "P") { e.arc = [1150, 290]; e.off = [16, 0]; }
+for (const e of EDGES) if (e.f === "V" && e.t === "P") { e.arc = [1165, 275]; e.off = [16, 0]; }
 const topo = buildGraph(gTopo, NODE, EDGES, 26, { stroke: C.ink, width: 2, marker: "url(#mInk)" });
-el("text", { x: 985, y: 130, text: "recovered topology", "font-size": 16, "font-style": "italic", "text-anchor": "middle", fill: "#55708c" }, gTopo);
-const RULES = ["P → W1 · W2 · W3 in parallel", "W → V;  W1 → W2 once, mid-task", "V → P ×2: fail, then pass"];
-const ruleEls = RULES.map((t, i) => el("text", { x: 985, y: 459 + i * 22, text: t, "font-size": 15, "text-anchor": "middle", opacity: 0, fill: "#2c3e50" }, gTopo));
-el("text", { x: 985, y: 440, text: "inferred rules", "font-size": 13, "font-style": "italic", "text-anchor": "middle", fill: "#55708c", id: "ruleTitle", opacity: 0 }, gTopo);
+/* box the topology and the rules together */
+const BOX = { x: 565, y: 112, w: 585, h: 318 }, BOX_C = [BOX.x + BOX.w / 2, BOX.y + BOX.h / 2];
+const gFrame = el("g", { opacity: 0 });   // frame + label appear once the roller has cleared the box
+gTopo.insertBefore(gFrame, gTopo.firstChild);
+el("rect", { x: BOX.x, y: BOX.y, width: BOX.w, height: BOX.h, rx: 10, fill: "#ffffff", "fill-opacity": 0.82, stroke: "#55708c", "stroke-width": 1.2 }, gFrame);
+el("text", { x: BOX_C[0], y: 134, text: "Recovered / Discovered Collaboration Policy", "font-size": 15, "font-weight": "bold", "text-anchor": "middle", fill: "#55708c" }, gFrame);
+const RULES = ["P → W1 · W2 · W3 in parallel", "W → V", "W1 → W2 once, mid-task", "V → P ×2: fail, then pass"];
+const ruleEls = RULES.map((t, i) => el("text", { x: 718, y: 238 + i * 36, text: t, "font-size": 19, "text-anchor": "middle", opacity: 0, fill: "#2c3e50" }, gTopo));
+el("text", { x: 718, y: 200, text: "inferred rules", "font-size": 15, "font-style": "italic", "text-anchor": "middle", fill: "#55708c", id: "ruleTitle", opacity: 0 }, gTopo);
 /* ghosts of activations flying into nodes */
 const gGhost = el("g", {}, svg);
 const ghosts = ACTS.map(a => el("rect", { x: 0, y: 0, width: 10, height: 10, rx: 6, fill: C.actOn, stroke: C.ink, "stroke-width": 1.4, opacity: 0 }, gGhost));
@@ -315,7 +339,8 @@ el("ellipse", { cx: 0, cy: -84, rx: 60, ry: 14, fill: "#f7f2e8", stroke: "#2f354
 el("circle", { cx: 0, cy: -101, r: 9, fill: "#2f3542" }, gLid);
 const gSteam = el("g", { fill: "none", stroke: "#a7b1bd", "stroke-width": 3.5, "stroke-linecap": "round" }, gTeapot);
 const steam = ["M-30,-122 c-12,-16 10,-26 -2,-44", "M0,-130 c-10,-18 12,-28 0,-50", "M30,-122 c-12,-16 10,-26 -2,-44"].map(d => el("path", { d, opacity: 0 }, gSteam));
-const stream = el("path", { d: "M760,233 C770,300 900,330 955,388", stroke: C.tea, "stroke-width": 5, fill: "none", "stroke-linecap": "round", opacity: 0 }, svg);
+const POT = { x: 740, y: 330 }, TIP = [POT.x + 160, POT.y - 97];   // pot origin and spout tip (pour pivot)
+const stream = el("path", { d: `M${TIP[0]},${TIP[1]} C${TIP[0] + 10},290 945,330 955,388`, stroke: C.tea, "stroke-width": 5, fill: "none", "stroke-linecap": "round", opacity: 0 }, svg);
 const gCup = el("g", { transform: "translate(960 430)", opacity: 0 }, svg);
 el("ellipse", { cx: 0, cy: 62, rx: 62, ry: 9, fill: "#e9e4da", stroke: "#2f3542", "stroke-width": 2 }, gCup);
 el("path", { d: "M-42,-40 L-34,42 C-33,52 -25,56 -15,56 L15,56 C25,56 33,52 34,42 L42,-40 Z", fill: "#fbf8f2", stroke: "#2f3542", "stroke-width": 3 }, gCup);
@@ -323,17 +348,51 @@ const tea = el("rect", { x: -42, y: 56, width: 84, height: 0, fill: C.tea, opaci
 el("path", { d: "M42,-24 C72,-24 72,26 38,28", stroke: "#2f3542", "stroke-width": 7, fill: "none", "stroke-linecap": "round" }, gCup);
 el("ellipse", { cx: 0, cy: -40, rx: 42, ry: 7, fill: "#fbf8f2", stroke: "#2f3542", "stroke-width": 3 }, gCup);
 
+/* tag left hanging on the rim once the bag is in: part of the pot so it tilts and fades with it */
+const gRimTag = el("g", { opacity: 0 }, gTeapot);
+el("path", { d: "M-44,-86 C-60,-72 -72,-62 -74,-46", stroke: "#8a7a5c", "stroke-width": 1.6, fill: "none" }, gRimTag);
+el("rect", { x: -90, y: -46, width: 32, height: 18, rx: 3, fill: C.green, stroke: "#2f3542", "stroke-width": 1.2 }, gRimTag);
+el("text", { x: -74, y: -33, text: "TEA", "font-size": 9.5, "font-weight": "bold", "text-anchor": "middle", fill: "white" }, gRimTag);
+
+/* tea bag: the record and its recovered structure are bagged together, then dunked */
+const gBag = el("g", { opacity: 0 }, svg);
+el("path", { d: "M-6,-40 C6,-56 14,-66 30,-78", stroke: "#8a7a5c", "stroke-width": 1.8, fill: "none" }, gBag);
+el("rect", { x: 18, y: -102, width: 44, height: 24, rx: 4, fill: C.green, stroke: "#2f3542", "stroke-width": 1.5 }, gBag);
+el("text", { x: 40, y: -85, text: "TEA", "font-size": 13, "font-weight": "bold", "text-anchor": "middle", fill: "white" }, gBag);
+el("path", { d: "M-36,-30 L36,-30 L42,40 Q42,52 30,52 L-30,52 Q-42,52 -42,40 Z", fill: "#f3ead6", stroke: "#8a7a5c", "stroke-width": 2, "stroke-linejoin": "round" }, gBag);
+el("path", { d: "M-32,8 L32,8", stroke: "#b8a98a", "stroke-width": 1.2, "stroke-dasharray": "3 3" }, gBag);
+el("rect", { x: -38, y: -42, width: 76, height: 14, rx: 3, fill: "#e5d9bd", stroke: "#8a7a5c", "stroke-width": 2 }, gBag);
+el("circle", { cx: 0, cy: -40, r: 3, fill: "#8a7a5c" }, gBag);
+const BAG = [740, 120];   // where the bag waits, above the pot
+
 const gGamma = el("g", { id: "gamma", opacity: 0 }, svg);
 const EDGES2 = [
   { f: "P", t: "W1" }, { f: "P", t: "W2" }, { f: "P", t: "W3" },
   { f: "W1", t: "V" }, { f: "W2", t: "V" }, { f: "W3", t: "V" },
-  { f: "V", t: "W3", arc: [1080, 262], off: [0, 0], text: "if fail → owner", textOff: [34, -2] }
+  { f: "V", t: "W3", arc: [1080, 262], off: [0, 0], text: "if fail → owner", textOff: [34, -2] },
+  { f: "W1", t: "W2", dashed: true, open: true }
 ];
-buildGraph(gGamma, NODE2, EDGES2, 17, { stroke: C.def, width: 2, marker: "url(#mBlue)" });
+const gamma = buildGraph(gGamma, NODE2, EDGES2, 17, { stroke: C.def, width: 2, marker: "url(#mBlue)" });
+for (const { e, path } of gamma.edges) if (e.open) { path.setAttribute("stroke", C.gray); path.setAttribute("marker-end", "url(#mGray)"); }
 el("text", { x: 960, y: 120, text: "proposed policy Γ′", "font-size": 15, "font-style": "italic", "text-anchor": "middle", fill: C.def }, gGamma);
-el("text", { x: 960, y: 342, text: "split by file owner · workers in parallel · V returns failures to the owner", "font-size": 12.5, "text-anchor": "middle", fill: "#2c3e50" }, gGamma);
-el("text", { x: 960, y: 359, text: "same constraints, written into Γ′ for the next episode", "font-size": 12.5, "font-style": "italic", "text-anchor": "middle", fill: "#55708c" }, gGamma);
-const nextText = el("text", { x: 600, y: 70, text: "next episode: execute Γ′ ▸", "font-size": 22, "font-style": "italic", "text-anchor": "middle", fill: C.green, opacity: 0 }, svg);
+el("text", { x: 960, y: 342, text: "split by owner · workers in parallel · failures back to the owner", "font-size": 12.5, "text-anchor": "middle", fill: "#2c3e50" }, gGamma);
+el("text", { x: 960, y: 359, text: "kept in blue · revised: V → owner · W1 → W2 left open", "font-size": 12.5, "font-style": "italic", "text-anchor": "middle", fill: "#55708c" }, gGamma);
+
+/* assessment of the recovered policy: the same edges, judged keep / revise / leave open */
+const VERDICT = e => (e.f === "V" && e.t === "P") ? "bad" : (e.f === "W1" && e.t === "W2") ? "open" : "good";
+const ASSESS_DELAY = e => e.f === "P" ? 0 : e.f.startsWith("W") && e.t === "V" ? 0.25 : e.f === "V" ? 0.5 : 0.75;
+const MARK = { good: "url(#mGood)", bad: "url(#mBad)", open: "url(#mOpen)" };
+const gAssess = el("g", { opacity: 0 }, svg);
+const EDGES_A = EDGES.map(e => ({ f: e.f, t: e.t, msgs: e.msgs, arc: (e.f === "V" && e.t === "P") ? [1170, 225] : undefined, off: [14, 0] }));
+const assess = buildGraph(gAssess, NODE2, EDGES_A, 17, { stroke: C.ink, width: 2, marker: "url(#mInk)" });
+for (const { e, label } of assess.edges) label.textContent = e.msgs.length > 1 ? String(e.msgs.length) : "";
+el("text", { x: 960, y: 120, text: "assess the recovered policy", "font-size": 15, "font-style": "italic", "text-anchor": "middle", fill: "#55708c" }, gAssess);
+const gVerdict = el("g", { opacity: 0, "font-size": 13 }, svg);
+[["keep", C.good, 880], ["revise", C.bad, 960], ["leave open", C.open, 1040]].forEach(([w, c, x]) => {
+  el("circle", { cx: x - 26, cy: 94, r: 5, fill: c }, gVerdict);
+  el("text", { x: x - 16, y: 98.5, text: w, fill: c, "font-weight": "bold" }, gVerdict);
+});
+const nextText = el("text", { x: 600, y: 70, text: "next episode: execute Γ′ · record · infuse again ↻", "font-size": 22, "font-style": "italic", "text-anchor": "middle", fill: C.green, opacity: 0 }, svg);
 
 /* ---------- precomputed pass times for the roll-up (scene 2) ---------- */
 const ROLL_T = 4.2;
@@ -342,6 +401,9 @@ function passTime(x) { let lo = 0, hi = ROLL_T; for (let i = 0; i < 40; i++) { c
 for (const m of MSGS) m.tp = passTime(xOf(m.us));
 for (const a of ACTS) a.tp = passTime(xOf(a.ue));
 for (const e of EDGES) e.msgs.sort((a, b) => a.tp - b.tp);
+/* each rule appears once the last message it rests on has rolled past */
+const RULE_T = [passTime(xOf(1.0)), passTime(xOf(3.2)), passTime(xOf(2.7)), passTime(xOf(4.8))];
+const RULE_T0 = Math.min(...RULE_T);
 
 /* ---------- rendering ---------- */
 function setFront(F) {
@@ -349,13 +411,14 @@ function setFront(F) {
   rollerR.setAttribute("transform", `translate(${F + 16} 0)`);
 }
 function hideScene3(fade) {
-  gTeapot.setAttribute("opacity", 0); gCup.setAttribute("opacity", 0); stream.setAttribute("opacity", 0);
+  gTeapot.setAttribute("opacity", 0); gCup.setAttribute("opacity", 0); stream.setAttribute("opacity", 0); gBag.setAttribute("opacity", 0);
+  gAssess.setAttribute("opacity", 0); gVerdict.setAttribute("opacity", 0);
   gGamma.setAttribute("opacity", 0); nextText.setAttribute("opacity", 0);
 }
 function setText(phase, text) { $("phase").textContent = phase; $("text").textContent = text; }
 
 function scene1(t) {
-  const u = clamp(t * 0.96, 0, UMAX);
+  const u = clamp(t * 3.84, 0, UMAX);
   gScroll.setAttribute("transform", "");
   gScroll.setAttribute("opacity", seg(t, 0, 0.5));
   setFront(xOf(u));
@@ -368,13 +431,16 @@ function scene1(t) {
   gTopo.setAttribute("opacity", 0); gTopo.setAttribute("transform", "");
   ghosts.forEach(g => g.setAttribute("opacity", 0));
   hideScene3();
+  setClock(u, seg(t, 0, 0.5));
+  ghostPaper.setAttribute("opacity", 0);
   let beat = BEATS[0][1]; for (const [bu, txt] of BEATS) if (u >= bu) beat = txt;
-  setText("1 · Execute", "TEA records the collaboration as it unfolds - tasks (T), agents (D), environment (Z) on one scroll.  " + beat);
+  setText("1 · Execute", "Record as it happens: tasks T, agents D, environment Z.  " + beat);
 }
 function scene2(t) {
   const F = frontAt(t);
   gScroll.setAttribute("transform", ""); gScroll.setAttribute("opacity", 1);
   setFront(F);
+  setClock(UMAX, 1 - seg(t, 0, 0.6));
   for (const a of ACTS) { actEls[a.id].setAttribute("fill", C.act); actEls[a.id].setAttribute("stroke", C.ink); actEls[a.id].setAttribute("stroke-width", 1.4); }
   gTopo.setAttribute("transform", ""); gTopo.setAttribute("opacity", seg(t, 0.5, 1.1));
   for (const { e, path, label } of topo.edges) {
@@ -405,40 +471,64 @@ function scene2(t) {
     topo.nodes[id].setAttribute("r", 26 + 5 * pulse);
     topo.nodes[id].setAttribute("fill", pulse > 0 ? C.actOn : C.act);
   }
-  $("ruleTitle").setAttribute("opacity", seg(t, 4.3, 4.7));
-  ruleEls.forEach((r, i) => r.setAttribute("opacity", seg(t, 4.5 + 0.45 * i, 4.9 + 0.45 * i)));
+  $("ruleTitle").setAttribute("opacity", seg(t, RULE_T0, RULE_T0 + 0.4));
+  ruleEls.forEach((r, i) => {
+    const t0 = RULE_T[i];
+    r.setAttribute("opacity", seg(t, t0, t0 + 0.4));
+    r.setAttribute("fill", t < t0 + 0.6 ? C.def : "#2c3e50");
+  });
+  ghostPaper.setAttribute("opacity", 0.08 * seg(t, 0, 0.6));
+  gFrame.setAttribute("opacity", seg(t, 2.1, 2.7));
   hideScene3();
-  setText("2 · Recover", t < 4.4
-    ? "Roll the scroll back up: each agent's activations merge into one node, and every message adds weight to a directed edge."
-    : "The recovered topology, plus rules read off the trace: what ran in parallel, what repeated, and which edges the policy never defined.");
+  setText("2 · Recover", t < ROLL_T
+    ? "Roll up: activations → nodes, messages → weighted edges, rules as evidence passes."
+    : "Recovered topology and rules.");
+}
+/* Infuse pacing: scene seconds → choreography seconds. Bagging 2.3 s, steep 1.2 s, pour 1.3 s, then assess → Γ′ → next episode in real time. */
+const S3_MAP = [[0, 0], [2.3, 2.6], [3.5, 5.0], [4.8, 7.0], [9.6, 11.8]];
+function s3time(t) {
+  for (let i = 0; i + 1 < S3_MAP.length; i++) {
+    const [a, oa] = S3_MAP[i], [b, ob] = S3_MAP[i + 1];
+    if (t <= b) return lerp(oa, ob, (t - a) / (b - a));
+  }
+  return S3_MAP[S3_MAP.length - 1][1];
 }
 function scene3(t) {
-  const fadeAll = 1 - seg(t, 8.4, 9.0);
-  /* scroll flies into the pot */
+  t = s3time(t);
+  const fadeAll = 1 - seg(t, 11.3, 11.8);
+  setClock(UMAX, 0);
+  ghostPaper.setAttribute("opacity", 0.08 * (1 - seg(t, 0, 0.4)));
+  /* scroll and topology fly into the tea bag together */
   setFront(XROLLED);
-  const p = seg(t, 0.5, 1.8), e = easeInOut(p);
-  const [px, py] = quad([ROLL_CX, 285], [330, 40], [600, 236], e);
-  const s = lerp(1, 0.14, e);
+  const e = easeInOut(seg(t, 0.3, 1.3));
+  const [px, py] = quad([ROLL_CX, 285], [380, 40], BAG, e);
+  const s = lerp(1, 0.12, e);
   gScroll.setAttribute("transform", `translate(${px} ${py}) scale(${s}) translate(${-ROLL_CX} -285)`);
-  gScroll.setAttribute("opacity", 1 - seg(t, 1.55, 1.8));
+  gScroll.setAttribute("opacity", 1 - seg(t, 1.1, 1.3));
   for (const a of ACTS) { actEls[a.id].setAttribute("fill", C.act); actEls[a.id].setAttribute("stroke", C.ink); actEls[a.id].setAttribute("stroke-width", 1.4); }
   ghosts.forEach(g => g.setAttribute("opacity", 0));
-  /* topology flies in after it */
-  const q = seg(t, 1.3, 2.4), eq = easeInOut(q);
-  const [tx, ty] = quad([985, 300], [800, 110], [600, 236], eq);
-  const ts = lerp(1, 0.12, eq);
-  gTopo.setAttribute("transform", `translate(${tx} ${ty}) scale(${ts}) translate(-985 -300)`);
-  gTopo.setAttribute("opacity", 1 - seg(t, 2.2, 2.4));
+  const [tx, ty] = quad(BOX_C, [1000, 40], BAG, e);
+  const ts = lerp(1, 0.1, e);
+  gTopo.setAttribute("transform", `translate(${tx} ${ty}) scale(${ts}) translate(${-BOX_C[0]} ${-BOX_C[1]})`);
+  gTopo.setAttribute("opacity", 1 - seg(t, 1.1, 1.3));
+  /* the bag: appear, receive both, dunk into the pot, leave the tag on the rim */
+  const bagIn = easeOut(seg(t, 0.0, 0.4)), dunk = easeInOut(seg(t, 1.45, 2.15));
+  const bagS = lerp(0.3, 1, bagIn) * lerp(1, 0.5, dunk);
+  gBag.setAttribute("transform", `translate(${BAG[0]} ${lerp(BAG[1], 252, dunk)}) scale(${bagS})`);
+  gBag.setAttribute("opacity", bagIn * (1 - seg(t, 2.0, 2.25)) * fadeAll);
+  gRimTag.setAttribute("opacity", seg(t, 2.3, 2.55));
   for (const { path, label, e: ed } of topo.edges) { const n = ed.msgs.length; path.setAttribute("opacity", 1); path.setAttribute("stroke-width", 1.6 + 1.4 * n); path.setAttribute("stroke", C.ink); label.textContent = n > 1 ? String(n) : ""; label.setAttribute("fill", C.ink); }
   for (const id in topo.nodes) { topo.nodes[id].setAttribute("r", 26); topo.nodes[id].setAttribute("fill", C.act); }
   $("ruleTitle").setAttribute("opacity", 1); ruleEls.forEach(r => r.setAttribute("opacity", 1));
+  gFrame.setAttribute("opacity", 1);
   /* teapot: appear, lid opens, steep, pour */
   const appear = easeOut(seg(t, 0, 0.6));
-  const lift = easeInOut(seg(t, 0.4, 1.1)) * (1 - easeInOut(seg(t, 2.4, 2.9)));
-  const tilt = -34 * easeInOut(seg(t, 5.0, 5.9)) * (1 - easeInOut(seg(t, 6.7, 7.3)));
-  gTeapot.setAttribute("opacity", appear * fadeAll);
-  gTeapot.setAttribute("transform", `rotate(${tilt} 760 233) translate(600 330) scale(${lerp(0.7, 1, appear)})`);
-  gLid.setAttribute("transform", `translate(${-10 * lift} ${-32 * lift}) rotate(${-14 * lift} -58 -84)`);
+  const lift = easeInOut(seg(t, 0.9, 1.4)) * (1 - easeInOut(seg(t, 2.25, 2.6)));
+  const tilt = 34 * easeInOut(seg(t, 5.0, 5.9)) * (1 - easeInOut(seg(t, 6.7, 7.3)));   // clockwise about the spout tip: spout dips, back lifts
+  const potGone = seg(t, 6.85, 7.25);   // once the pour ends the pot recedes, before the policy rises from the cup beside it
+  gTeapot.setAttribute("opacity", appear * (1 - potGone) * fadeAll);
+  gTeapot.setAttribute("transform", `rotate(${tilt} ${TIP[0]} ${TIP[1]}) translate(${POT.x} ${POT.y}) scale(${lerp(0.7, 1, appear)})`);
+  gLid.setAttribute("transform", `translate(${-18 * lift} ${-62 * lift}) rotate(${-24 * lift} -58 -84)`);
   const steep = seg(t, 2.6, 3.1) * (1 - seg(t, 4.8, 5.2));
   steam.forEach((w, k) => {
     const ph = ((t * 0.55) + k * 0.33) % 1;
@@ -451,15 +541,27 @@ function scene3(t) {
   gCup.setAttribute("opacity", seg(t, 2.5, 3.1) * fadeAll);
   const level = seg(t, 5.7, 6.8);
   tea.setAttribute("height", 90 * level); tea.setAttribute("y", 56 - 90 * level);
-  /* the new policy rises from the cup */
-  const g = easeOut(seg(t, 7.0, 8.0));
-  gGamma.setAttribute("opacity", g * fadeAll);
-  gGamma.setAttribute("transform", `translate(0 ${70 * (1 - g)})`);
-  nextText.setAttribute("opacity", seg(t, 8.0, 8.4) * (1 - seg(t, 8.7, 9.0)));
-  setText("3 · Infuse", t < 2.6 ? "Steep the record: the rolled scroll and its recovered structure go into the pot."
-    : t < 5.0 ? "Infuse queries the record - which coordination helped task progress and environmental outcomes, which hurt, which is unclear."
-    : t < 7.0 ? "Pour: an updated policy, grounded in what actually happened."
-    : "Γ′ writes the useful emergent structure into the policy - the same constraints, made explicit - and the next episode begins.");
+  /* the recovered policy rises from the cup and is assessed edge by edge */
+  const g = easeOut(seg(t, 7.0, 8.0)), toGamma = seg(t, 9.8, 10.4);
+  gAssess.setAttribute("opacity", g * (1 - toGamma) * fadeAll);
+  gAssess.setAttribute("transform", `translate(0 ${70 * (1 - g)})`);
+  for (const { e, path, label } of assess.edges) {
+    const v = VERDICT(e), d = 8.0 + ASSESS_DELAY(e), k = seg(t, d, d + 0.3);
+    const col = k > 0 ? C[v] : C.ink;
+    path.setAttribute("stroke", col); path.setAttribute("marker-end", k > 0 ? MARK[v] : "url(#mInk)");
+    path.setAttribute("stroke-width", 2 + 2.5 * k * (1 - 0.6 * seg(t, d + 0.3, d + 0.8)));
+    label.setAttribute("fill", col);
+  }
+  gVerdict.setAttribute("opacity", seg(t, 8.0, 8.4) * fadeAll);
+  /* ...then becomes Γ′ in place: keep in blue, revised route added, open edge left gray */
+  gGamma.setAttribute("opacity", toGamma * fadeAll);
+  gGamma.setAttribute("transform", "");
+  nextText.setAttribute("opacity", seg(t, 10.4, 10.8) * (1 - seg(t, 11.5, 11.8)));
+  setText("3 · Infuse", t < 2.6 ? "Record and structure, bagged together, into the pot."
+    : t < 5.0 ? "Query: what helped, what hurt."
+    : t < 7.0 ? "Pour."
+    : t < 9.8 ? "Assess each part: keep, revise, or leave open."
+    : "Γ′ keeps, revises, leaves open. Then infuse again.");
 }
 function render(T) {
   T = ((T % TOTAL) + TOTAL) % TOTAL;
