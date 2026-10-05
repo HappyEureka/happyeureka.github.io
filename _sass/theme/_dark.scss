@@ -33,22 +33,30 @@ $navicon-height             : 4px;
 $sidebar-link-max-width     : 250px;
 $sidebar-screen-min-width   : 1024px;
 
-/* Dark theme for the site */
+/* Dark theme for the site: a deep blue-black instead of mid-gray, with quiet borders and soft white text */
+$dark-bg                    : #12151a;
+$dark-bg-raised             : #1a1e25;
+$dark-border                : #2b313a;
+$dark-border-strong         : #3d4551;
+$dark-text                  : #e4e7eb;
+$dark-text-muted            : #98a2ae;
+$dark-link                  : #5cc0dc;
+
 html[data-theme="dark"] {
-    --global-base-color                 : #{$background};
-    --global-bg-color                   : #{$background};
-    --global-footer-bg-color            : #{$background};
-    --global-border-color               : #{$light-gray};
-    --global-dark-border-color          : #{$background-light};
-    --global-code-background-color      : #fafafa;
-    --global-code-text-color            : #{$darker-gray};
-    --global-fig-caption-color          : #{$light-gray};
-    --global-link-color                 : #{$link};
-    --global-link-color-hover           : #{$link-dark};
-    --global-link-color-visited         : #{$link-light};
-    --global-masthead-link-color        : #{$text};
-    --global-masthead-link-color-hover  : #{$background-light};
-    --global-text-color                 : #{$text};
-    --global-text-color-light           : #{$light-gray};
-    --global-thead-color                : #{$background-lighter};
+    --global-base-color                 : #{$dark-border-strong};
+    --global-bg-color                   : #{$dark-bg};
+    --global-footer-bg-color            : #{$dark-bg-raised};
+    --global-border-color               : #{$dark-border};
+    --global-dark-border-color          : #{$dark-border-strong};
+    --global-code-background-color      : #{$dark-bg-raised};
+    --global-code-text-color            : #{$dark-text};
+    --global-fig-caption-color          : #{$dark-text-muted};
+    --global-link-color                 : #{$dark-link};
+    --global-link-color-hover           : #{mix(#fff, $dark-link, 30%)};
+    --global-link-color-visited         : #{mix(#fff, $dark-link, 15%)};
+    --global-masthead-link-color        : #{$dark-text};
+    --global-masthead-link-color-hover  : #ffffff;
+    --global-text-color                 : #{$dark-text};
+    --global-text-color-light           : #{$dark-text-muted};
+    --global-thead-color                : #{$dark-bg-raised};
 }

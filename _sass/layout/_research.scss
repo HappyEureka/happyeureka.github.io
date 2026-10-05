@@ -29,7 +29,8 @@
 }
 
 .research-summary {
-  max-width: 50ch;
+  /* full width like the paragraph and essays below; never a lone last word */
+  text-wrap: pretty;
   margin: 0 0 0.85rem !important;
   color: var(--global-text-color);
   font-size: clamp(1rem, 1.45vw, 1.15rem) !important;
@@ -38,50 +39,712 @@
   letter-spacing: -0.012em;
 }
 
-.research-description {
-  max-width: 68ch;
-  margin-bottom: 0.75rem !important;
-  color: var(--global-text-color);
-  font-size: 1rem !important;
-  line-height: 1.62;
-}
-
-.research-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 0 !important;
-  font-size: 0.82rem !important;
-}
-
 .research-section {
   margin: 0 0 2.75rem;
 }
 
-.research-directions {
-  margin-top: -0.5rem;
+.research-page .research-directions .research-divider {
+  margin-top: 0;
 }
 
+/* ---- Illustrations (see _includes/research-fun.html) --------------------------------------------
+   One framed block, narrower than the text column. Row one: tasks, agents, environment. Under the
+   agents, a brace opens onto row two: one animated figure per collaboration policy. Row two is narrower
+   than row one (--rf-cases), so it reads as three cases of "Agent interaction". The time axis at the
+   bottom holds three rounds and is the playhead. Agents are round faces, tasks are cards, teal marks
+   what is new or emergent. */
+.research-fun {
+  /* One round is one full execution: the row-one scenes play once per round. The loop is three rounds:
+     the policy figures and the time axis run on it. Every other motion is a share of the round, so this
+     one value sets the tempo. */
+  --rf-round: 0.85s;
+  --rf-loop: calc(var(--rf-round) * 3);
+  --rf-cases: 76%;
+  max-width: 40rem;
+  margin: -1.2rem auto 2rem;
+  padding: 0.9rem 1.2rem 0.8rem;
+  border: 1px solid var(--global-dark-border-color);
+  border-radius: 12px;
+}
+
+.research-fun-defs {
+  position: absolute;
+}
+
+.research-fun-kicker {
+  margin: 0 0 0.35rem !important;
+  color: var(--global-text-color-light);
+  font-family: $monospace;
+  font-size: 0.66rem !important;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+/* row one: the agents sit between the tasks they shape and the environment they act in,
+   with a two-way edge to each side */
+.research-fun-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr) 3rem minmax(0, 1fr);
+  column-gap: 0.6rem;
+  align-items: center;
+}
+
+.rf-flow-art {
+  grid-row: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.rf-flow-label {
+  grid-row: 2;
+  margin: 0.2rem 0 0 !important;
+  color: var(--global-text-color);
+  font-size: 0.74rem !important;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.rf-flow-1 { grid-column: 1; }
+.rf-flow-3 { grid-column: 3; }
+.rf-flow-5 { grid-column: 5; }
+
+/* the edges reuse the triangle's two-way arrow (.research-cycle-edge) */
+.research-fun-edge {
+  grid-row: 1;
+  width: 100%;
+}
+
+.rf-flow-e1 { grid-column: 2; }
+.rf-flow-e2 { grid-column: 4; }
+
+/* a marker that shuttles along the edge; shown only when motion is allowed */
+.research-fun-edge i {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--global-link-color);
+}
+
+/* a brace as wide as row two: its point sits under "Agent interaction" and its arms take in the three
+   policies below */
+.research-fun-brace {
+  display: flex;
+  align-items: center;
+  width: var(--rf-cases);
+  height: 20px;
+  margin: 0.25rem auto 0.1rem;
+}
+
+.research-fun-brace svg {
+  flex: 0 0 12px;
+  width: 12px;
+  height: 20px;
+  overflow: visible;
+}
+
+.research-fun-brace .research-fun-brace-cusp {
+  flex-basis: 28px;
+  width: 28px;
+}
+
+.research-fun-brace path {
+  fill: none;
+  stroke: var(--global-text-color);
+  stroke-width: 1.5;
+}
+
+.research-fun-brace span {
+  flex: 1 1 0;
+  height: 1.5px;
+  margin: 0 -0.5px;
+  background: var(--global-text-color);
+}
+
+.research-fun-kicker--policies {
+  text-align: center;
+}
+
+/* row two: one animated figure per policy, centered under the brace */
+.research-fun-policies {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 1.2rem;
+  align-items: start;
+  width: var(--rf-cases);
+  margin: 0.2rem auto 0;
+}
+
+
+.research-fun-panel svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.research-fun-panel p {
+  margin: 0.2rem 0 0 !important;
+  color: var(--global-text-color);
+  font-size: 0.74rem !important;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+}
+
+/* the time axis: collaboration is a process. It holds three rounds and is the playhead. */
+.research-fun-time {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.35rem 0.7rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--global-border-color);
+}
+
+.research-fun-time .research-fun-kicker {
+  flex: 0 0 auto;
+  margin: 0 !important;
+  line-height: 21px;
+}
+
+/* pauses and resumes the whole block; hidden unless there is motion to control and a script to do it */
+.research-fun-play {
+  display: none;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 21px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--global-dark-border-color);
+  border-radius: 50%;
+  background: none;
+  color: var(--global-text-color);
+  cursor: pointer;
+}
+
+.research-fun-play:hover {
+  border-color: var(--global-text-color);
+}
+
+.research-fun-play:focus-visible {
+  outline: 2px solid var(--global-link-color);
+  outline-offset: 2px;
+}
+
+.research-fun-play svg {
+  width: 9px;
+  height: 9px;
+  overflow: visible;
+}
+
+.rf-icon-pause {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.rf-icon-play {
+  display: none;
+  fill: currentColor;
+}
+
+.research-fun.is-paused .rf-icon-pause {
+  display: none;
+}
+
+.research-fun.is-paused .rf-icon-play {
+  display: inline;
+}
+
+.research-fun-time-line {
+  display: flex;
+  flex: 1 1 9rem;
+  align-items: center;
+  height: 21px;
+}
+
+.research-fun-time-axis {
+  position: relative;
+  flex: 1 1 0;
+  height: 1.5px;
+  background: var(--global-text-color);
+}
+
+.research-fun-time-line svg {
+  flex: 0 0 10px;
+  width: 10px;
+  height: 10px;
+  margin-left: -1px;
+  fill: var(--global-text-color);
+}
+
+.research-fun-time-label {
+  color: var(--global-text-color-light);
+  font-size: 0.72rem;
+  font-style: italic;
+  line-height: 21px;
+}
+
+/* a tick where each round starts */
+.rf-bound {
+  position: absolute;
+  top: -5px;
+  width: 1.5px;
+  height: 11.5px;
+  background: var(--global-text-color);
+}
+
+.rf-bound--1 { left: 0; }
+.rf-bound--2 { left: 33.333%; }
+.rf-bound--3 { left: 66.667%; }
+
+/* elapsed time, with a marker at "now"; shown only when motion is allowed */
+.research-fun-time-axis i {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--global-link-color);
+}
+
+.research-fun-time-axis i::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--global-link-color);
+}
+
+/* the key: solid links and dashed links */
+.research-fun-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1.6rem;
+  margin-top: 0.35rem;
+}
+
+.research-fun-legend p {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 !important;
+  color: var(--global-text-color-light);
+  font-size: 0.72rem !important;
+  line-height: 1.35;
+}
+
+.research-fun-legend svg {
+  flex: 0 0 2.3rem;
+  width: 2.3rem;
+  height: auto;
+  overflow: visible;
+}
+
+/* drawing vocabulary */
+.rf-line {
+  fill: none;
+  stroke: var(--global-text-color);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rf-soft {
+  stroke: var(--global-text-color-light);
+}
+
+.rf-accent {
+  stroke: var(--global-link-color);
+}
+
+.rf-dashed {
+  stroke-dasharray: 4 4;
+}
+
+.rf-skin,
+.rf-card {
+  fill: var(--global-bg-color);
+  stroke: var(--global-text-color);
+  stroke-width: 1.5;
+}
+
+.rf-eye,
+.rf-arrowhead {
+  fill: var(--global-text-color);
+}
+
+.rf-arrowhead--accent {
+  fill: var(--global-link-color);
+}
+
+.rf-tint,
+.rf-flag {
+  fill: var(--global-link-color);
+  fill-opacity: 0.16;
+  stroke: var(--global-link-color);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.rf-num {
+  fill: var(--global-text-color);
+  font-size: 17px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* an agent that is needed but not there yet */
+.rf-ghost .rf-skin {
+  fill: none;
+  stroke: var(--global-text-color-light);
+  stroke-dasharray: 3 3;
+}
+
+.rf-ghost .rf-eye {
+  fill: var(--global-text-color-light);
+}
+
+/* information on a link, in "Agent interaction". A token follows its link with offset-path, so tokens are
+   only drawn where that is supported. Its shape changes each time an agent passes it on. */
+.rf-tok {
+  display: none;
+  fill: var(--global-link-color);
+  stroke: var(--global-bg-color);
+  stroke-width: 1.2;
+  offset-rotate: 0deg;
+  offset-distance: 50%;
+}
+
+@supports (offset-path: path("M0 0L1 1")) {
+  .rf-tok {
+    display: inline;
+  }
+}
+
+/* a rule is a small tag on a link: the link is only used when the tag holds */
+.rf-gate rect {
+  fill: var(--global-bg-color);
+  stroke: var(--global-text-color);
+  stroke-width: 1;
+}
+
+.rf-gate text {
+  fill: var(--global-text-color);
+  font-family: $monospace;
+  font-size: 7.4px;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+/* resting poses, used as they are when motion is reduced: the block at the flag, and each policy
+   figure showing its first round with the untaken branch pale */
+.rf-env-move {
+  transform: translateX(26px);
+}
+
+.rf-env-ghost {
+  opacity: 0;
+}
+
+.rf-never {
+  opacity: 0.3;
+}
+
+.rf-r2,
+.rf-r3 {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* the task splits early and is checked off once the block reaches the flag */
+  .rf-step {
+    animation: var(--rf-round) ease-in-out infinite both;
+  }
+
+  @for $i from 1 through 4 {
+    .rf-step--#{$i} {
+      animation-name: rf-pop-#{$i};
+    }
+  }
+
+  /* information hops from agent to agent, one hop after another, once per round */
+  .rf-tok {
+    animation: var(--rf-round) linear infinite both;
+  }
+
+  @for $h from 1 through 5 {
+    .rf-hop--#{$h} {
+      animation-name: rf-hop-#{$h};
+    }
+  }
+
+  /* the block needs three: one agent strains, two more appear, then all three move it to the flag */
+  .rf-env-move,
+  .rf-env-ghost,
+  .rf-env-helper,
+  .rf-env-speed,
+  .rf-env-spark {
+    animation: var(--rf-round) ease-in-out infinite both;
+  }
+
+  .rf-env-move { animation-name: rf-env-move; }
+  .rf-env-ghost { animation-name: rf-env-ghost; }
+  .rf-env-helper { animation-name: rf-env-helper; }
+  .rf-env-speed { animation-name: rf-env-speed; }
+
+  .rf-env-spark {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-name: rf-env-spark;
+  }
+
+  .rf-strain {
+    animation: rf-strain calc(var(--rf-round) * 0.24) ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+  }
+
+  /* emergent links keep flowing */
+  .rf-march {
+    animation: rf-march calc(var(--rf-round) * 0.45) linear infinite;
+  }
+
+  /* something passes back and forth between the agents and each side */
+  .research-fun-edge i {
+    display: block;
+    animation: rf-shuttle calc(var(--rf-round) * 0.75) ease-in-out infinite alternate;
+  }
+
+  .rf-flow-e2 i {
+    animation-delay: calc(var(--rf-round) * -0.375);
+  }
+
+  /* the playhead crosses the axis once per loop */
+  .research-fun-time-axis i {
+    display: block;
+    animation: rf-time var(--rf-loop) linear infinite both;
+  }
+
+  /* the timeline controls: the button, and the axis as something to click or drag along */
+  .js .research-fun-play {
+    display: inline-flex;
+  }
+
+  .js .research-fun-time-line {
+    cursor: pointer;
+    touch-action: pan-y;
+  }
+
+  .research-fun.is-paused * {
+    animation-play-state: paused !important;
+  }
+
+  /* a link is faint (--idle) until its phase, at full strength during it, and stays lit (--done)
+     until the round ends. Prescribed links stay visible while idle; links the agents add are only
+     there in their own round. */
+  .rf-link {
+    --idle: 0.3;
+    --done: 0.8;
+  }
+
+  .rf-link--emergent {
+    --idle: 0;
+    --done: 0.8;
+  }
+
+  @for $p from 1 through 3 {
+    .rf-every.rf-p#{$p} {
+      animation: rf-every-p#{$p} var(--rf-round) linear infinite both;
+    }
+
+    @for $r from 1 through 3 {
+      .rf-r#{$r}.rf-p#{$p} {
+        animation: rf-r#{$r}-p#{$p} var(--rf-loop) linear infinite both;
+      }
+    }
+  }
+}
+
+/* pieces 1 to 3 are the split cards, piece 4 is the finished card, which appears as the block arrives;
+   all clear together at the end */
+@each $i, $from in (1: 6%, 2: 12%, 3: 18%, 4: 75%) {
+  @keyframes rf-pop-#{$i} {
+    0%, #{$from} { opacity: 0; }
+    #{$from + 6%}, 93% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+}
+
+/* hop $h of five: the token appears at the start of its link, crosses it, and is taken in at the far end */
+@for $h from 1 through 5 {
+  $w0: ($h - 1) * 18% + 3%;
+  $w1: $h * 18% + 1%;
+
+  @keyframes rf-hop-#{$h} {
+    0%, #{$w0 - 1.5%} { offset-distance: 0%; opacity: 0; }
+    #{$w0} { offset-distance: 0%; opacity: 1; }
+    #{$w1} { offset-distance: 100%; opacity: 1; }
+    #{$w1 + 2%}, 100% { offset-distance: 100%; opacity: 0; }
+  }
+}
+
+@keyframes rf-env-move {
+  0% { transform: translateX(0); opacity: 0; }
+  6% { transform: translateX(0); opacity: 1; }
+  42% { transform: translateX(0); }
+  74% { transform: translateX(26px); }
+  93% { transform: translateX(26px); opacity: 1; }
+  100% { transform: translateX(26px); opacity: 0; }
+}
+
+@keyframes rf-env-ghost {
+  0%, 10% { opacity: 0; }
+  18%, 30% { opacity: 1; }
+  38%, 100% { opacity: 0; }
+}
+
+@keyframes rf-env-helper {
+  0%, 30% { opacity: 0; }
+  38%, 100% { opacity: 1; }
+}
+
+@keyframes rf-env-speed {
+  0%, 42% { opacity: 0; }
+  48%, 72% { opacity: 1; }
+  78%, 100% { opacity: 0; }
+}
+
+@keyframes rf-env-spark {
+  0%, 72% { opacity: 0; transform: scale(0.4); }
+  80%, 92% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.4); }
+}
+
+@keyframes rf-strain {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(1.6px); }
+}
+
+@keyframes rf-march {
+  to { stroke-dashoffset: -16; }
+}
+
+@keyframes rf-time {
+  0% { width: 0; opacity: 0; }
+  1.5% { opacity: 1; }
+  98.5% { opacity: 1; }
+  100% { width: 100%; opacity: 0; }
+}
+
+/* A round has three phases. $a and $b are where a phase starts and ends, as a share of the round.
+   rf-every-p* repeats every round; rf-r*-p* is the same shape placed in one round of the three-round loop. */
+@each $p, $a, $b in (1, 3%, 30%), (2, 36%, 62%), (3, 68%, 92%) {
+  @keyframes rf-every-p#{$p} {
+    0%, #{$a - 3%} { opacity: var(--idle); }
+    #{$a}, #{$b} { opacity: 1; }
+    #{$b + 4%}, 97% { opacity: var(--done); }
+    100% { opacity: var(--idle); }
+  }
+
+  @for $r from 1 through 3 {
+    $o: ($r - 1) * 33.333%;
+
+    @keyframes rf-r#{$r}-p#{$p} {
+      0%, #{$o + ($a - 3%) / 3} { opacity: var(--idle); }
+      #{$o + $a / 3}, #{$o + $b / 3} { opacity: 1; }
+      #{$o + ($b + 4%) / 3}, #{$o + 97% / 3} { opacity: var(--done); }
+      #{$o + 33.333%}, 100% { opacity: var(--idle); }
+    }
+  }
+}
+
+@keyframes rf-shuttle {
+  from { left: 14%; }
+  to { left: 86%; }
+}
+
+/* Triangle: Definition at the apex, Representation and Computation at the base, a two-way arrow on each side. */
 .research-cycle {
   display: block;
   width: 100%;
-  max-width: 54rem;
+  max-width: 34rem;
   margin: 1rem auto 0;
 }
 
 .research-cycle-diagram {
-  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr) 3rem minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 4.5rem minmax(0, 1fr);
+  grid-template-rows: auto 3.4rem auto;
   align-items: center;
-  min-height: 13.5rem;
-  padding-top: 3.5rem;
 }
 
+.research-cycle-node {
+  padding: 0.3rem 0.4rem;
+  text-align: center;
+}
+
+.research-cycle-node--definition {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  justify-self: center;
+  max-width: 15rem;
+}
+
+.research-cycle-node--representation {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.research-cycle-node--computation {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+.research-cycle-node h3 {
+  margin: 0 0 0.3rem;
+  font-size: 0.92rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.research-cycle-node p {
+  margin: 0;
+  color: var(--global-text-color);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.research-cycle-node .research-cycle-theme {
+  margin-bottom: 0;
+  color: var(--global-text-color);
+  font-size: 0.64rem;
+  letter-spacing: 0.025em;
+}
+
+/* a two-way arrow: a hairline with a chevron at each end */
 .research-cycle-edge {
   position: relative;
-  z-index: 2;
-  width: 100%;
+  display: block;
   height: 1.5px;
   background: var(--global-text-color);
 }
@@ -109,140 +772,47 @@
   transform: translate(1px, -50%) rotate(45deg);
 }
 
-.research-cycle-edge--one {
+.research-cycle-edge--base {
   grid-column: 2;
+  grid-row: 3;
+  width: 100%;
 }
 
-.research-cycle-edge--two {
-  grid-column: 4;
-}
-
-.research-cycle-return {
-  position: absolute;
-  z-index: 0;
-  top: 0.3rem;
-  right: 15%;
-  left: 15%;
-  height: 3.7rem;
-}
-
-.research-cycle-return::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 7.4rem;
-  box-sizing: border-box;
-  border: 1.5px solid var(--global-text-color);
-  border-radius: 50%;
-  clip-path: inset(0 0 50% 0);
-}
-
-.research-cycle-return-arrow {
-  position: absolute;
-  bottom: -0.05rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-right: 1.5px solid var(--global-text-color);
-  border-bottom: 1.5px solid var(--global-text-color);
-}
-
-.research-cycle-return-arrow--start {
-  left: -0.28rem;
-  transform: translateY(50%) rotate(135deg);
-}
-
-.research-cycle-return-arrow--end {
-  right: -0.28rem;
-  transform: translateY(50%) rotate(-45deg);
-}
-
-.research-cycle-node {
+/* the two slanted sides sit between the apex and the base nodes */
+.research-cycle-sides {
   position: relative;
-  z-index: 1;
+  grid-column: 1 / -1;
+  grid-row: 2;
   align-self: stretch;
-  padding: 0.75rem 0.55rem;
-  background: var(--global-bg-color);
-  text-align: center;
 }
 
-.research-cycle-node--definition {
-  grid-column: 1;
+.research-cycle-sides .research-cycle-edge {
+  position: absolute;
+  top: 50%;
+  width: 3.6rem;
 }
 
-.research-cycle-node--representation {
-  grid-column: 3;
+.research-cycle-edge--left {
+  left: 34%;
+  transform: translate(-50%, -50%) rotate(-42deg);
 }
 
-.research-cycle-node--computation {
-  grid-column: 5;
-}
-
-.research-cycle-node h3 {
-  margin: 0 0 0.35rem;
-  font-size: 0.88rem;
-  font-weight: 650;
-  letter-spacing: 0.01em;
-}
-
-.research-cycle-node p {
-  margin: 0;
-  color: var(--global-text-color);
-  font-size: 0.76rem;
-  line-height: 1.5;
-}
-
-.research-cycle-node .research-cycle-theme {
-  margin-bottom: 0.55rem;
-  color: var(--global-text-color);
-  font-size: 0.62rem;
-  letter-spacing: 0.025em;
-}
-
-.research-cycle-question {
-  font-family: Georgia, Times, serif;
-  font-style: italic;
+.research-cycle-edge--right {
+  left: 66%;
+  transform: translate(-50%, -50%) rotate(42deg);
 }
 
 .research-lenses {
   margin-bottom: 0;
 }
 
+/* each essay is a run-in block: "Name. Question? text", full width, no side column */
 .research-lens {
-  display: grid;
-  grid-template-columns: 9rem minmax(0, 1fr);
-  gap: 0.55rem 1.5rem;
-  padding: 1.25rem 0 1.3rem;
+  padding: 1.1rem 0 1.15rem;
   border-top: 1px solid var(--global-border-color);
 }
 
-.research-lens header {
-  grid-column: 1;
-  grid-row: 1 / span 3;
-  align-self: start;
-  margin: 0;
-}
-
-.research-lens header h3,
-.research-lens header p {
-  margin: 0;
-}
-
-.research-lens header h3 {
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-.research-lens header p {
-  margin-top: 0.35rem;
-  color: var(--global-text-color);
-  font-size: 0.78rem;
-  line-height: 1.5;
-}
-
 .research-lens > p {
-  grid-column: 2;
   max-width: none;
   margin: 0 0 0.55rem;
   color: var(--global-text-color);
@@ -254,35 +824,72 @@
   margin-bottom: 0;
 }
 
-.research-lens .research-lens-question {
-  max-width: none;
-  margin-bottom: 0.15rem;
-  color: var(--global-text-color);
-  font-family: Georgia, Times, serif;
-  font-size: 0.86rem;
-  font-style: italic;
-  line-height: 1.55;
+/* the name and its question sit on their own line; the essay starts below */
+.research-lens > .research-lens-lead {
+  margin-bottom: 0.4rem;
 }
 
-.research-works {
-  margin-top: 0;
+.research-lens-name {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.research-lens-question {
+  font-style: italic;
+}
+
+/* A section opens with its name and a rule, both in the link color, so the line reads as a divider
+   and not as one more title: the years that group the works on Projects, and "Research agenda"
+   under the illustrations on Research. The rule is a tint of the name's color; the gray rule is the
+   fallback where color-mix() is not supported. */
+.research-page .research-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  border: 0;
+  color: var(--global-link-color);
+  font-family: $monospace;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+.research-divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--global-dark-border-color);
+  border-top-color: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+/* the first group follows the Scholar line, which already leaves room below itself */
+.research-page .research-year-group:first-of-type .research-divider {
+  margin-top: 0.2rem;
 }
 
 .research-work-list {
   margin-top: 0;
 }
 
+/* the year rule stands in for the first entry's own rule */
+.research-divider + .research-work-list .research-work:first-child {
+  border-top: 0;
+}
+
 .research-work {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 12rem;
-  gap: 1.25rem;
-  align-items: center;
-  padding: 1.35rem 0;
+  grid-template-columns: minmax(0, 1fr) 10rem;
+  gap: 1.1rem;
+  align-items: start;
+  padding: 0.8rem 0;
   border-top: 1px solid var(--global-border-color);
   scroll-margin-top: 4rem;
 }
 
-.research-work:last-child {
+/* only the very last entry closes the list with a rule; elsewhere the next year's rule follows */
+.research-year-group:last-of-type .research-work:last-child {
   border-bottom: 1px solid var(--global-border-color);
 }
 
@@ -290,14 +897,8 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
-.research-work-meta {
-  margin: 0 0 0.45rem !important;
-  color: var(--global-text-color-light);
-  font-size: 0.72rem !important;
-}
-
 .research-work h3 {
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.3rem;
   font-size: 1rem;
   font-weight: 650;
   line-height: 1.4;
@@ -308,7 +909,7 @@
 }
 
 .research-work-authors {
-  margin: -0.2rem 0 0.6rem !important;
+  margin: 0 0 0.3rem !important;
   color: var(--global-text-color-light);
   font-size: 0.78rem !important;
   line-height: 1.5;
@@ -319,25 +920,136 @@
   font-weight: 650;
 }
 
-.research-work-inline-links {
-  display: inline;
-  margin-left: 0.4rem;
+/* One line, after the publication rows on narjesno.github.io: the venue in a small chip, then the
+   Overview toggle and the links as plain underlined words. The toggle and the links are one group: on
+   a narrow screen they move below the chip together. The overview text opens below the line.
+   The toggle needs the page script; without scripts it is hidden and every overview shows. */
+.research-work-more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.7rem;
+  font-family: $monospace;
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+/* the chip is a wash of the dark blue with a stronger edge of it. It is kept about as tall as the
+   words beside it. */
+.research-work-venue {
+  padding: 0 0.42rem;
+  border: 1px solid rgba($ink-blue, 0.32);
+  border-radius: 4px;
+  background: rgba($ink-blue, 0.07);
+  color: $ink-blue;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+}
+
+/* on the dark background the dark blue would sink: the chip is a wash of the link color with light
+   text (the plain surface and border are the fallback where color-mix() is not supported) */
+html[data-theme="dark"] .research-work-venue {
+  border-color: var(--global-dark-border-color);
+  border-color: color-mix(in srgb, var(--global-link-color) 40%, transparent);
+  background: var(--global-code-background-color);
+  background: color-mix(in srgb, var(--global-link-color) 12%, transparent);
+  color: var(--global-text-color);
+}
+
+/* a venue link keeps the chip's ink; its underline is faint until hovered */
+.research-page .research-work-venue a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
   white-space: nowrap;
 }
 
-.research-work-inline-links a {
-  font-size: 0.82rem;
+.research-page .research-work-venue a:hover {
+  color: inherit;
+  text-decoration-color: currentColor;
 }
 
-.research-work-copy > p:not(.research-work-meta):not(.research-work-recognition):not(.research-work-authors) {
-  margin-bottom: 0.7rem;
+.research-work-toggle {
+  display: none;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--global-link-color);
+  font: inherit;
+  line-height: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.js .research-work-toggle {
+  display: block;
+}
+
+/* the caret is an inline block, so the underline stops before it */
+.research-work-toggle::after {
+  content: "\25BE";
+  display: inline-block;
+  margin-left: 0.35em;
+}
+
+.research-work-toggle[aria-expanded="true"]::after {
+  content: "\25B4";
+}
+
+.research-work-toggle:focus-visible {
+  outline: 2px solid var(--global-link-color);
+  outline-offset: 2px;
+}
+
+.research-work-inline-links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.7rem;
+}
+
+.research-page .research-work-inline-links a {
+  font-size: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.research-work-overview {
+  flex: 0 0 100%;
+  font-family: $global-font-family;
+  margin: 0 !important;
+  padding-top: 0.25rem;
   color: var(--global-text-color);
-  font-size: 0.86rem;
+  font-size: 0.86rem !important;
   line-height: 1.62;
 }
 
+.js .research-work-more:has(.research-work-toggle[aria-expanded="false"]) > .research-work-overview {
+  display: none;
+}
+
+/* a heading-weight line in the text color; "Google Scholar" is an ordinary link */
+.projects-scholar {
+  /* the first project's top rule and padding follow, so the line is spaced like an entry */
+  margin: 0 0 0.8rem !important;
+  color: var(--global-text-color);
+  font-size: 1rem !important;
+  font-style: italic;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+
+
 .research-work-recognition {
-  margin: -0.15rem 0 0.75rem !important;
+  margin: 0 0 0.4rem !important;
   padding-left: 0.55rem;
   border-left: 2px solid #b42318;
   color: #b42318;
@@ -355,13 +1067,20 @@ html[data-theme="dark"] .research-work-recognition {
   color: #ff7b72;
 }
 
+/* Beside the text, a thumbnail takes its height from the text block and never adds to the entry:
+   height 0 keeps it out of the row's size, min-height stretches it back to the row. --thumb-max stops
+   it growing past its usual size next to a long title. */
 .research-work-figure {
+  --thumb-max: 4.95rem;
   display: grid;
+  /* a definite row, so the image's max-height: 100% applies and tall figures shrink instead of being clipped */
+  grid-template-rows: minmax(0, 1fr);
   width: 100%;
-  max-width: 12rem;
-  height: 7rem;
+  max-width: 10rem;
+  height: 0;
+  min-height: 100%;
   margin: 0;
-  padding: 0.25rem 0;
+  padding: 0.15rem 0;
   place-items: center;
   justify-self: center;
   overflow: hidden;
@@ -369,7 +1088,52 @@ html[data-theme="dark"] .research-work-recognition {
   background: transparent;
 }
 
+/* the thumbnail is a link to the full figure; it fills the box so the image still fits by height */
+.research-work-figure a {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: var(--thumb-max);
+  cursor: zoom-in;
+}
+
+.research-work-figure a:hover img {
+  opacity: 0.82;
+}
+
+/* the enlarged figure: centered over a dimmed page, closes on click or Escape */
+.figure-lightbox {
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-out;
+}
+
+.figure-lightbox::backdrop {
+  background: rgba(10, 12, 16, 0.82);
+}
+
+.figure-lightbox img {
+  display: block;
+  max-width: 94vw;
+  max-height: 92vh;
+  border-radius: 6px;
+  background: #fff;
+}
+
+/* white-background figures are softened on the dark theme so they do not glare */
+html[data-theme="dark"] .research-work-figure img {
+  filter: brightness(0.86);
+}
+
 .research-work-figure img {
+  border-radius: 4px;
   display: block;
   width: auto;
   max-width: 100%;
@@ -379,32 +1143,29 @@ html[data-theme="dark"] .research-work-recognition {
   object-fit: contain;
 }
 
+/* a drawn figure, not an image: it keeps its own height, which stays within a three-line text block */
 .research-work-figure--icore {
   display: block;
+  align-self: center;
   height: auto;
-  padding: 0.8rem 0.75rem 0.65rem;
+  min-height: 0;
+  padding: 0.15rem 0.4rem;
 }
 
+/* tall images that may use more of the height when the text beside them allows it */
 .research-work-figure--drwell {
-  height: 9rem;
-  padding: 0.2rem 0;
+  --thumb-max: 6.2rem;
 }
 
 .research-work-figure--five-ws {
-  height: 8.5rem;
-  padding: 0.2rem 0;
-}
-
-.research-work-figure--digital-twin {
-  height: 7rem;
-  padding: 0.2rem 0;
+  --thumb-max: 5.95rem;
 }
 
 .icore-mini {
   display: grid;
   grid-template-columns: 1.25rem minmax(0, 1fr);
-  grid-template-rows: auto 2rem auto;
-  gap: 0.35rem 0.45rem;
+  grid-template-rows: auto 0.9rem auto;
+  gap: 0.15rem 0.45rem;
   align-items: center;
 }
 
@@ -426,7 +1187,7 @@ html[data-theme="dark"] .research-work-recognition {
 .icore-mini-chain span {
   position: relative;
   z-index: 1;
-  padding: 0.34rem 0.18rem;
+  padding: 0.3rem 0.18rem;
   border: 1px solid var(--global-dark-border-color);
   background: var(--global-bg-color);
   color: var(--global-text-color-light);
@@ -454,50 +1215,17 @@ html[data-theme="dark"] .research-work-recognition {
 
 .icore-mini-links span {
   justify-self: center;
-  height: 2rem;
+  height: 0.9rem;
   border-left: 1px dashed var(--global-dark-border-color);
 }
 
-.research-work-figure--icore figcaption {
-  display: block;
-  width: 100%;
-  margin: 0.65rem 0 0;
-  padding-top: 0.65rem;
-  border-top: 1px solid var(--global-border-color);
-  color: var(--global-text-color-light);
-  font-family: -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", Arial, sans-serif;
-  font-size: 0.62rem;
-  line-height: 1.5;
-}
-
-.research-works {
-  margin-bottom: 1.5rem;
-}
-
-.research-works .research-work:last-child {
-  border-bottom: 0;
-}
-
-.research-healthcare {
-  margin-top: 0;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--global-border-color);
-}
-
+/* the last group opens with a line on what the healthcare papers have in common */
 .research-healthcare-intro {
-  max-width: 70ch;
-  margin-bottom: 1.2rem;
+  margin: 0.8rem 0 1.2rem;
 }
 
-.research-healthcare-intro h2,
 .research-healthcare-intro p {
   margin-top: 0;
-}
-
-.research-healthcare-intro h2 {
-  margin-bottom: 0.25rem;
-  font-size: clamp(1.45rem, 2.3vw, 1.8rem);
-  line-height: 1.25;
 }
 
 .research-healthcare-intro > p:not(.research-healthcare-subtitle) {
@@ -505,6 +1233,15 @@ html[data-theme="dark"] .research-work-recognition {
   color: var(--global-text-color);
   font-size: 0.88rem;
   line-height: 1.62;
+}
+
+/* The intro evens out its lines, so the last one is never a word or two; overviews just avoid a lone last word. */
+.research-healthcare-intro > p:not(.research-healthcare-subtitle) {
+  text-wrap: balance;
+}
+
+.research-work-overview {
+  text-wrap: pretty;
 }
 
 .research-healthcare-subtitle {
@@ -516,6 +1253,72 @@ html[data-theme="dark"] .research-work-recognition {
 }
 
 @media (max-width: 700px) {
+  .research-fun {
+    --rf-cases: 100%;
+    padding: 1rem 0.8rem 0.9rem;
+  }
+
+  /* row one becomes a small triangle: tasks and the environment on top, the agents below and between them,
+     so the brace still sits under "Agent interaction" */
+  .research-fun-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1rem;
+  }
+
+  .rf-flow-art.rf-flow-1 { grid-column: 1; grid-row: 1; }
+  .rf-flow-label.rf-flow-1 { grid-column: 1; grid-row: 2; }
+  .rf-flow-art.rf-flow-5 { grid-column: 2; grid-row: 1; }
+  .rf-flow-label.rf-flow-5 { grid-column: 2; grid-row: 2; }
+
+  .research-fun-edge {
+    grid-row: 3;
+    width: 2.4rem;
+    margin: 1.15rem 0 0.95rem;
+  }
+
+  .rf-flow-e1 {
+    grid-column: 1;
+    justify-self: end;
+    margin-right: 12%;
+    transform: rotate(45deg);
+  }
+
+  .rf-flow-e2 {
+    grid-column: 2;
+    justify-self: start;
+    margin-left: 12%;
+    transform: rotate(-45deg);
+  }
+
+  .rf-flow-art.rf-flow-3 {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    justify-self: center;
+    width: 62%;
+  }
+
+  .rf-flow-label.rf-flow-3 {
+    grid-column: 1 / -1;
+    grid-row: 5;
+  }
+
+  /* row two: two figures on the first line, the third centered below */
+  .research-fun-policies {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1rem;
+    row-gap: 0.9rem;
+  }
+
+  .research-fun-policies > .research-fun-panel:nth-child(3) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 0.5rem);
+  }
+
+  .research-fun-legend {
+    justify-content: flex-start;
+  }
+
   .research-intro {
     margin-bottom: 2.75rem;
   }
@@ -528,118 +1331,38 @@ html[data-theme="dark"] .research-work-recognition {
     gap: 0.45rem;
   }
 
-  .research-lens header {
-    grid-column: 1;
-    grid-row: auto;
-  }
-
-  .research-lens {
-    grid-template-columns: 1fr;
-    gap: 0.55rem;
-  }
-
-  .research-lens > p {
-    grid-column: 1;
-  }
-
   .research-work-figure {
+    --thumb-max: 100%;
     width: 100%;
     height: 7rem;
-  }
-
-  .research-cycle {
-    margin-top: 1.5rem;
+    min-height: 0;
   }
 
   .research-cycle-diagram {
-    grid-template-columns: minmax(0, 1fr) 2rem;
-    grid-template-rows: auto 2.5rem auto 2.5rem auto;
-    min-height: 0;
-    padding: 0 2.5rem 0 0;
-  }
-
-  .research-cycle-node {
-    grid-column: 1;
-    padding-right: 0.25rem;
-    padding-left: 0.25rem;
-  }
-
-  .research-cycle-node--definition {
-    grid-row: 1;
-  }
-
-  .research-cycle-node--representation {
-    grid-row: 3;
-  }
-
-  .research-cycle-node--computation {
-    grid-row: 5;
+    grid-template-columns: minmax(0, 1fr) 2.6rem minmax(0, 1fr);
+    grid-template-rows: auto 2.8rem auto;
   }
 
   .research-cycle-node h3 {
-    font-size: 0.78rem;
-  }
-
-  .research-cycle-node p {
-    font-size: 0.68rem;
-    line-height: 1.45;
+    font-size: 0.82rem;
   }
 
   .research-cycle-node .research-cycle-theme {
     font-size: 0.58rem;
   }
 
-  .research-cycle-edge {
-    grid-column: 1;
-    width: 2.5rem;
-    justify-self: center;
-    transform: rotate(90deg);
+  .research-cycle-sides .research-cycle-edge {
+    width: 2.6rem;
   }
 
-  .research-cycle-edge--one {
-    grid-row: 2;
+  .research-cycle-edge--left {
+    left: 32%;
+    transform: translate(-50%, -50%) rotate(-52deg);
   }
 
-  .research-cycle-edge--two {
-    grid-row: 4;
-  }
-
-  .research-cycle-return {
-    top: 1.8rem;
-    right: 0.35rem;
-    bottom: 1.8rem;
-    left: auto;
-    width: 1.8rem;
-    height: auto;
-  }
-
-  .research-cycle-return::before {
-    top: 0;
-    right: 0;
-    left: auto;
-    width: 3.6rem;
-    height: 100%;
-    border-radius: 50%;
-    clip-path: inset(0 0 0 50%);
-  }
-
-  .research-cycle-return-arrow {
-    left: -0.08rem;
-    right: auto;
-    bottom: auto;
-    border-right: 1.5px solid var(--global-text-color);
-    border-bottom: 1.5px solid var(--global-text-color);
-  }
-
-  .research-cycle-return-arrow--start {
-    top: -0.28rem;
-    transform: translateX(-50%) rotate(-135deg);
-  }
-
-  .research-cycle-return-arrow--end {
-    top: auto;
-    bottom: -0.28rem;
-    transform: translateX(-50%) rotate(45deg);
+  .research-cycle-edge--right {
+    left: 68%;
+    transform: translate(-50%, -50%) rotate(52deg);
   }
 
   .research-work-figure--icore {

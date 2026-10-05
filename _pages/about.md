@@ -7,25 +7,17 @@ redirect_from:
   - /about.html
 ---
 
-I am a Ph.D. student in Electrical and Computer Engineering at [Carnegie Mellon University](https://www.cmu.edu/), advised by [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/) in the [LIONS research group](https://research.ece.cmu.edu/lions/).
+I am a Ph.D. student in Electrical and Computer Engineering at [Carnegie Mellon University](https://www.cmu.edu/), advised by [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/), where I work on collaboration among AI agents. Before CMU, I worked on machine learning for healthcare at [Washington University in St. Louis](https://washu.edu/), advised by [Prof. Chenyang Lu](https://www.cse.wustl.edu/~lu/).
 
-I study collaboration among intelligent decision-making entities: **what defines collaboration, how to represent it, and what becomes computationally possible once collaboration itself is represented**. Rather than assuming a known organizational structure, I examine how collaboration unfolds as agents interact, tasks are transformed, interdependencies emerge, and individual contributions become collectively consequential. My current work focuses on these questions through LLM-based multi-agent systems.
+**Research Interests.** I am curious about collaboration among intelligent decision-making entities: what *defines* it, how to *represent* it, and what becomes *computationally* possible once it is represented, and at what cost. I am especially interested in how collaboration policy shapes teamwork among AI agents, and what behavior emerges under partially defined or open-ended policies. I approach collaboration by looking at how it unfolds as agents interact, tasks are transformed, interdependencies emerge, and individual contributions become collectively consequential.
 
-Before CMU, I worked on machine learning for healthcare in [CPSL](https://wsn.cse.wustl.edu/index.php/Cyber-Physical_Systems_Laboratory) at [Washington University in St. Louis](https://washu.edu/), advised by [Prof. Chenyang Lu](https://www.cse.wustl.edu/~lu/).
+<p class="about-keywords" aria-label="Keywords"><span>Collaborative intelligence</span> <span>Emergent cooperation</span> <span>LLM-based multi-agent systems</span> <span>Decentralized agents</span></p>
 
 ## Education
 
 - **Ph.D. Student**: Electrical and Computer Engineering, CMU (2025–Present)
 - **M.S.**: Artificial Intelligence Engineering, Electrical and Computer Engineering, CMU (2024)
 - **B.S.**: Computer Engineering and Computer Science, WashU (2023)
-
-## Research Interests
-
-What does **collaboration** mean for intelligent entities, and what turns a group into a team?
-
-- **Definition:** What constitutes collaboration among intelligent entities, and which primitives distinguish it from mere group behavior?
-- **Representation:** What representational structure can capture emergent collaboration across tasks, teams, and scales, and under what assumptions?
-- **Computation:** Once collaboration is represented, what can be explained, evaluated, guaranteed, repaired, or optimized, and at what computational cost?
 
 ## Teaching Experience
 

@@ -14,7 +14,13 @@ body {
 
   margin: 0;
   padding: $masthead-height 0 0;
-  padding-bottom: 9em;
+  /* Room for the absolutely positioned footer comes from the script that sets margin-bottom to the footer's
+     height; the fixed padding is only the fallback for when scripts do not run. */
+  padding-bottom: 0;
+
+  .no-js & {
+    padding-bottom: 12em;
+  }
   font-family: $global-font-family;
   line-height: 1.5;
 

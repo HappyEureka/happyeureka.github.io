@@ -15,40 +15,19 @@
 
 .open-source-intro {
   position: relative;
-  margin-bottom: 1.25rem;
-}
-
-.open-source-intro h1 {
-  margin: 0 0 0.9rem;
-  color: var(--global-text-color);
-  font-size: clamp(1.9rem, 3.2vw, 2.5rem);
-  font-weight: 700;
-  line-height: 1.16;
-  letter-spacing: -0.03em;
-}
-
-.open-source-summary {
-  max-width: 53ch;
-  margin: 0;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--global-border-color);
-  color: var(--global-text-color);
-  font-size: clamp(1rem, 1.45vw, 1.15rem) !important;
-  font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: -0.012em;
+  margin-bottom: 0.9rem;
 }
 
 .open-source-description {
-  max-width: 66ch;
-  margin: 0.85rem 0 0 !important;
+  margin: 0 !important;
   color: var(--global-text-color);
   font-size: 1rem !important;
   line-height: 1.62;
+  text-wrap: pretty;
 }
 
 .open-source-release {
-  padding: 1.7rem 0;
+  padding: 0.85rem 0;
   border-top: 1px solid var(--global-border-color);
 }
 
@@ -56,58 +35,37 @@
   border-bottom: 1px solid var(--global-border-color);
 }
 
-.open-source-release:first-child {
-  border-top: 0;
-}
-
-.open-source-release-meta {
-  margin: 0 0 0.45rem !important;
-  color: var(--global-text-color-light);
-  font-size: 0.72rem !important;
-}
-
 .open-source-release h2 {
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.3rem;
   color: var(--global-text-color);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 700;
   line-height: 1.3;
 }
 
+/* the one-line tagline sits beside the name, not on its own line */
 .open-source-release h2 span {
-  display: block;
-  margin-top: 0.15rem;
+  margin-left: 0.4rem;
+  color: var(--global-text-color-light);
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0;
 }
 
-.open-source-release-copy > p:not(.open-source-release-meta):not(.open-source-links) {
-  margin: 0 0 1rem;
+.open-source-release-copy > p:not(.open-source-links) {
+  margin: 0 0 0.35rem;
   color: var(--global-text-color);
   font-size: 0.88rem;
   line-height: 1.62;
+  text-wrap: pretty;
 }
 
+/* the repository link; its README carries the paper, the webpage, the language and the license */
 .open-source-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.25rem 0.9rem;
   margin: 0 !important;
-  font-size: 0.82rem !important;
-}
-
-.open-source-coming {
-  margin: 0 0 0.5rem;
-  padding: 1rem 0;
-  border-top: 1px solid var(--global-border-color);
-  border-bottom: 1px solid var(--global-border-color);
-}
-
-.open-source-coming p {
-  margin: 0 !important;
-  color: var(--global-text-color);
-  font-size: 0.78rem !important;
-  font-weight: 600;
-  line-height: 1.5;
+  font-family: $monospace;
+  font-size: 0.74rem !important;
 }

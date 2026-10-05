@@ -1,0 +1,201 @@
+<!-- Research page illustrations. Agents are round faces, tasks are cards, teal marks what is new or emergent.
+     Row one puts the agents between the tasks they shape and the environment they act in.
+     In "Agent interaction", information is a token that changes shape each time an agent passes it on.
+     A brace under that scene opens onto row two: one animated figure per collaboration policy.
+     The time axis at the bottom holds three rounds, a tick where each one starts, and is the playhead;
+     a button beside it pauses the block, and a click or drag on the axis moves to that moment.
+     Every round is one full execution: the row-one scenes play once per round, and each policy figure
+     plays its round. Defined links are solid and repeat every round,
+     and a rule is a small tag on a link (if, else, if fail); links that emerged from the agents are
+     dashed and belong to a single round.
+     Motion is defined in _sass/layout/_research.scss and only runs when the visitor has not asked for reduced motion. -->
+<section class="research-fun" aria-label="Illustrations. First: agents in the middle pass information to each other, transforming it as they do, with the tasks on their left, and with the environment on their right. Second, expanding on how agents interact: the same five agents under a fully defined, a partially defined, and an open-ended collaboration policy, over three rounds of execution along a time axis. The fully defined policy repeats the same pattern every round, the partially defined one repeats its defined part while the rest varies, and the open-ended one is different every round. Defined links are solid, and some carry a rule: if, else, or if fail. Links that emerged from the agents are dashed. Tokens change shape as each agent passes information on.">
+  <svg class="research-fun-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <marker id="rf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto">
+        <path d="M1,1.5 L9,5 L1,8.5 Z" class="rf-arrowhead"/>
+      </marker>
+      <marker id="rf-arrow-idle" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto">
+        <path d="M1,1.5 L9,5 L1,8.5 Z" class="rf-arrowhead rf-arrowhead--idle"/>
+      </marker>
+      <marker id="rf-arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto">
+        <path d="M1,1.5 L9,5 L1,8.5 Z" class="rf-arrowhead rf-arrowhead--accent"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="research-fun-flow">
+    <svg class="rf-flow-art rf-flow-1" viewBox="0 4 200 97" aria-hidden="true" focusable="false">
+      <rect x="20" y="45" width="20" height="20" rx="4.5" class="rf-card"/><path d="M25,52 H35 M25,58 H32" class="rf-line rf-soft"/>
+      <g class="rf-step rf-step--1"><path d="M40,55 C66,55 62,21 86,21" class="rf-line"/><rect x="86" y="11" width="20" height="20" rx="4.5" class="rf-card"/><path d="M91,18 H101 M91,24 H98" class="rf-line rf-soft"/></g>
+      <g class="rf-step rf-step--2"><path d="M40,55 C66,55 62,55 86,55" class="rf-line"/><rect x="86" y="45" width="20" height="20" rx="4.5" class="rf-card"/><path d="M91,52 H101 M91,58 H98" class="rf-line rf-soft"/></g>
+      <g class="rf-step rf-step--3"><path d="M40,55 C66,55 62,89 86,89" class="rf-line"/><rect x="86" y="79" width="20" height="20" rx="4.5" class="rf-card"/><path d="M91,86 H101 M91,92 H98" class="rf-line rf-soft"/></g>
+      <g class="rf-step rf-step--4"><path d="M106,21 C130,21 126,55 152,55" class="rf-line"/><path d="M106,55 C130,55 126,55 152,55" class="rf-line"/><path d="M106,89 C130,89 126,55 152,55" class="rf-line"/><rect x="152" y="45" width="20" height="20" rx="4.5" class="rf-card rf-tint"/><path d="M157,55.5 l3.6,3.6 l6.4,-7.6" class="rf-line rf-accent"/></g>
+    </svg>
+    <p class="rf-flow-label rf-flow-1">Task evolution</p>
+    <span class="research-cycle-edge research-fun-edge rf-flow-e1" aria-hidden="true"><i></i></span>
+    <svg class="rf-flow-art rf-flow-3" viewBox="0 4 200 97" aria-hidden="true" focusable="false">
+      <path d="M112.2,21.7 L146.8,37.9" class="rf-line rf-soft rf-dashed"/>
+      <path d="M152.9,55.7 L142.5,76.3" class="rf-line rf-soft rf-dashed"/>
+      <path d="M122.9,88.4 L77.1,88.4" class="rf-line rf-soft rf-dashed"/>
+      <path d="M57.5,76.3 L47.1,55.7" class="rf-line rf-soft rf-dashed"/>
+      <path d="M53.2,37.9 L87.8,21.7" class="rf-line rf-soft rf-dashed"/>
+      <path d="M53.2,49.3 L124.2,82.7" class="rf-line rf-soft rf-dashed"/>
+      <path d="M146.8,49.3 L75.8,82.7" class="rf-line rf-soft rf-dashed"/>
+      <g transform="translate(100 16)"><g class="rf-agent"><circle r="10" class="rf-skin"/><circle cx="-3.3" cy="-0.3" r="1.4" class="rf-eye"/><circle cx="3.3" cy="-0.3" r="1.4" class="rf-eye"/></g></g>
+      <g transform="translate(159 43.6)"><g class="rf-agent"><circle r="10" class="rf-skin"/><circle cx="-4.4" cy="-1.0" r="1.4" class="rf-eye"/><circle cx="2.2" cy="-1.0" r="1.4" class="rf-eye"/></g></g>
+      <g transform="translate(136.4 88.4)"><g class="rf-agent"><circle r="10" class="rf-skin"/><circle cx="-4.0" cy="-2.3" r="1.4" class="rf-eye"/><circle cx="2.6" cy="-2.3" r="1.4" class="rf-eye"/></g></g>
+      <g transform="translate(63.6 88.4)"><g class="rf-agent"><circle r="10" class="rf-skin"/><circle cx="-2.6" cy="-2.3" r="1.4" class="rf-eye"/><circle cx="4.0" cy="-2.3" r="1.4" class="rf-eye"/></g></g>
+      <g transform="translate(41 43.6)"><g class="rf-agent"><circle r="10" class="rf-skin"/><circle cx="-2.2" cy="-1.0" r="1.4" class="rf-eye"/><circle cx="4.4" cy="-1.0" r="1.4" class="rf-eye"/></g></g>
+      <g class="rf-tok rf-hop--1" style="offset-path:path('M112.2,21.7 L146.8,37.9')"><circle r="3.6"/></g>
+      <g class="rf-tok rf-hop--2" style="offset-path:path('M152.9,55.7 L142.5,76.3')"><rect x="-3.3" y="-3.3" width="6.6" height="6.6" rx="0.8"/></g>
+      <g class="rf-tok rf-hop--2" style="offset-path:path('M146.8,49.3 L75.8,82.7')"><rect x="-3.3" y="-3.3" width="6.6" height="6.6" rx="0.8"/></g>
+      <g class="rf-tok rf-hop--3" style="offset-path:path('M122.9,88.4 L77.1,88.4')"><path d="M0,-4.6 L4.3,3.1 L-4.3,3.1 Z"/></g>
+      <g class="rf-tok rf-hop--4" style="offset-path:path('M57.5,76.3 L47.1,55.7')"><circle r="3.6"/></g>
+      <g class="rf-tok rf-hop--5" style="offset-path:path('M53.2,37.9 L87.8,21.7')"><rect x="-3.3" y="-3.3" width="6.6" height="6.6" rx="0.8"/></g>
+      <g class="rf-tok rf-hop--5" style="offset-path:path('M53.2,49.3 L124.2,82.7')"><rect x="-3.3" y="-3.3" width="6.6" height="6.6" rx="0.8"/></g>
+    </svg>
+    <p class="rf-flow-label rf-flow-3">Agent interaction</p>
+    <span class="research-cycle-edge research-fun-edge rf-flow-e2" aria-hidden="true"><i></i></span>
+    <svg class="rf-flow-art rf-flow-5" viewBox="0 4 200 97" aria-hidden="true" focusable="false">
+      <line x1="8" y1="96.75" x2="192" y2="96.75" class="rf-line rf-soft"/>
+      <path d="M172,96 V58" class="rf-line"/>
+      <path d="M172,58 L186,63.5 L172,69 Z" class="rf-flag"/>
+      <path d="M158,32 L160,38 L166,40 L160,42 L158,48 L156,42 L150,40 L156,38 Z" class="rf-flag rf-env-spark"/>
+      <g class="rf-env-move"><path d="M4,78 h8 M2,85 h10 M4,92 h8" class="rf-line rf-soft rf-env-speed"/><g transform="translate(30 85)"><g class="rf-agent rf-ghost rf-env-ghost"><circle r="11" class="rf-skin"/><circle cx="-2.2" cy="-1.5" r="1.5" class="rf-eye"/><circle cx="5.0" cy="-1.5" r="1.5" class="rf-eye"/></g></g><g class="rf-env-helper"><g transform="translate(30 85)"><g class="rf-agent rf-strain" style="--d:0.50s"><circle r="11" class="rf-skin"/><circle cx="-2.0" cy="-1.5" r="1.5" class="rf-eye"/><circle cx="5.2" cy="-1.5" r="1.5" class="rf-eye"/></g></g></g><g transform="translate(53 85)"><g class="rf-agent rf-ghost rf-env-ghost"><circle r="11" class="rf-skin"/><circle cx="-2.2" cy="-1.5" r="1.5" class="rf-eye"/><circle cx="5.0" cy="-1.5" r="1.5" class="rf-eye"/></g></g><g class="rf-env-helper"><g transform="translate(53 85)"><g class="rf-agent rf-strain" style="--d:0.25s"><circle r="11" class="rf-skin"/><circle cx="-2.0" cy="-1.5" r="1.5" class="rf-eye"/><circle cx="5.2" cy="-1.5" r="1.5" class="rf-eye"/></g></g></g><g transform="translate(76 85)"><g class="rf-agent rf-strain"><circle r="11" class="rf-skin"/><circle cx="-2.0" cy="-1.5" r="1.5" class="rf-eye"/><circle cx="5.2" cy="-1.5" r="1.5" class="rf-eye"/></g></g><rect x="88.5" y="50" width="46" height="46" rx="6" class="rf-card"/><text x="111.5" y="80.5" class="rf-num">3</text></g>
+    </svg>
+    <p class="rf-flow-label rf-flow-5">Environment transition</p>
+  </div>
+
+  <div class="research-fun-brace" aria-hidden="true">
+    <svg viewBox="0 0 12 20" focusable="false"><path d="M1,19 Q1,10 12,10"/></svg>
+    <span></span>
+    <svg class="research-fun-brace-cusp" viewBox="0 0 28 20" focusable="false"><path d="M0,10 Q12,10 14,1 Q16,10 28,10"/></svg>
+    <span></span>
+    <svg viewBox="0 0 12 20" focusable="false"><path d="M11,19 Q11,10 0,10"/></svg>
+  </div>
+  <p class="research-fun-kicker research-fun-kicker--policies">How a collaboration policy shapes teamwork</p>
+  <div class="research-fun-policies">
+    <div class="research-fun-panel">
+      <svg viewBox="0 0 166 104" aria-hidden="true" focusable="false">
+        <g class="rf-link rf-every rf-p1"><path d="M69.7,17.5 L27.2,45.9" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g class="rf-link rf-never"><path d="M78.0,22.0 L78.0,41.0" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g class="rf-link rf-every rf-p1"><path d="M86.3,17.5 L128.8,45.9" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g class="rf-link rf-every rf-p2"><path d="M26.3,57.5 L68.8,85.9" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g class="rf-link rf-never"><path d="M78.0,62.0 L78.0,81.0" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g class="rf-link rf-every rf-p2"><path d="M129.7,57.5 L87.2,85.9" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g class="rf-link rf-every rf-p3"><path d="M87.1,96.2 Q224,52 89,11" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g transform="translate(78 12)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-2.8" cy="-0.2" r="1.2" class="rf-eye"/><circle cx="2.8" cy="-0.2" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(18 52)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-2.0" cy="-1.8" r="1.2" class="rf-eye"/><circle cx="3.6" cy="-1.8" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(78 52)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-2.8" cy="-2.1" r="1.2" class="rf-eye"/><circle cx="2.8" cy="-2.1" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(138 52)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-3.6" cy="-1.8" r="1.2" class="rf-eye"/><circle cx="2.0" cy="-1.8" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(78 92)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-2.8" cy="-2.2" r="1.2" class="rf-eye"/><circle cx="2.8" cy="-2.2" r="1.2" class="rf-eye"/></g></g>
+        <g class="rf-gate" transform="translate(48 32)"><rect x="-7.8" y="-5.3" width="15.6" height="10.6" rx="3.2"/><text y="2.6">if</text></g>
+        <g class="rf-gate" transform="translate(78 29.5)"><rect x="-12.6" y="-5.3" width="25.2" height="10.6" rx="3.2"/><text y="2.6">else</text></g>
+        <g class="rf-gate" transform="translate(131 78.7)"><rect x="-19.8" y="-5.3" width="39.6" height="10.6" rx="3.2"/><text y="2.6">if fail</text></g>
+      </svg>
+      <p>Fully defined</p>
+    </div>
+    <div class="research-fun-panel">
+      <svg viewBox="0 0 166 104" aria-hidden="true" focusable="false">
+        <g class="rf-link rf-every rf-p1"><path d="M69.7,17.5 L27.2,45.9" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g class="rf-link rf-never"><path d="M78.0,22.0 L78.0,41.0" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g class="rf-link rf-every rf-p1"><path d="M86.3,17.5 L128.8,45.9" class="rf-line" marker-end="url(#rf-arrow)"/></g>
+        <g class="rf-link rf-link--emergent rf-r1 rf-p2"><path d="M28.0,52.0 L67.0,52.0" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r1 rf-p2"><path d="M128.0,52.0 L89.0,52.0" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r1 rf-p3"><path d="M78.0,62.0 L78.0,81.0" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r2 rf-p2"><path d="M26.3,57.5 L68.8,85.9" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r2 rf-p2"><path d="M129.7,57.5 L87.2,85.9" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r2 rf-p3"><path d="M87.1,96.2 Q224,52 89,11" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r3 rf-p2"><path d="M128.0,52.0 L89.0,52.0" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r3 rf-p3"><path d="M78.0,62.0 L78.0,81.0" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r3 rf-p3"><path d="M26.3,57.5 L68.8,85.9" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g transform="translate(78 12)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-2.8" cy="-0.2" r="1.2" class="rf-eye"/><circle cx="2.8" cy="-0.2" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(18 52)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-2.0" cy="-1.8" r="1.2" class="rf-eye"/><circle cx="3.6" cy="-1.8" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(78 52)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-2.8" cy="-2.1" r="1.2" class="rf-eye"/><circle cx="2.8" cy="-2.1" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(138 52)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-3.6" cy="-1.8" r="1.2" class="rf-eye"/><circle cx="2.0" cy="-1.8" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(78 92)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-2.8" cy="-2.2" r="1.2" class="rf-eye"/><circle cx="2.8" cy="-2.2" r="1.2" class="rf-eye"/></g></g>
+        <g class="rf-gate" transform="translate(48 32)"><rect x="-7.8" y="-5.3" width="15.6" height="10.6" rx="3.2"/><text y="2.6">if</text></g>
+        <g class="rf-gate" transform="translate(78 29.5)"><rect x="-12.6" y="-5.3" width="25.2" height="10.6" rx="3.2"/><text y="2.6">else</text></g>
+      </svg>
+      <p>Partially defined</p>
+    </div>
+    <div class="research-fun-panel">
+      <svg viewBox="0 0 166 104" aria-hidden="true" focusable="false">
+        <g class="rf-link rf-link--emergent rf-r1 rf-p1"><path d="M38.5,23.3 L74.7,46.1" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r1 rf-p1"><path d="M129.8,19.8 L93.0,45.7" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r1 rf-p2"><path d="M75.1,56.5 L25.8,81.1" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r1 rf-p2"><path d="M93.0,56.3 L142.0,79.3" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r1 rf-p3"><path d="M18.0,76.2 L27.8,28.8" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r1 rf-p3"><path d="M150.0,74.2 L140.2,24.8" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r2 rf-p1"><path d="M40.0,17.6 L127.0,14.4" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r2 rf-p2"><path d="M140.0,23.8 L149.8,73.2" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r2 rf-p3"><path d="M142.0,84.1 L27.0,85.8" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r3 rf-p1"><path d="M24.9,81.5 L74.2,56.9" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r3 rf-p1"><path d="M143.0,79.7 L94.0,56.7" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r3 rf-p2"><path d="M75.5,46.7 L39.3,23.9" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g class="rf-link rf-link--emergent rf-r3 rf-p3"><path d="M40.0,17.6 L127.0,14.4" class="rf-line rf-accent rf-dashed rf-march" marker-end="url(#rf-arrow-accent)"/></g>
+        <g transform="translate(30 18)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-1.7" cy="-0.7" r="1.2" class="rf-eye"/><circle cx="3.9" cy="-0.7" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(138 14)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-3.7" cy="-0.4" r="1.2" class="rf-eye"/><circle cx="1.9" cy="-0.4" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(84 52)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-3.4" cy="-0.3" r="1.2" class="rf-eye"/><circle cx="2.2" cy="-0.3" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(16 86)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-2.2" cy="-2.2" r="1.2" class="rf-eye"/><circle cx="3.4" cy="-2.2" r="1.2" class="rf-eye"/></g></g>
+        <g transform="translate(152 84)"><g class="rf-agent"><circle r="8.5" class="rf-skin"/><circle cx="-3.3" cy="-2.2" r="1.2" class="rf-eye"/><circle cx="2.3" cy="-2.2" r="1.2" class="rf-eye"/></g></g>
+      </svg>
+      <p>Open-ended</p>
+    </div>
+  </div>
+
+  <div class="research-fun-time">
+    <p class="research-fun-kicker">Collaboration is a process</p>
+    <button type="button" class="research-fun-play" aria-label="Pause the animation">
+      <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path class="rf-icon-pause" d="M3.5,2.5 V9.5 M8.5,2.5 V9.5"/><path class="rf-icon-play" d="M3.5,1.8 L10.2,6 L3.5,10.2 Z"/></svg>
+    </button>
+    <div class="research-fun-time-line" aria-hidden="true">
+      <div class="research-fun-time-axis"><i></i><span class="rf-bound rf-bound--1"></span><span class="rf-bound rf-bound--2"></span><span class="rf-bound rf-bound--3"></span></div>
+      <svg viewBox="0 0 10 10" focusable="false"><path d="M1,1 L9,5 L1,9 Z"/></svg>
+    </div>
+    <span class="research-fun-time-label">time</span>
+  </div>
+
+  <div class="research-fun-legend">
+    <p><svg viewBox="0 0 34 10" aria-hidden="true" focusable="false"><line x1="1" y1="5" x2="31" y2="5" class="rf-line" marker-end="url(#rf-arrow)"/></svg>defined</p>
+    <p><svg viewBox="0 0 34 10" aria-hidden="true" focusable="false"><line x1="1" y1="5" x2="31" y2="5" class="rf-line rf-accent rf-dashed" marker-end="url(#rf-arrow-accent)"/></svg>emerged</p>
+  </div>
+</section>
+
+<script>
+  // Timeline controls for the illustrations: the button pauses and resumes every animation in the block,
+  // and a click or a drag along the time axis moves all of them to that moment.
+  // The button is hidden without this script and when the visitor asked for reduced motion (see _research.scss).
+  (function () {
+    var block = document.querySelector(".research-fun");
+    if (!block || !block.getAnimations) { return; }
+    var button = block.querySelector(".research-fun-play");
+    var line = block.querySelector(".research-fun-time-line");
+    var axis = block.querySelector(".research-fun-time-axis");
+    var playhead = axis.querySelector("i");
+
+    button.addEventListener("click", function () {
+      var paused = block.classList.toggle("is-paused");
+      button.setAttribute("aria-label", paused ? "Play the animation" : "Pause the animation");
+    });
+
+    // the playhead crosses the axis once per loop, so its duration is the length of the loop
+    function seek(event) {
+      var running = playhead.getAnimations()[0];
+      if (!running) { return; }
+      var box = axis.getBoundingClientRect();
+      var share = Math.min(Math.max((event.clientX - box.left) / box.width, 0), 0.999);
+      var time = share * running.effect.getComputedTiming().duration;
+      block.getAnimations({ subtree: true }).forEach(function (animation) { animation.currentTime = time; });
+    }
+
+    line.addEventListener("pointerdown", function (event) {
+      line.setPointerCapture(event.pointerId);
+      seek(event);
+    });
+    line.addEventListener("pointermove", function (event) {
+      if (line.hasPointerCapture(event.pointerId)) { seek(event); }
+    });
+  })();
+</script>

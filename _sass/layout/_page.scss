@@ -20,11 +20,13 @@
   @include breakpoint($large) {
     @include span(10 of 12 last);
     @include prefix(0.5 of 12);
-    @include suffix(2 of 12);
+    /* no right-hand gutter: this site has no right sidebar, and the text column should match the
+       920px used by the Research, Projects, and Open Source pages */
   }
 
   .page__inner-wrap {
     @include full();
+    max-width: 920px;
 
     .page__content,
     .page__meta,

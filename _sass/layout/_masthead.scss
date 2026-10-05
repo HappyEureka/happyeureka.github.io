@@ -65,3 +65,8 @@
     font-weight: 700;
   }
 }
+
+/* the tab for the page being viewed: an underline bar in the link's own color, no width change */
+.greedy-nav .masthead__menu-item--current > a {
+  box-shadow: inset 0 -2px 0 currentColor;
+}

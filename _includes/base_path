@@ -1,5 +1,3 @@
-{% if site.url %}
-  {% assign base_path = site.url | append: site.baseurl %}
-{% else %}
-  {% assign base_path = site.github.url %}
-{% endif %}
+{% comment %}Root-relative prefix for site links, so pages work on the live site and on a local server.
+Social-preview and canonical URLs that must be absolute are built in seo.html from site.url.{% endcomment %}
+{% assign base_path = site.baseurl %}
