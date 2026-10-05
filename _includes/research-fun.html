@@ -164,9 +164,11 @@
 </section>
 
 <script>
-  // Timeline controls for the illustrations: the button pauses and resumes every animation in the block,
-  // and a click or a drag along the time axis moves all of them to that moment.
-  // The button is hidden without this script and when the visitor asked for reduced motion (see _research.scss).
+  /* Timeline controls for the illustrations: the button pauses and resumes every animation in the block,
+     and a click or a drag along the time axis moves all of them to that moment.
+     The button is hidden without this script and when the visitor asked for reduced motion (see _research.scss).
+     Comments here are block comments on purpose: the live site compresses its HTML onto one line
+     (compress_html in _config.yml), and a line comment would then swallow the code after it. */
   (function () {
     var block = document.querySelector(".research-fun");
     if (!block || !block.getAnimations) { return; }
@@ -180,7 +182,7 @@
       button.setAttribute("aria-label", paused ? "Play the animation" : "Pause the animation");
     });
 
-    // the playhead crosses the axis once per loop, so its duration is the length of the loop
+    /* the playhead crosses the axis once per loop, so its duration is the length of the loop */
     function seek(event) {
       var running = playhead.getAnimations()[0];
       if (!running) { return; }

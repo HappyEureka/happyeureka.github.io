@@ -272,15 +272,18 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
 </dialog>
 
 <script>
-  // Overview toggles: without this script the overviews stay visible (see .js rules in _research.scss).
+  /* Comments in this script are block comments on purpose: the live site compresses its HTML onto one
+     line (compress_html in _config.yml), and a line comment would then swallow the code after it. */
+
+  /* Overview toggles: without this script the overviews stay visible (see .js rules in _research.scss). */
   document.querySelectorAll(".research-work-toggle").forEach(function (button) {
     button.addEventListener("click", function () {
       button.setAttribute("aria-expanded", button.getAttribute("aria-expanded") === "true" ? "false" : "true");
     });
   });
 
-  // Figure viewer: a thumbnail opens its full figure over the page; a click anywhere or Escape closes it.
-  // Without this script the thumbnail is a plain link to the image.
+  /* Figure viewer: a thumbnail opens its full figure over the page; a click anywhere or Escape closes it.
+     Without this script the thumbnail is a plain link to the image. */
   (function () {
     var box = document.querySelector(".figure-lightbox");
     if (!box || typeof box.showModal !== "function") { return; }
