@@ -7,6 +7,8 @@ redirect_from:
   - /about.html
 ---
 
+<h1 class="screen-reader-text">Hanqing Yang</h1>
+
 I am a Ph.D. student in Electrical and Computer Engineering at [Carnegie Mellon University](https://www.cmu.edu/), advised by [Prof. Carlee Joe-Wong](https://www.andrew.cmu.edu/user/cjoewong/), where I work on collaboration among AI agents. Before CMU, I worked on machine learning for healthcare at [Washington University in St. Louis](https://washu.edu/), advised by [Prof. Chenyang Lu](https://www.cse.wustl.edu/~lu/).
 
 **Research Interests.** I am curious about collaboration among intelligent decision-making entities: what *defines* it, how to *represent* it, and what becomes *computationally* possible once it is represented, and at what cost. I am especially interested in how collaboration policy shapes teamwork among AI agents, and what behavior emerges under partially defined or open-ended policies. I approach collaboration by looking at how it unfolds as agents interact, tasks are transformed, interdependencies emerge, and individual contributions become collectively consequential.

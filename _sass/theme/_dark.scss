@@ -58,5 +58,6 @@ html[data-theme="dark"] {
     --global-masthead-link-color-hover  : #ffffff;
     --global-text-color                 : #{$dark-text};
     --global-text-color-light           : #{$dark-text-muted};
+    --global-text-color-muted           : #{$dark-text-muted};
     --global-thead-color                : #{$dark-bg-raised};
 }

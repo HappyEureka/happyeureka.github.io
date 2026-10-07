@@ -73,7 +73,7 @@
 
 .research-fun-kicker {
   margin: 0 0 0.35rem !important;
-  color: var(--global-text-color-light);
+  color: var(--global-text-color-muted);
   font-family: $monospace;
   font-size: 0.66rem !important;
   font-weight: 500;
@@ -293,7 +293,7 @@
 }
 
 .research-fun-time-label {
-  color: var(--global-text-color-light);
+  color: var(--global-text-color-muted);
   font-size: 0.72rem;
   font-style: italic;
   line-height: 21px;
@@ -349,7 +349,7 @@
   align-items: center;
   gap: 0.5rem;
   margin: 0 !important;
-  color: var(--global-text-color-light);
+  color: var(--global-text-color-muted);
   font-size: 0.72rem !important;
   line-height: 1.35;
 }
@@ -910,7 +910,7 @@
 
 .research-work-authors {
   margin: 0 0 0.3rem !important;
-  color: var(--global-text-color-light);
+  color: var(--global-text-color-muted);
   font-size: 0.78rem !important;
   line-height: 1.5;
 }
