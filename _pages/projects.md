@@ -16,7 +16,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
     <div class="research-work-list">
       <article id="work-tea" class="research-work">
         <div class="research-work-copy">
-          <h3>TEA: Structurally Representing Arbitrary LLM Agents Collaboration</h3>
+          <h3>From Prescribed to Emergent: Representing and Exploiting Structure in LLM Agents Collaboration</h3>
           <p class="research-work-authors"><strong>H. Yang</strong>, Y. Mao, Z. Zhang, Y. Yao, J. Chen, T. Lan, and C. Joe-Wong</p>
           <div class="research-work-more">
             <span class="research-work-venue">Preprint 2026</span>
