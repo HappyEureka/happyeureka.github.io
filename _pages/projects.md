@@ -22,6 +22,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
             <span class="research-work-venue">Preprint 2026</span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-1">Overview</button>
+              <a href="/tea/TEA.pdf" download="TEA.pdf">Paper</a>
               <a href="/tea/">Webpage</a>
             </span>
             <p class="research-work-overview" id="overview-1">Introduces Task-Environment-Agents (TEA), a structural representation that couples an Agent Interaction Graph with a Task Activity Graph and the shared environment. It makes evolving collaboration explicit without prescribing agent reasoning, behavior, or communication order, and Infuse uses TEA records to recover, assess, and improve collaboration policies.</p>

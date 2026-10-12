@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TEA teaser: record the scroll, roll it up, infuse a new policy</title>
+<title>TEA teaser: roll out the scroll, unroll it to infuse a new policy</title>
 <style>
   * { box-sizing: border-box; }
   body {
@@ -41,7 +41,7 @@
 <body>
 <main>
   <svg id="scene" viewBox="0 0 1200 560" role="img"
-       aria-label="A scroll unrolls while agents collaborate, recording tasks, agent activations, and environment changes. Rolling the scroll back up merges each agent's activations into a node and tallies messages into weighted edges, recovering the collaboration topology and rules. The rolled record steeps in a teapot, which pours out a proposed policy for the next episode.">
+       aria-label="A scroll rolls out while agents collaborate, recording tasks, agent activations, and environment changes. Rolling the scroll back up merges each agent's activations into a node and tallies messages into weighted edges, recovering the collaboration topology and rules. The rolled record steeps in a teapot. The view zooms inside the pot, where the record is unrolled again beside the recovered policy and each part is kept, revised, or left open by querying the record. The view pulls back to a cup holding that assessed policy; the cup then gives way to the proposed policy for the next episode.">
     <defs id="defs"></defs>
   </svg>
   <div class="status">
@@ -52,7 +52,7 @@
     <button id="play">Pause</button>
     <button id="replay">Replay</button>
     <button class="chip" data-scene="0">1 Execute</button>
-    <button class="chip" data-scene="1">2 Recover</button>
+    <button class="chip" data-scene="1">2 Recover/Discover</button>
     <button class="chip" data-scene="2">3 Infuse</button>
     <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Timeline">
     <span id="clock">0:00 / 0:18</span>
@@ -146,9 +146,8 @@ const BEATS = [
   [8.9, "P joins and closes k1. Done."]
 ];
 const NODE = { P: [1000, 175], W1: [900, 275], W2: [1000, 275], W3: [1100, 275], V: [1000, 375] };
-const NODE2 = { P: [960, 150], W1: [890, 225], W2: [960, 225], W3: [1030, 225], V: [960, 300] };
 
-const S1 = 2.7, S2 = 5.7, S3 = 9.6, TOTAL = S1 + S2 + S3;   // Recover: 4.2 s roll + 1.5 s hold; Infuse paced by S3_MAP below
+const S1 = 2.7, S2 = 5.7, S3 = 10.1, TOTAL = S1 + S2 + S3;   // Recover: 4.2 s roll + 1.5 s hold; Infuse paced by S3_MAP below
 
 /* ---------- build the scene ---------- */
 const svg = $("scene"), defs = $("defs");
@@ -325,7 +324,7 @@ el("text", { x: 718, y: 200, text: "inferred rules", "font-size": 15, "font-styl
 const gGhost = el("g", {}, svg);
 const ghosts = ACTS.map(a => el("rect", { x: 0, y: 0, width: 10, height: 10, rx: 6, fill: C.actOn, stroke: C.ink, "stroke-width": 1.4, opacity: 0 }, gGhost));
 
-/* --- teapot, cup, stream, next policy (scene 3) --- */
+/* --- teapot, cup, next policy (scene 3) --- */
 const gTeapot = el("g", { id: "teapot", opacity: 0 }, svg);
 const BODY = "M-118,-10 C-124,60 -80,110 0,112 C80,110 124,60 118,-10 C112,-62 60,-84 0,-84 C-60,-84 -112,-62 -118,-10 Z";
 el("path", { d: "M-112,-20 C-192,-30 -192,62 -118,72", stroke: "#2f3542", "stroke-width": 11, fill: "none", "stroke-linecap": "round" }, gTeapot);
@@ -340,11 +339,10 @@ el("circle", { cx: 0, cy: -101, r: 9, fill: "#2f3542" }, gLid);
 const gSteam = el("g", { fill: "none", stroke: "#a7b1bd", "stroke-width": 3.5, "stroke-linecap": "round" }, gTeapot);
 const steam = ["M-30,-122 c-12,-16 10,-26 -2,-44", "M0,-130 c-10,-18 12,-28 0,-50", "M30,-122 c-12,-16 10,-26 -2,-44"].map(d => el("path", { d, opacity: 0 }, gSteam));
 const POT = { x: 740, y: 330 }, TIP = [POT.x + 160, POT.y - 97];   // pot origin and spout tip (pour pivot)
-const stream = el("path", { d: `M${TIP[0]},${TIP[1]} C${TIP[0] + 10},290 945,330 955,388`, stroke: C.tea, "stroke-width": 5, fill: "none", "stroke-linecap": "round", opacity: 0 }, svg);
 const gCup = el("g", { transform: "translate(960 430)", opacity: 0 }, svg);
 el("ellipse", { cx: 0, cy: 62, rx: 62, ry: 9, fill: "#e9e4da", stroke: "#2f3542", "stroke-width": 2 }, gCup);
 el("path", { d: "M-42,-40 L-34,42 C-33,52 -25,56 -15,56 L15,56 C25,56 33,52 34,42 L42,-40 Z", fill: "#fbf8f2", stroke: "#2f3542", "stroke-width": 3 }, gCup);
-const tea = el("rect", { x: -42, y: 56, width: 84, height: 0, fill: C.tea, opacity: 0.85, "clip-path": "url(#cupClip)" }, gCup);
+el("rect", { x: -42, y: -34, width: 84, height: 90, fill: C.tea, opacity: 0.22, "clip-path": "url(#cupClip)" }, gCup);
 el("path", { d: "M42,-24 C72,-24 72,26 38,28", stroke: "#2f3542", "stroke-width": 7, fill: "none", "stroke-linecap": "round" }, gCup);
 el("ellipse", { cx: 0, cy: -40, rx: 42, ry: 7, fill: "#fbf8f2", stroke: "#2f3542", "stroke-width": 3 }, gCup);
 
@@ -365,33 +363,88 @@ el("rect", { x: -38, y: -42, width: 76, height: 14, rx: 3, fill: "#e5d9bd", stro
 el("circle", { cx: 0, cy: -40, r: 3, fill: "#8a7a5c" }, gBag);
 const BAG = [740, 120];   // where the bag waits, above the pot
 
-const gGamma = el("g", { id: "gamma", opacity: 0 }, svg);
-const EDGES2 = [
-  { f: "P", t: "W1" }, { f: "P", t: "W2" }, { f: "P", t: "W3" },
-  { f: "W1", t: "V" }, { f: "W2", t: "V" }, { f: "W3", t: "V" },
-  { f: "V", t: "W3", arc: [1080, 262], off: [0, 0], text: "if fail → owner", textOff: [34, -2] },
-  { f: "W1", t: "W2", dashed: true, open: true }
-];
-const gamma = buildGraph(gGamma, NODE2, EDGES2, 17, { stroke: C.def, width: 2, marker: "url(#mBlue)" });
-for (const { e, path } of gamma.edges) if (e.open) { path.setAttribute("stroke", C.gray); path.setAttribute("marker-end", "url(#mGray)"); }
-el("text", { x: 960, y: 120, text: "proposed policy Γ′", "font-size": 15, "font-style": "italic", "text-anchor": "middle", fill: C.def }, gGamma);
-el("text", { x: 960, y: 342, text: "split by owner · workers in parallel · failures back to the owner", "font-size": 12.5, "text-anchor": "middle", fill: "#2c3e50" }, gGamma);
-el("text", { x: 960, y: 359, text: "kept in blue · revised: V → owner · W1 → W2 left open", "font-size": 12.5, "font-style": "italic", "text-anchor": "middle", fill: "#55708c" }, gGamma);
+/* --- inside the pot: the stage is shared by the record (left) and the recovered policy (right); each verdict
+   points at the part of the record it rests on. Everything in here zooms in with the pot and back out of it. --- */
+const gInside = el("g", { opacity: 0 }, svg);
+const INSIDE_C = [600, 290];                                     // what the zoom is centred on
+el("rect", { x: 24, y: 40, width: 1152, height: 472, rx: 48, fill: "#fbf7ee", stroke: "#2f3542", "stroke-width": 3 }, gInside);
+el("rect", { x: 24, y: 40, width: 1152, height: 472, rx: 48, fill: C.tea, opacity: 0.08 }, gInside);
+el("text", { x: 52, y: 70, text: "inside the pot", "font-size": 14, "font-style": "italic", fill: "#8a7a5c" }, gInside);
+const REC = { s: 0.56, x: -10.5, y: 56 };                       // the record, scaled onto the left half
+const recPt = (x, y) => [REC.x + REC.s * x, REC.y + REC.s * y];
+const gRecord = el("g", { opacity: 0 }, gInside);
+const gRecordArt = el("g", { transform: `translate(${REC.x} ${REC.y}) scale(${REC.s})` }, gRecord);
+el("use", { href: "#paperContent" }, gRecordArt);
+el("text", { x: 36, y: 104, text: "the record, as captured in TEA", "font-size": 13, "font-style": "italic", fill: "#55708c" }, gRecord);
+/* evidence, in record coordinates: hand-out and reports; the failure's detour; the one unprescribed message */
+const EVIDENCE = {
+  good: [[222, 212, 84, 160], [352, 132, 70, 70], [448, 252, 96, 156]],
+  bad: [[578, 106, 300, 300]],
+  open: [[396, 256, 52, 72]]
+};
+const evidenceEls = {};
+for (const v in EVIDENCE) evidenceEls[v] = EVIDENCE[v].map(([x, y, w, h]) =>
+  el("rect", { x, y, width: w, height: h, rx: 8, fill: C[v], "fill-opacity": 0.16, stroke: C[v], "stroke-width": 3, opacity: 0 }, gRecordArt));
+/* the query: a dashed line from the policy to the evidence, and the reason in words */
+const QUERY = {
+  good: { from: [938, 250], to: recPt(422, 167), text: "keep · P split the task, workers worked in parallel and reported to V: the tasks were updated and tested" },
+  bad: { from: [974, 372], to: recPt(878, 256), text: "revise · V's failure went up to P and back down to W3, a detour: route failures to the owner" },
+  open: { from: [950, 275], to: recPt(448, 292), text: "leave open · W1 → W2 happened once; nothing in T or Z is tied to it" }
+};
+const gQuery = el("g", { fill: "none" }, gInside);
+const queryEls = {}, reasonEls = {};
+[["good", 352], ["bad", 384], ["open", 416]].forEach(([v, y]) => {
+  const { from, to, text } = QUERY[v];
+  queryEls[v] = el("path", { d: `M${from[0]},${from[1]} Q${(from[0] + to[0]) / 2},${Math.min(from[1], to[1]) - 40} ${to[0]},${to[1]}`,
+    stroke: C[v], "stroke-width": 2, "stroke-dasharray": "6 5", opacity: 0 }, gQuery);
+  const g = el("g", { opacity: 0 }, gInside);
+  el("circle", { cx: 44, cy: y - 5, r: 5, fill: C[v] }, g);
+  el("text", { x: 56, y, text, "font-size": 14.5, fill: "#2c3e50" }, g);
+  reasonEls[v] = g;
+});
+const assessTitle = el("text", { x: 600, y: 74, text: "Infuse: query the record to assess the recovered policy", "font-size": 22, "font-style": "italic", "text-anchor": "middle", fill: C.green, opacity: 0 }, gInside);
 
-/* assessment of the recovered policy: the same edges, judged keep / revise / leave open */
+/* assessment of the recovered policy: the same edges, large, judged keep / revise / leave open */
 const VERDICT = e => (e.f === "V" && e.t === "P") ? "bad" : (e.f === "W1" && e.t === "W2") ? "open" : "good";
-const ASSESS_DELAY = e => e.f === "P" ? 0 : e.f.startsWith("W") && e.t === "V" ? 0.25 : e.f === "V" ? 0.5 : 0.75;
 const MARK = { good: "url(#mGood)", bad: "url(#mBad)", open: "url(#mOpen)" };
-const gAssess = el("g", { opacity: 0 }, svg);
-const EDGES_A = EDGES.map(e => ({ f: e.f, t: e.t, msgs: e.msgs, arc: (e.f === "V" && e.t === "P") ? [1170, 225] : undefined, off: [14, 0] }));
-const assess = buildGraph(gAssess, NODE2, EDGES_A, 17, { stroke: C.ink, width: 2, marker: "url(#mInk)" });
+const gAssess = el("g", { opacity: 0 }, gInside);
+const gAssessArt = el("g", { id: "assessArt" }, gAssess);   // the graph itself, so the cup can show a copy of it
+const EDGES_A = EDGES.map(e => ({ f: e.f, t: e.t, msgs: e.msgs, arc: (e.f === "V" && e.t === "P") ? [1165, 275] : undefined, off: [16, 0] }));
+const assess = buildGraph(gAssessArt, NODE, EDGES_A, 26, { stroke: C.ink, width: 2, marker: "url(#mInk)" });
 for (const { e, label } of assess.edges) label.textContent = e.msgs.length > 1 ? String(e.msgs.length) : "";
-el("text", { x: 960, y: 120, text: "assess the recovered policy", "font-size": 15, "font-style": "italic", "text-anchor": "middle", fill: "#55708c" }, gAssess);
-const gVerdict = el("g", { opacity: 0, "font-size": 13 }, svg);
-[["keep", C.good, 880], ["revise", C.bad, 960], ["leave open", C.open, 1040]].forEach(([w, c, x]) => {
+el("text", { x: 1000, y: 128, text: "recovered policy", "font-size": 15, "font-style": "italic", "text-anchor": "middle", fill: "#55708c" }, gAssess);
+const gVerdict = el("g", { opacity: 0, "font-size": 13 }, gInside);
+[["keep", C.good, 920], ["revise", C.bad, 1000], ["leave open", C.open, 1080]].forEach(([w, c, x]) => {
   el("circle", { cx: x - 26, cy: 94, r: 5, fill: c }, gVerdict);
   el("text", { x: x - 16, y: 98.5, text: w, fill: c, "font-weight": "bold" }, gVerdict);
 });
+
+/* ...and the view pulls back to a cup holding the assessed policy: a copy of that very graph, fitted inside the cup.
+   At the end the cup goes and the proposed policy Γ′ stands on its own, full size, in the middle of the stage. */
+const CUP = { x: 600, y: 300, s: 2.4 };   // alone in the middle of the stage once the pot has been left behind
+const CUP_ART = "translate(0 6) scale(0.29) translate(-987 -275)";   // the big graph's box, centred in the cup
+const cupAssess = el("g", { transform: CUP_ART, opacity: 0 }, gCup);
+el("use", { href: "#assessArt" }, cupAssess);
+const gGamma = el("g", { transform: "translate(-387 15)", opacity: 0 }, svg);   // the big graph's box, centred on the stage
+const EDGES2 = [
+  { f: "P", t: "W1" }, { f: "P", t: "W2" }, { f: "P", t: "W3" },
+  { f: "W1", t: "V" }, { f: "W2", t: "V" }, { f: "W3", t: "V" },
+  { f: "V", t: "W3", arc: [1150, 350], off: [0, 0], text: "if fail → owner", textOff: [48, 4] },
+  { f: "W1", t: "W2", dashed: true, open: true }
+];
+const gamma = buildGraph(gGamma, NODE, EDGES2, 26, { stroke: C.def, width: 2, marker: "url(#mBlue)" });
+for (const { e, path } of gamma.edges) if (e.open) { path.setAttribute("stroke", C.gray); path.setAttribute("marker-end", "url(#mGray)"); }
+/* what the cup holds, said above it; what Γ′ changes, said below it */
+const cupTitle = el("text", { x: CUP.x, y: 156, text: "the policy, assessed", "font-size": 15, "font-style": "italic", "text-anchor": "middle", fill: "#55708c", opacity: 0 }, svg);
+const cupKey = el("g", { opacity: 0, "font-size": 12.5, "font-weight": "bold" }, svg);
+[["keep", C.good, CUP.x - 75], ["revise", C.bad, CUP.x - 8], ["leave open", C.open, CUP.x + 66]].forEach(([w, c, x]) => {
+  el("circle", { cx: x - 24, cy: 176, r: 4.5, fill: c }, cupKey);
+  el("text", { x: x - 15, y: 180.5, text: w, fill: c }, cupKey);
+});
+const gammaTitle = el("text", { x: 600, y: 134, text: "proposed policy Γ′", "font-size": 16, "font-style": "italic", "text-anchor": "middle", fill: C.def, opacity: 0 }, svg);
+const gammaNotes = el("g", { opacity: 0 }, svg);
+el("text", { x: 600, y: 446, text: "split by owner · workers in parallel · failures back to the owner", "font-size": 12.5, "text-anchor": "middle", fill: "#2c3e50" }, gammaNotes);
+el("text", { x: 600, y: 464, text: "kept in blue · revised: V → owner · W1 → W2 left open", "font-size": 12.5, "font-style": "italic", "text-anchor": "middle", fill: "#55708c" }, gammaNotes);
 const nextText = el("text", { x: 600, y: 70, text: "next episode: execute Γ′ · record · infuse again ↻", "font-size": 22, "font-style": "italic", "text-anchor": "middle", fill: C.green, opacity: 0 }, svg);
 
 /* ---------- precomputed pass times for the roll-up (scene 2) ---------- */
@@ -411,9 +464,11 @@ function setFront(F) {
   rollerR.setAttribute("transform", `translate(${F + 16} 0)`);
 }
 function hideScene3(fade) {
-  gTeapot.setAttribute("opacity", 0); gCup.setAttribute("opacity", 0); stream.setAttribute("opacity", 0); gBag.setAttribute("opacity", 0);
-  gAssess.setAttribute("opacity", 0); gVerdict.setAttribute("opacity", 0);
-  gGamma.setAttribute("opacity", 0); nextText.setAttribute("opacity", 0);
+  gTeapot.setAttribute("opacity", 0); gCup.setAttribute("opacity", 0); gBag.setAttribute("opacity", 0);
+  cupTitle.setAttribute("opacity", 0); cupKey.setAttribute("opacity", 0); gGamma.setAttribute("opacity", 0); gammaTitle.setAttribute("opacity", 0); gammaNotes.setAttribute("opacity", 0);
+  gInside.setAttribute("opacity", 0); gAssess.setAttribute("opacity", 0); gVerdict.setAttribute("opacity", 0); gRecord.setAttribute("opacity", 0); assessTitle.setAttribute("opacity", 0);
+  for (const v in queryEls) { queryEls[v].setAttribute("opacity", 0); reasonEls[v].setAttribute("opacity", 0); }
+  nextText.setAttribute("opacity", 0);
 }
 function setText(phase, text) { $("phase").textContent = phase; $("text").textContent = text; }
 
@@ -480,12 +535,13 @@ function scene2(t) {
   ghostPaper.setAttribute("opacity", 0.08 * seg(t, 0, 0.6));
   gFrame.setAttribute("opacity", seg(t, 2.1, 2.7));
   hideScene3();
-  setText("2 · Recover", t < ROLL_T
+  setText("2 · Recover/Discover", t < ROLL_T
     ? "Roll up: activations → nodes, messages → weighted edges, rules as evidence passes."
-    : "Recovered topology and rules.");
+    : "Recovered and discovered topology and rules.");
 }
-/* Infuse pacing: scene seconds → choreography seconds. Bagging 2.3 s, steep 1.2 s, pour 1.3 s, then assess → Γ′ → next episode in real time. */
-const S3_MAP = [[0, 0], [2.3, 2.6], [3.5, 5.0], [4.8, 7.0], [9.6, 11.8]];
+/* Infuse pacing: scene seconds → choreography seconds. Bagging 1.2 s and steeping 0.3 s, then in real time the zoom
+   into the pot, the queries, the zoom back out, the cup, and the proposed policy, with a second's hold on the final frame. */
+const S3_MAP = [[0, 0], [1.2, 2.6], [1.5, 3.2], [10.1, 11.8]];
 function s3time(t) {
   for (let i = 0; i + 1 < S3_MAP.length; i++) {
     const [a, oa] = S3_MAP[i], [b, ob] = S3_MAP[i + 1];
@@ -495,7 +551,7 @@ function s3time(t) {
 }
 function scene3(t) {
   t = s3time(t);
-  const fadeAll = 1 - seg(t, 11.3, 11.8);
+  const fadeAll = 1 - seg(t, 11.5, 11.8);
   setClock(UMAX, 0);
   ghostPaper.setAttribute("opacity", 0.08 * (1 - seg(t, 0, 0.4)));
   /* scroll and topology fly into the tea bag together */
@@ -521,47 +577,65 @@ function scene3(t) {
   for (const id in topo.nodes) { topo.nodes[id].setAttribute("r", 26); topo.nodes[id].setAttribute("fill", C.act); }
   $("ruleTitle").setAttribute("opacity", 1); ruleEls.forEach(r => r.setAttribute("opacity", 1));
   gFrame.setAttribute("opacity", 1);
-  /* teapot: appear, lid opens, steep, pour */
+  /* teapot: appear, lid opens, steep; then the view zooms into it for the analysis, and back out for the pour */
   const appear = easeOut(seg(t, 0, 0.6));
   const lift = easeInOut(seg(t, 0.9, 1.4)) * (1 - easeInOut(seg(t, 2.25, 2.6)));
-  const tilt = 34 * easeInOut(seg(t, 5.0, 5.9)) * (1 - easeInOut(seg(t, 6.7, 7.3)));   // clockwise about the spout tip: spout dips, back lifts
-  const potGone = seg(t, 6.85, 7.25);   // once the pour ends the pot recedes, before the policy rises from the cup beside it
-  gTeapot.setAttribute("opacity", appear * (1 - potGone) * fadeAll);
-  gTeapot.setAttribute("transform", `rotate(${tilt} ${TIP[0]} ${TIP[1]}) translate(${POT.x} ${POT.y}) scale(${lerp(0.7, 1, appear)})`);
+  const zoom = easeInOut(seg(t, 3.2, 3.9));   // 0 = the pot on its table, 1 = we are inside it
+  const sc = lerp(lerp(0.7, 1, appear), 4.6, zoom);
+  const potX = lerp(POT.x, INSIDE_C[0], zoom), potY = lerp(POT.y + 14, INSIDE_C[1], zoom) - 14 * sc;   // the body centre moves to the middle as it grows
+  const hidden = seg(t, 3.5, 3.9);   // out of view once we are inside it; it does not come back
+  gTeapot.setAttribute("opacity", appear * (1 - hidden) * fadeAll);
+  gTeapot.setAttribute("transform", `translate(${potX} ${potY}) scale(${sc})`);
   gLid.setAttribute("transform", `translate(${-18 * lift} ${-62 * lift}) rotate(${-24 * lift} -58 -84)`);
-  const steep = seg(t, 2.6, 3.1) * (1 - seg(t, 4.8, 5.2));
+  const steep = seg(t, 2.6, 3.0) * (1 - seg(t, 3.3, 3.8));
   steam.forEach((w, k) => {
     const ph = ((t * 0.55) + k * 0.33) % 1;
     w.setAttribute("opacity", Math.sin(Math.PI * ph) * 0.9 * steep);
     w.setAttribute("transform", `translate(0 ${-8 - 34 * ph})`);
   });
-  potTint.setAttribute("opacity", 0.32 * seg(t, 2.8, 3.8));
-  potLabel.setAttribute("opacity", seg(t, 3.0, 3.6));
-  stream.setAttribute("opacity", seg(t, 5.55, 5.85) * (1 - seg(t, 6.55, 6.85)) * fadeAll);
-  gCup.setAttribute("opacity", seg(t, 2.5, 3.1) * fadeAll);
-  const level = seg(t, 5.7, 6.8);
-  tea.setAttribute("height", 90 * level); tea.setAttribute("y", 56 - 90 * level);
-  /* the recovered policy rises from the cup and is assessed edge by edge */
-  const g = easeOut(seg(t, 7.0, 8.0)), toGamma = seg(t, 9.8, 10.4);
-  gAssess.setAttribute("opacity", g * (1 - toGamma) * fadeAll);
-  gAssess.setAttribute("transform", `translate(0 ${70 * (1 - g)})`);
+  potTint.setAttribute("opacity", 0.32 * seg(t, 2.7, 3.2));
+  potLabel.setAttribute("opacity", seg(t, 2.9, 3.3));
+  /* inside the pot: the record and the recovered policy, checked against each other one verdict at a time */
+  const inside = seg(t, 3.4, 3.9) * (1 - seg(t, 7.8, 8.4));
+  const shrink = 1 - 0.85 * easeInOut(seg(t, 7.8, 8.5));
+  gInside.setAttribute("opacity", inside * fadeAll);
+  gInside.setAttribute("transform", `translate(${INSIDE_C[0]} ${INSIDE_C[1]}) scale(${shrink}) translate(${-INSIDE_C[0]} ${-INSIDE_C[1]})`);
+  const stage = easeOut(seg(t, 3.7, 4.2));
+  gRecord.setAttribute("opacity", stage);
+  assessTitle.setAttribute("opacity", stage);
+  gAssess.setAttribute("opacity", stage);
+  gAssess.setAttribute("transform", `translate(0 ${30 * (1 - stage)})`);
+  gVerdict.setAttribute("opacity", stage);
+  const AT = { good: 4.3, bad: 5.4, open: 6.5 };   // when each query starts
+  for (const v in AT) {
+    const a = AT[v], show = seg(t, a, a + 0.3);
+    evidenceEls[v].forEach(r => r.setAttribute("opacity", show));
+    queryEls[v].setAttribute("opacity", show);
+    reasonEls[v].setAttribute("opacity", seg(t, a + 0.4, a + 0.7));
+  }
   for (const { e, path, label } of assess.edges) {
-    const v = VERDICT(e), d = 8.0 + ASSESS_DELAY(e), k = seg(t, d, d + 0.3);
+    const v = VERDICT(e), d = AT[v] + 0.3, k = seg(t, d, d + 0.3);
     const col = k > 0 ? C[v] : C.ink;
     path.setAttribute("stroke", col); path.setAttribute("marker-end", k > 0 ? MARK[v] : "url(#mInk)");
     path.setAttribute("stroke-width", 2 + 2.5 * k * (1 - 0.6 * seg(t, d + 0.3, d + 0.8)));
     label.setAttribute("fill", col);
   }
-  gVerdict.setAttribute("opacity", seg(t, 8.0, 8.4) * fadeAll);
-  /* ...then becomes Γ′ in place: keep in blue, revised route added, open edge left gray */
-  gGamma.setAttribute("opacity", toGamma * fadeAll);
-  gGamma.setAttribute("transform", "");
-  nextText.setAttribute("opacity", seg(t, 10.4, 10.8) * (1 - seg(t, 11.5, 11.8)));
+  /* out of the pot: the cup holds the assessed policy; then the cup goes and the proposed policy Γ′ stands alone */
+  const cupUp = easeOut(seg(t, 8.5, 9.0)), morph = seg(t, 9.8, 10.3);
+  gCup.setAttribute("opacity", cupUp * (1 - morph) * fadeAll);
+  gCup.setAttribute("transform", `translate(${CUP.x} ${lerp(CUP.y + 24, CUP.y, cupUp)}) scale(${CUP.s})`);
+  cupAssess.setAttribute("opacity", 1);
+  gGamma.setAttribute("opacity", morph * fadeAll);
+  cupTitle.setAttribute("opacity", seg(t, 8.9, 9.2) * (1 - seg(t, 9.8, 10.0)) * fadeAll);
+  cupKey.setAttribute("opacity", seg(t, 8.9, 9.2) * (1 - seg(t, 9.8, 10.0)) * fadeAll);
+  gammaTitle.setAttribute("opacity", seg(t, 10.1, 10.4) * fadeAll);
+  gammaNotes.setAttribute("opacity", seg(t, 10.1, 10.4) * fadeAll);
+  nextText.setAttribute("opacity", seg(t, 10.3, 10.6) * fadeAll);
   setText("3 · Infuse", t < 2.6 ? "Record and structure, bagged together, into the pot."
-    : t < 5.0 ? "Query: what helped, what hurt."
-    : t < 7.0 ? "Pour."
-    : t < 9.8 ? "Assess each part: keep, revise, or leave open."
-    : "Γ′ keeps, revises, leaves open. Then infuse again.");
+    : t < 3.2 ? "Steep."
+    : t < 7.8 ? "Inside the pot: query the record. Why keep, why revise, what to leave open."
+    : t < 9.8 ? "Out of the pot: the policy, assessed. Green keep, red revise, yellow leave open."
+    : "It proposes a new policy Γ′. Next episode: execute, record, infuse again.");
 }
 function render(T) {
   T = ((T % TOTAL) + TOTAL) % TOTAL;
