@@ -86,7 +86,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>COOP<sup>2</sup>: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems</h3>
           <p class="research-work-authors"><strong>H. Yang</strong>, N. Nourzad, S. Chen, M. Siew, J. Chen, and C. Joe-Wong</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://neurips.cc/Conferences/2026">NeurIPS 2026</a> &middot; ED Track</span>
+            <span class="research-work-venue"><a href="https://neurips.cc/Conferences/2026/CallForEvaluationsDatasets">NeurIPS 2026 E&amp;D Track</a></span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-3">Overview</button>
               <a href="https://arxiv.org/abs/2603.00349">Paper</a>
