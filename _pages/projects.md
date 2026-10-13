@@ -105,7 +105,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>The Five Ws of Multi-Agent Communication: Who Talks to Whom, When, What, and Why: A Survey from MARL to Emergent Language and LLMs</h3>
           <p class="research-work-authors">J. Chen, <strong>H. Yang</strong>, Z. Liu, and C. Joe-Wong</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://jmlr.org/tmlr/">TMLR 2026</a></span>
+            <span class="research-work-venue"><a href="https://jmlr.org/tmlr/">TMLR 2026</a> Survey Certification</span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-5">Overview</button>
               <a href="https://openreview.net/forum?id=LGsed0QQVq">Paper</a>
