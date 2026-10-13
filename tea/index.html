@@ -93,6 +93,20 @@
     }
     .toc, .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.45rem; }
     .links { margin-top: 1.2rem; }
+    .authors {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.2rem 1.1rem;
+      margin: 1.1rem auto 0; color: rgba(0, 0, 0, 0.82); font-size: 1.08rem;
+    }
+    .authors a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(63, 127, 85, 0.35); }
+    .authors a:hover { color: var(--accent-dark); border-bottom-color: var(--accent-dark); }
+    .authors sup, .affils sup { font-size: 0.68em; }
+    .authors sup { margin-left: 0.08em; }
+    .affils { margin-top: 0.55rem; color: rgba(0, 0, 0, 0.62); font-size: 0.95rem; }
+    .affils sup { margin-right: 0.1em; }
+    .affils .sep { margin: 0 0.45rem; }
+    .affils .contact { margin-top: 0.25rem; font-size: 0.86rem; }
+    .affils .contact a { color: inherit; }
+    .accent { color: var(--accent-dark); font-weight: 700; }
     .section-title { margin-bottom: 1.25rem; }
     .mini { color: rgba(0, 0, 0, 0.76); font-size: 0.95rem; line-height: 1.62; }
     .mini code, .tool code, .comparison code { color: var(--accent-dark); background: rgba(63, 127, 85, 0.07); font-size: 0.86em; }
@@ -282,6 +296,19 @@
               one record - without prescribing agent reasoning, behavior, or communication order. <strong>Infuse</strong> turns
               that record into a better collaboration policy.
             </p>
+            <div class="authors" aria-label="Authors">
+              <span class="author"><a href="https://happyeureka.github.io/">Hanqing Yang</a><sup>1<span class="accent">*</span></sup></span>
+              <span class="author">Yuebin Mao<sup>1</sup></span>
+              <span class="author"><a href="https://zhangzuyuan.github.io/zuyuanzhang/">Zuyuan Zhang</a><sup>2</sup></span>
+              <span class="author"><a href="https://yuhangyao.com/">Yuhang Yao</a><sup>3</sup></span>
+              <span class="author"><a href="https://jingdichen.com/info">Jingdi Chen</a><sup>4</sup></span>
+              <span class="author"><a href="https://www2.seas.gwu.edu/~tlan/">Tian Lan</a><sup>2</sup></span>
+              <span class="author"><a href="https://www.andrew.cmu.edu/user/cjoewong/">Carlee Joe-Wong</a><sup>1</sup></span>
+            </div>
+            <div class="affils" aria-label="Affiliations">
+              <span><sup>1</sup>Carnegie Mellon University</span><span class="sep">&middot;</span><span><sup>2</sup>George Washington University</span><span class="sep">&middot;</span><span><sup>3</sup>Zoom</span><span class="sep">&middot;</span><span><sup>4</sup>University of Arizona</span>
+              <div class="contact"><span class="accent">*</span> Contact: <a href="mailto:hanqing3@andrew.cmu.edu">hanqing3@andrew.cmu.edu</a></div>
+            </div>
             <div class="links" aria-label="Paper and code">
               <a class="pill" href="TEA.pdf" download="TEA.pdf"><i class="fas fa-file-pdf" aria-hidden="true"></i> Paper</a>
               <span class="pill is-soon"><i class="fab fa-github" aria-hidden="true"></i> Code <span class="soon">coming soon</span></span>

@@ -16,7 +16,7 @@ excerpt: "Definition, representation, and computation of collaboration among int
   {% include research-fun.html %}
 
   <section class="research-section research-directions" aria-labelledby="directions-heading">
-    <h2 id="directions-heading" class="research-divider">Research agenda</h2>
+    <h2 id="directions-heading" class="research-divider">Research motifs</h2>
 
     <figure class="research-cycle" aria-label="Definition, representation, and computation form a triangle of two-way relations.">
       <div class="research-cycle-diagram">
