@@ -62,25 +62,6 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
         </figure>
       </article>
 
-      <article id="work-coop2" class="research-work">
-        <div class="research-work-copy">
-          <h3>COOP<sup>2</sup>: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems</h3>
-          <p class="research-work-authors"><strong>H. Yang</strong>, N. Nourzad, S. Chen, M. Siew, J. Chen, and C. Joe-Wong</p>
-          <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://neurips.cc/Conferences/2026">NeurIPS 2026</a> &middot; ED Track</span>
-            <span class="research-work-inline-links">
-              <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-3">Overview</button>
-              <a href="https://arxiv.org/abs/2603.00349">Paper</a>
-              <a href="/coop2/">Webpage</a>
-            </span>
-            <p class="research-work-overview" id="overview-3">Formalizes cooperation from two connected sides: what cooperative tasks require and how LLM agents reason, communicate, use tools, and act across cognitive and primitive layers. Aligning both makes cooperation observable, while the COOP<sup>2</sup>-Repair case study highlights how the formulation can support targeted replanning.</p>
-          </div>
-        </div>
-        <figure class="research-work-figure">
-          <a href="/coop2/figs/overview.png" aria-label="Open the full figure"><img src="/coop2/figs/overview.png" alt="COOP squared connects symbolic agent activity with grounded environment execution." loading="lazy"></a>
-        </figure>
-      </article>
-
       <article id="work-dig" class="research-work">
         <div class="research-work-copy">
           <h3>DIG to Heal: Scaling General-Purpose Agent Collaboration via Explainable Dynamic Decision Paths</h3>
@@ -97,6 +78,25 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
         </div>
         <figure class="research-work-figure">
           <a href="/dig/figs/fig2_new.png" aria-label="Open the full figure"><img src="/dig/figs/fig2_new.png" alt="Dynamic Interaction Graph representation of agent activations and events." loading="lazy"></a>
+        </figure>
+      </article>
+
+      <article id="work-coop2" class="research-work">
+        <div class="research-work-copy">
+          <h3>COOP<sup>2</sup>: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems</h3>
+          <p class="research-work-authors"><strong>H. Yang</strong>, N. Nourzad, S. Chen, M. Siew, J. Chen, and C. Joe-Wong</p>
+          <div class="research-work-more">
+            <span class="research-work-venue"><a href="https://neurips.cc/Conferences/2026">NeurIPS 2026</a> &middot; ED Track</span>
+            <span class="research-work-inline-links">
+              <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-3">Overview</button>
+              <a href="https://arxiv.org/abs/2603.00349">Paper</a>
+              <a href="/coop2/">Webpage</a>
+            </span>
+            <p class="research-work-overview" id="overview-3">Formalizes cooperation from two connected sides: what cooperative tasks require and how LLM agents reason, communicate, use tools, and act across cognitive and primitive layers. Aligning both makes cooperation observable, while the COOP<sup>2</sup>-Repair case study highlights how the formulation can support targeted replanning.</p>
+          </div>
+        </div>
+        <figure class="research-work-figure">
+          <a href="/coop2/figs/overview.png" aria-label="Open the full figure"><img src="/coop2/figs/overview.png" alt="COOP squared connects symbolic agent activity with grounded environment execution." loading="lazy"></a>
         </figure>
       </article>
 
