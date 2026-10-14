@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DIG task state: how delivery and activations update X(t) = [U | C]</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: white; color: #202631;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 1400px; margin: 0 auto; padding: 10px 12px 10px; background: white; }
+  svg { width: 100%; height: auto; display: block; }
+  svg text { font-family: Georgia, "Times New Roman", serif; fill: #252831; }
+  .status {
+    display: flex; gap: 12px; align-items: flex-start;
+    min-height: 56px; padding: 9px 13px; margin-top: 6px;
+    background: #f1f5f2; border-radius: 9px; line-height: 1.45; font-size: 14px;
+  }
+  .status .phase { flex: 0 0 auto; font-weight: 700; color: #2c5a3c; white-space: nowrap; }
+  .status .text { color: #384150; }
+  .controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 9px; }
+  button {
+    font: inherit; font-size: 13px; padding: 6px 11px; border: 1px solid #cbd2dd;
+    border-radius: 7px; background: white; cursor: pointer; color: #202631;
+  }
+  #play { background: #3f7f55; color: white; border-color: #3f7f55; min-width: 66px; }
+  .chip { border-radius: 999px; padding: 5px 11px; color: #4a5568; }
+  .chip.on { background: #e8f3ea; border-color: #9cc4a8; color: #2c5a3c; font-weight: 600; }
+  input[type=range] { flex: 1; min-width: 140px; accent-color: #3f7f55; }
+  #clock { font-variant-numeric: tabular-nums; color: #667085; font-size: 13px; }
+  button:focus-visible, input:focus-visible { outline: 3px solid rgba(63, 127, 85, 0.3); outline-offset: 2px; }
+  @media (max-width: 700px) {
+    main { padding: 6px 6px 8px; }
+    .status { font-size: 12.5px; min-height: 0; padding: 8px 10px; gap: 8px; }
+    button { font-size: 12px; padding: 5px 9px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <svg id="scene" viewBox="0 0 1200 560" role="img"
+       aria-label="A task arrives as an event and the task state starts as one unfinished copy. Delivered to one agent the state is unchanged; delivered to three agents it becomes three copies. Two agents discard their copies. One agent splits the task into four pieces, which go to four agents. Each agent completes its piece, moving its count from unfinished to completed; one agent waits and another reroutes its piece, which changes nothing. Two agents each merge a pair of results, a third merges the two partial results and submits, matching the target of no unfinished work and each piece completed once. A rewind then delivers one result to both mergers: its row is duplicated, and the final record carries a two, exposing repeated effort.">
+    <defs id="defs">
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5568"></path>
+      </marker>
+      <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#9aa3ad"></path>
+      </marker>
+      <marker id="arrOk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#3f7f55"></path>
+      </marker>
+    </defs>
+  </svg>
+  <div class="controls">
+    <button id="play">Pause</button>
+    <button id="replay">Replay</button>
+    <button class="chip" data-scene="0">1 Deliver</button>
+    <button class="chip" data-scene="1">2 Expand</button>
+    <button class="chip" data-scene="2">3 Process</button>
+    <button class="chip" data-scene="3">4 Reduce &amp; submit</button>
+    <button class="chip" data-scene="4">5 Redundant merge</button>
+    <button class="chip" data-scene="5">6 Reading the record</button>
+    <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Timeline">
+    <span id="clock">0:00 / 0:31</span>
+  </div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) { if (k === "text") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); }
+  if (parent) parent.appendChild(n);
+  return n;
+}
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+const lerp = (a, b, p) => a + (b - a) * p;
+const easeInOut = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+const easeOut = p => 1 - Math.pow(1 - p, 3);
+const pulse = p => Math.sin(Math.PI * clamp(p, 0, 1));
+
+/* ---------- palette & geometry ---------- */
+const C = {
+  ink: "#4a5568", text: "#252831", gray: "#9aa3ad", faint: "#c4cad3",
+  ev: "#f0a04b", evEdge: "#b86d1f", res: "#9cc4a8", resEdge: "#3f7f55", merged: "#c9d6f2", mergedEdge: "#3b5998",
+  green: "#3f7f55", red: "#c0392b", warn: "#b8730f", act: "#e4edfb", hl: "#ffe9a8", hlC: "#d7ecdc", hlWarn: "#fde6bf", badge: "#eef1f5"
+};
+/* asynchronous layout: x grows with logical time, nothing sits on a grid; every activation is its own node,
+   drawn when an event reaches the agent, so one agent can appear several times */
+const N = {
+  e0: [45, 150],
+  a1x: [125, 150], a2d: [165, 75], a5d: [120, 430],              // a1 expands; a2 and a5 receive copies and discard
+  p: [[210, 70], [232, 190], [218, 300], [240, 410]],             // pieces, generated at slightly different times
+  a2p: [300, 85], a3p: [335, 210], a4p: [305, 315], a5p: [320, 440],   // processing
+  r: [[385, 75], [420, 195], [390, 320], [410, 432]],             // results
+  a1m: [520, 130], a2m: [545, 350], a1f: [660, 235]              // merges and the final merge
+};
+const SRC = N.e0, P = N.p, R = N.r;
+const M01 = [597, 108], M23 = [618, 372];                        // partial results
+const EINF = [668, 300];
+const RA = 20, RE = 12;                            // agent radius, event half-size (plus a little trim)
+const MX = 680, MY = 166, CW = 48, RH = 54, GAP = 30;
+
+const SCENES = [0, 9.0, 11.4, 16.8, 23.5, 29.8];
+const REWIND = 23.5;
+const TOTAL = 33.5;
+/* playback warp: the first WARP_END seconds of the story run SPEED times faster */
+const WARP_END = 5, SPEED = 2, REAL_TOTAL = TOTAL - WARP_END * (1 - 1 / SPEED);
+const warp = r => r < WARP_END / SPEED ? r * SPEED : r - WARP_END / SPEED + WARP_END;     // real → story time
+const unwarp = t => t < WARP_END ? t / SPEED : t - WARP_END + WARP_END / SPEED;          // story → real time
+const svg = $("scene");
+
+/* ---------- drawing helpers ---------- */
+function txt(parent, x, y, s, o = {}) {
+  return el("text", {
+    x, y, text: s, "font-size": o.size || 14, "text-anchor": o.anchor || "start",
+    "dominant-baseline": o.base || "auto", fill: o.fill || C.text, opacity: o.alpha ?? 1,
+    "font-style": o.italic ? "italic" : "normal", "font-weight": o.bold ? 700 : 400
+  }, parent);
+}
+function trim(f, t, rf, rt) {
+  const dx = t[0] - f[0], dy = t[1] - f[1], L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+  return [[f[0] + ux * rf, f[1] + uy * rf], [t[0] - ux * rt, t[1] - uy * rt]];
+}
+const grow = (T, t0, d = 0.6) => easeOut(seg(T, t0, t0 + d));
+function edge(parent, f, rf, t, rt, p, o = {}) {
+  const alpha = o.alpha ?? 1;
+  if (p <= 0 || alpha <= 0) return;
+  const [s, e] = trim(f, t, rf + 2, rt + 2);
+  const ex = lerp(s[0], e[0], p), ey = lerp(s[1], e[1], p);
+  const color = o.color || (o.dashed ? C.gray : C.ink);
+  const marker = p > 0.97 ? (o.color === C.green ? "url(#arrOk)" : o.dashed ? "url(#arrG)" : "url(#arr)") : "none";
+  el("line", { x1: s[0], y1: s[1], x2: ex, y2: ey, stroke: color, "stroke-width": o.w || 1.8,
+    "stroke-dasharray": o.dashed ? "5 4" : "none", opacity: alpha, "marker-end": marker }, parent);
+  if (o.tag && (o.tagAlpha ?? 1) > 0) {
+    const mx = (s[0] + e[0]) / 2 + (o.tagOff ? o.tagOff[0] : 0), my = (s[1] + e[1]) / 2 + (o.tagOff ? o.tagOff[1] : -8);
+    txt(parent, mx, my, o.tag, { size: 15, italic: true, fill: o.tagColor || C.gray, anchor: "middle", alpha: alpha * (o.tagAlpha ?? 1) });
+  }
+}
+function agent(parent, id, pos, act, kind = "ok", seen = true) {
+  const faint = !seen && act <= 0;
+  if (act > 0) {
+    el("circle", { cx: pos[0], cy: pos[1], r: RA + 7, fill: "none", stroke: kind === "ok" ? C.green : C.gray,
+      "stroke-width": 3, opacity: 0.9 * act }, parent);
+  }
+  el("circle", { cx: pos[0], cy: pos[1], r: RA, fill: act > 0 && kind === "ok" ? C.act : "white",
+    stroke: faint ? C.faint : C.ink, "stroke-width": faint ? 1.4 : 1.8 }, parent);
+  txt(parent, pos[0], pos[1] + 1, id, { size: 18, anchor: "middle", base: "central", italic: true, fill: faint ? C.gray : C.text });
+}
+function event(parent, pos, label, kind, alpha, consumed) {
+  if (alpha <= 0) return;
+  const k = lerp(0.6, 1, alpha), w = (label.length > 2 ? 38 : 22) * k, h = 22 * k;
+  const fill = kind === "res" ? C.res : kind === "merged" ? C.merged : kind === "end" ? "#2b2f38" : C.ev;
+  const stroke = kind === "res" ? C.resEdge : kind === "merged" ? C.mergedEdge : kind === "end" ? "#2b2f38" : C.evEdge;
+  const g = el("g", { opacity: alpha * (consumed ? 0.4 : 1) }, parent);
+  el("rect", { x: pos[0] - w / 2, y: pos[1] - h / 2, width: w, height: h, rx: 3, fill, stroke, "stroke-width": 1.4 }, g);
+  if (kind === "end") el("rect", { x: pos[0] - w / 2 + 3, y: pos[1] - h / 2 + 3, width: w - 6, height: h - 6, rx: 2, fill: "none", stroke: "white", "stroke-width": 1 }, g);
+  txt(g, pos[0], pos[1] + 1, label, { size: label.length > 2 ? 12.5 : 14, anchor: "middle", base: "central", fill: kind === "end" ? "white" : C.text, bold: true });
+}
+function activity(T, windows) {
+  let a = 0;
+  for (const [s, e] of windows) a = Math.max(a, seg(T, s, s + 0.15) * (1 - seg(T, e, e + 0.3)));
+  return a;
+}
+
+/* ---------- the stage ---------- */
+function node(parent, id, pos, alpha, act, kind = "ok") {
+  if (alpha <= 0) return;
+  agent(el("g", { opacity: alpha }, parent), id, pos, act, kind, true);
+}
+function stage(T) {
+  txt(el("g", {}, svg), 40, 40, "Dynamic Interaction Graph (DIG)", { size: 26, italic: true });
+  const g = el("g", { transform: "translate(0 36) scale(0.9)", opacity: 1 - seg(T, 29.8, 30.5) }, svg);
+
+  const fade = (a, b) => 1 - seg(T, a, b);
+  const ep = T >= REWIND + 0.5;                 // the redundant-merge epilogue
+  const rew = 1 - seg(T, REWIND, REWIND + 0.5); // the first merge story fades out before the rewind
+  const okIf = on => on > 0.5 ? C.green : undefined;
+  const pop = t0 => seg(T, t0, t0 + 0.3);       // a node appears once the delivery edge reaches it
+
+  const a1xOn = activity(T, [[9.0, 10.2]]), dOn = activity(T, [[7.5, 8.1]]);
+  const a2pOn = activity(T, [[13.2, 14.0]]), a3wait = activity(T, [[13.4, 14.0]]), a3on = activity(T, [[14.8, 15.5]]);
+  const a4pOn = activity(T, [[13.3, 14.1]]), a5pOn = activity(T, [[15.4, 16.1]]);
+  const a6 = N.a1m, a7 = N.a2m, a8 = N.a1f;    // the two mergers and the final merger
+  const a6on = ep ? activity(T, [[25.6, 26.3]]) : activity(T, [[17.4, 18.1]]);
+  const a7on = ep ? activity(T, [[25.8, 26.5]]) : activity(T, [[18.6, 19.3]]);
+  const a8on = ep ? activity(T, [[27.4, 28.1]]) : activity(T, [[20.2, 20.9]]);
+
+  /* delivery of e0 */
+  edge(g, SRC, RE, N.a1x, RA, grow(T, 2.4), { alpha: fade(4.9, 5.3) });
+  edge(g, SRC, RE, N.a1x, RA, grow(T, 5.4), { color: okIf(a1xOn), w: a1xOn > 0.5 ? 2.4 : 1.8 });
+  const disc = seg(T, 7.5, 7.8), discFade = fade(8.4, 8.9);
+  edge(g, SRC, RE, N.a2d, RA, grow(T, 5.5), { dashed: disc > 0.5, alpha: discFade, tag: "discard", tagAlpha: disc, tagOff: [36, 4] });
+  edge(g, SRC, RE, N.a5d, RA, grow(T, 5.6), { dashed: disc > 0.5, alpha: discFade, tag: "discard", tagAlpha: disc, tagOff: [-32, 4] });
+  txt(g, 262, 64, "instead: three recipients", { size: 16, italic: true, fill: C.ink, alpha: seg(T, 4.9, 5.3) * fade(7.3, 7.6) });
+
+  /* expansion: a1 → four pieces, generated one after another */
+  const pGen = [9.4, 9.55, 9.7, 9.9];
+  P.forEach((p, i) => edge(g, N.a1x, RA, p, RE, grow(T, pGen[i])));
+  /* pieces delivered at different times */
+  edge(g, P[0], RE, N.a2p, RA, grow(T, 11.4), { color: okIf(a2pOn) });
+  edge(g, P[1], RE, N.a3p, RA, grow(T, 11.7), { dashed: T >= 13.4 && T < 14.7, tag: "wait", tagAlpha: seg(T, 13.4, 13.7) * fade(14.5, 14.8), color: okIf(a3on) });
+  edge(g, P[2], RE, N.a4p, RA, grow(T, 11.9), { color: okIf(a4pOn) });
+  edge(g, P[3], RE, N.a5p, RA, grow(T, 12.3), { color: okIf(a5pOn) });
+  /* results */
+  edge(g, N.a2p, RA, R[0], RE, grow(T, 13.9));
+  edge(g, N.a4p, RA, R[2], RE, grow(T, 14.0));
+  edge(g, N.a3p, RA, R[1], RE, grow(T, 15.4));
+  edge(g, N.a5p, RA, R[3], RE, grow(T, 16.0));
+
+  /* reduce: two merges, then a final merge and submit */
+  if (!ep) {
+    edge(g, R[0], RE, a6, RA, grow(T, 16.8), { alpha: rew, color: okIf(a6on) });
+    edge(g, R[1], RE, a6, RA, grow(T, 16.95), { alpha: rew, color: okIf(a6on) });
+    edge(g, R[2], RE, a7, RA, grow(T, 17.1), { alpha: rew, color: okIf(a7on) });
+    edge(g, R[3], RE, a7, RA, grow(T, 17.25), { alpha: rew, color: okIf(a7on) });
+    edge(g, a6, RA, M01, RE, grow(T, 17.9), { alpha: rew });
+    edge(g, a7, RA, M23, RE, grow(T, 19.1), { alpha: rew });
+    edge(g, M01, RE, a8, RA, grow(T, 19.6), { alpha: rew, color: okIf(a8on) });
+    edge(g, M23, RE, a8, RA, grow(T, 19.75), { alpha: rew, color: okIf(a8on) });
+    edge(g, a8, RA, EINF, RE, grow(T, 20.7), { alpha: rew });
+  } else {
+    edge(g, R[0], RE, a6, RA, grow(T, 24.3), { color: okIf(a6on) });
+    edge(g, R[1], RE, a6, RA, grow(T, 24.4), { color: okIf(a6on) });
+    edge(g, R[1], RE, a7, RA, grow(T, 24.5), { color: okIf(a7on) });
+    edge(g, R[2], RE, a7, RA, grow(T, 24.6), { color: okIf(a7on) });
+    edge(g, R[3], RE, a7, RA, grow(T, 24.7), { color: okIf(a7on) });
+    edge(g, a6, RA, M01, RE, grow(T, 26.1));
+    edge(g, a7, RA, M23, RE, grow(T, 26.3));
+    edge(g, M01, RE, a8, RA, grow(T, 26.9), { color: okIf(a8on) });
+    edge(g, M23, RE, a8, RA, grow(T, 27.05), { color: okIf(a8on) });
+    edge(g, a8, RA, EINF, RE, grow(T, 27.9));
+  }
+
+  /* activation nodes, each drawn when its event arrives; the activations that discarded their copies fade away */
+  const dropped = 1 - seg(T, 8.6, 10.8);
+  node(g, "a1", N.a1x, pop(2.9), a1xOn);
+  node(g, "a2", N.a2d, pop(6.0) * dropped, dOn, "idle");
+  node(g, "a5", N.a5d, pop(6.1) * dropped, dOn, "idle");
+  node(g, "a2", N.a2p, pop(11.9), a2pOn);
+  node(g, "a3", N.a3p, pop(12.2), Math.max(a3on, a3wait), a3on > a3wait ? "ok" : "idle");
+  node(g, "a4", N.a4p, pop(12.4), a4pOn);
+  node(g, "a5", N.a5p, pop(12.8), a5pOn);
+  node(g, "a1", N.a1m, ep ? pop(24.8) : pop(17.3) * rew, a6on);
+  node(g, "a2", N.a2m, ep ? pop(25.1) : pop(17.6) * rew, a7on);
+  node(g, "a1", N.a1f, ep ? pop(27.4) : pop(20.1) * rew, a8on);
+
+  event(g, SRC, "0", "task", seg(T, 0.4, 0.9), T >= 9.0);
+  txt(g, SRC[0] - 4, SRC[1] - 31, "e0 · task 0", { size: 15, anchor: "middle", fill: C.ink, alpha: seg(T, 0.6, 1.0) });
+  const pCons = [13.2, 14.8, 13.3, 15.4];
+  P.forEach((p, i) => event(g, p, String(i), "task", seg(T, pGen[i], pGen[i] + 0.4), T >= pCons[i]));
+  const rOn = [13.9, 15.4, 14.0, 16.0];
+  const rCons = ep ? [25.6, 25.6, 25.8, 25.8] : [17.4, 17.4, 18.6, 18.6];
+  R.forEach((r, i) => event(g, r, String(i), "res", seg(T, rOn[i] + 0.2, rOn[i] + 0.6), T >= rCons[i]));
+  if (!ep) {
+    event(g, M01, "0+1", "merged", seg(T, 18.1, 18.5) * rew, T >= 20.2);
+    event(g, M23, "2+3", "merged", seg(T, 19.3, 19.7) * rew, T >= 20.2);
+    event(g, EINF, "∞", "end", seg(T, 20.9, 21.4) * rew, false);
+    txt(g, EINF[0], EINF[1] + 34, "e∞ · submit", { size: 15, anchor: "middle", fill: C.ink, alpha: seg(T, 21.2, 21.6) * rew });
+  } else {
+    event(g, M01, "0+1", "merged", seg(T, 26.3, 26.7), T >= 27.4);
+    event(g, M23, "1+2+3", "merged", seg(T, 26.5, 26.9), T >= 27.4);
+    event(g, EINF, "∞", "end", seg(T, 28.1, 28.6), false);
+    txt(g, EINF[0], EINF[1] + 34, "e∞ · submit", { size: 15, anchor: "middle", fill: C.ink, alpha: seg(T, 28.4, 28.8) });
+  }
+}
+
+/* ---------- the task state X(t) = [U | C] ---------- */
+/* a cell holds [value, alpha] pairs so one value can fade out while the next fades in */
+const val = cell => cell.vals[cell.vals.length - 1][0];
+const cellOf = v => ({ vals: [[v, 1]], hl: 0 });
+const row = (u, c, alpha = 1, dy = 0) => ({ u: u.map(cellOf), c: c.map(cellOf), alpha, dy });
+const settle = rows => rows.filter(r => r.alpha > 0.001).map(r => row(r.u.map(val), r.c.map(val)));
+function cross(cell, nv, p, hp) {
+  const ov = val(cell);
+  if (nv === ov) return cell;
+  return { vals: [[ov, 1 - seg(p, 0.3, 0.6)], [nv, seg(p, 0.5, 0.8)]], hl: pulse(hp), bad: nv > 1 };
+}
+/* merge each contiguous block of rows into its first row: the others slide up into it and fade, rows below shift up */
+function mergeAnim(rows, blocks, p, hp = p) {
+  const out = []; let removedPrev = 0;
+  rows.forEach((r, k) => {
+    const b = blocks.find(([i, j]) => k >= i && k <= j);
+    const shift = -removedPrev * RH * p;
+    if (!b) { out.push({ ...r, dy: r.dy + shift }); return; }
+    const [i, j] = b;
+    if (k === i) {
+      const sumU = r.u.map((_, col) => rows.slice(i, j + 1).reduce((s, rr) => s + val(rr.u[col]), 0));
+      const sumC = r.c.map((_, col) => rows.slice(i, j + 1).reduce((s, rr) => s + val(rr.c[col]), 0));
+      out.push({ u: r.u.map((c, col) => cross(c, sumU[col], p, hp)), c: r.c.map((c, col) => cross(c, sumC[col], p, hp)), alpha: r.alpha, dy: r.dy + shift });
+    } else {
+      out.push({ ...r, dy: r.dy + shift - (k - i) * RH * p, alpha: r.alpha * (1 - easeOut(seg(p, 0, 0.6))) });
+    }
+    if (k === j) removedPrev += j - i;
+  });
+  return out;
+}
+/* insert a row at an index: it fades in while the rows below move down to make room */
+function insertAnim(rows, at, newRow, p, label, labelAlpha) {
+  const out = rows.slice(0, at).map(r => ({ ...r }));
+  const nr = { ...newRow, alpha: p, label, labelAlpha };
+  nr.u = nr.u.map(c => ({ ...c, hl: pulse(seg(p, 0.2, 1)) })); nr.c = nr.c.map(c => ({ ...c, hl: pulse(seg(p, 0.2, 1)) }));
+  out.push(nr);
+  rows.slice(at).forEach(r => out.push({ ...r, dy: r.dy - RH * (1 - p) }));
+  return out;
+}
+const R4 = () => [0, 1, 2, 3].map(i => row([0, 0, 0, 0], [0, 1, 2, 3].map(j => j === i ? 1 : 0)));
+const afterM1 = () => settle(mergeAnim(R4(), [[0, 1]], 1));
+const afterM2 = () => settle(mergeAnim(afterM1(), [[1, 2]], 1));
+const afterM3 = () => settle(mergeAnim(afterM2(), [[0, 1]], 1));
+const DUP = () => row([0, 0, 0, 0], [0, 1, 0, 0]);
+const after5 = () => settle(insertAnim(R4(), 2, DUP(), 1));
+const afterE1 = () => settle(mergeAnim(after5(), [[0, 1], [2, 4]], 1));
+
+function matrix(T) {
+  const g = el("g", { opacity: seg(T, 0.9, 1.5) }, svg);
+  txt(g, MX - 20, 40, "Task state X(t) = [ U | C ]", { size: 26, italic: true });
+  txt(g, MX - 20, 64, "U unfinished · C completed · rows: copies · columns: tasks", { size: 16, fill: C.gray });
+
+  /* effect line, mirroring Table 1: DIG pattern → structural effect */
+  const EFF = [
+    [0, "task arrives", "X(0) = [ 1 | 0 ]"],
+    [2.4, "|R| = 1", "unchanged"],
+    [4.9, "|R| = 3", "rows increase"],
+    [7.5, "discard", "rows decrease"],
+    [9.0, "expansion  n = 4 > m = 1", "rows & columns increase"],
+    [11.4, "|R| = 1", "unchanged"],
+    [13.2, "transformation  n = m", "counts move U → C"],
+    [14.4, "wait", "unchanged"],
+    [15.3, "transformation  n = m", "counts move U → C"],
+    [17.4, "reduction  n = 1 < m = 2", "rows decrease"],
+    [21.0, "submit", "the expected record"],
+    [REWIND, "rewind", "back to the four results"],
+    [24.3, "|R| = 2", "rows increase"],
+    [25.6, "reduction", "rows decrease"],
+    [27.3, "redundant merge", "a count above one"]
+  ];
+  let eff = EFF[0];
+  for (const e of EFF) if (T >= e[0]) eff = e;
+  const et = el("text", { x: MX - 20, y: 100, "font-size": 18, fill: C.text, opacity: seg(T, eff[0], eff[0] + 0.3) * (1 - seg(T, 29.8, 30.2)) }, g);
+  el("tspan", { text: eff[1], "font-weight": 700 }, et);
+  el("tspan", { text: "   →   " + eff[2], fill: C.ink }, et);
+
+  /* state */
+  let colsF = 1, rows = [], tokens = [], label = "", labelAlpha = 0, bodyAlpha = 1;
+  if (T < 6.4) {
+    rows = [row([1], [0])];
+  } else if (T < 8.0) {
+    const rf = lerp(1, 3, easeOut(seg(T, 6.4, 7.2)));
+    rows = [0, 1, 2].map(i => { const r = row([1], [0], clamp(rf - i, 0, 1)); if (i > 0) r.u[0].hl = pulse(seg(T, 6.6 + 0.2 * i, 7.8 + 0.2 * i)); return r; });
+    label = "3 copies"; labelAlpha = seg(T, 7.0, 7.4);
+  } else if (T < 9.8) {
+    const rf = lerp(3, 1, easeInOut(seg(T, 8.0, 8.8)));
+    rows = [0, 1, 2].map(i => row([1], [0], clamp(rf - i, 0, 1)));
+    label = "3 copies"; labelAlpha = 1 - seg(T, 8.0, 8.4);
+  } else if (T < 17.7) {
+    const pe = easeInOut(seg(T, 9.8, 10.8));
+    colsF = lerp(1, 4, pe);
+    const rf = lerp(1, 4, pe);
+    const FLIP = [[13.8, 14.3], [15.3, 15.8], [13.9, 14.4], [16.1, 16.6]];
+    rows = [0, 1, 2, 3].map(i => {
+      const r = row([0, 1, 2, 3].map(j => j === i ? 1 : 0), [0, 0, 0, 0], clamp(rf - i, 0, 1));
+      if (i > 0) r.u[i].hl = pulse(seg(T, 10.0 + 0.15 * i, 11.4 + 0.15 * i));
+      const fp = seg(T, FLIP[i][0], FLIP[i][1]);
+      if (fp > 0) {
+        r.u[i].vals = [[1, 1 - seg(fp, 0, 0.2)], [0, seg(fp, 0.6, 0.9)]];
+        r.c[i].vals = [[0, 1 - seg(fp, 0.65, 0.8)], [1, seg(fp, 0.9, 1)]];
+        r.c[i].hl = pulse(seg(T, FLIP[i][0] + 0.4, FLIP[i][1] + 0.9));
+        tokens.push({ i, j: i, p: fp });
+      }
+      return r;
+    });
+    label = "4 pieces"; labelAlpha = seg(T, 10.6, 11.0) * (1 - seg(T, 16.8, 17.1));
+  } else if (T < 18.9) {
+    colsF = 4; rows = mergeAnim(R4(), [[0, 1]], easeInOut(seg(T, 17.7, 18.4)), seg(T, 18.0, 19.2));
+  } else if (T < 20.2) {
+    colsF = 4; rows = mergeAnim(afterM1(), [[1, 2]], easeInOut(seg(T, 18.9, 19.6)), seg(T, 19.2, 20.4));
+  } else if (T < REWIND + 1.1) {
+    colsF = 4;
+    if (T < REWIND + 0.5) { rows = mergeAnim(afterM2(), [[0, 1]], easeInOut(seg(T, 20.2, 20.9)), seg(T, 20.5, 21.7)); bodyAlpha = 1 - seg(T, REWIND, REWIND + 0.4); }
+    else { rows = R4(); bodyAlpha = seg(T, REWIND + 0.5, REWIND + 0.9); }
+  } else if (T < 25.9) {
+    colsF = 4; rows = insertAnim(R4(), 2, DUP(), easeOut(seg(T, 24.6, 25.2)), "duplicate", seg(T, 24.9, 25.2) * (1 - seg(T, 25.6, 25.9)));
+  } else if (T < 27.5) {
+    colsF = 4; rows = mergeAnim(after5(), [[0, 1], [2, 4]], easeInOut(seg(T, 25.9, 26.6)), seg(T, 26.2, 27.4));
+  } else {
+    colsF = 4; rows = mergeAnim(afterE1(), [[0, 1]], easeInOut(seg(T, 27.5, 28.2)), seg(T, 27.8, 29.2));
+  }
+
+  /* layout */
+  const body = el("g", { opacity: bodyAlpha }, g);
+  const xU = j => MX + CW * (j + 0.5);
+  const xBar = MX + CW * colsF + GAP / 2;
+  const xC = j => MX + CW * colsF + GAP + CW * (j + 0.5);
+  const right = MX + 2 * CW * colsF + GAP;
+  const nVis = rows.reduce((s, r) => s + r.alpha, 0);
+  const bottom = MY + RH * Math.max(1, nVis);
+  const colA = j => clamp(colsF - j, 0, 1);
+
+  /* headers: short labels while the blocks are one column wide; the long ones fade in only after the short ones are gone */
+  const narrow = 1 - seg(colsF, 1.4, 2.0), wide = seg(colsF, 2.6, 3.3), uX = MX + CW * colsF / 2, cX = right - CW * colsF / 2;
+  txt(body, uX, MY - 44, "U", { size: 18, anchor: "middle", fill: C.ink, alpha: narrow });
+  txt(body, uX, MY - 44, "U · unfinished", { size: 18, anchor: "middle", fill: C.ink, alpha: wide });
+  txt(body, cX, MY - 44, "C", { size: 18, anchor: "middle", fill: C.ink, alpha: narrow });
+  txt(body, cX, MY - 44, "C · completed", { size: 18, anchor: "middle", fill: C.ink, alpha: wide });
+  for (let j = 0; j < 4; j++) {
+    if (colA(j) <= 0) continue;
+    txt(body, xU(j), MY - 18, String(j), { size: 16, anchor: "middle", fill: C.gray, alpha: colA(j) });
+    txt(body, xC(j), MY - 18, String(j), { size: 16, anchor: "middle", fill: C.gray, alpha: colA(j) });
+  }
+  /* brackets and bar */
+  const bk = (x, dir) => el("path", { d: `M ${x + dir * 11} ${MY - 8} H ${x} V ${bottom + 8} H ${x + dir * 11}`, fill: "none", stroke: C.text, "stroke-width": 2.6 }, body);
+  bk(MX - 10, 1); bk(right + 10, -1);
+  el("line", { x1: xBar, y1: MY - 4, x2: xBar, y2: bottom + 4, stroke: C.text, "stroke-width": 1.8 }, body);
+
+  /* cells */
+  rows.forEach((r, i) => {
+    if (r.alpha <= 0) return;
+    const y = MY + RH * (i + 0.5) + r.dy;
+    const gr = el("g", { opacity: r.alpha }, body);
+    const cell = (parent, x, c, tone) => {
+      if (c.hl > 0) el("rect", { x: x - CW / 2 + 3, y: y - RH / 2 + 4, width: CW - 6, height: RH - 8, rx: 5, fill: c.bad ? C.hlWarn : tone, opacity: c.hl }, parent);
+      for (const [v, a] of c.vals) if (a > 0) txt(parent, x, y + 1, String(v), { size: 30, anchor: "middle", base: "central", alpha: a, fill: v > 1 ? C.warn : C.text, bold: v > 1 });
+    };
+    const colGroup = j => colA(j) < 1 ? el("g", { opacity: colA(j) }, gr) : gr;
+    r.u.forEach((c, j) => { if (colA(j) > 0) cell(colGroup(j), xU(j), c, C.hl); });
+    r.c.forEach((c, j) => { if (colA(j) > 0) cell(colGroup(j), xC(j), c, C.hlC); });
+    if (r.label && r.labelAlpha > 0) txt(body, right + 26, y + 1, r.label, { size: 17, italic: true, fill: C.ink, base: "central", alpha: r.labelAlpha });
+  });
+  /* the token arcs over the gap between rows so it never crosses another digit */
+  tokens.forEach(tk => {
+    const a = seg(tk.p, 0, 0.1) * (1 - seg(tk.p, 0.8, 0.9));
+    if (a <= 0) return;
+    const y = MY + RH * (tk.i + 0.5), q = easeInOut(tk.p);
+    const lift = 28 * Math.pow(Math.sin(Math.PI * q), 0.3);   /* rises fast, travels in the gap between rows, drops at the end */
+    txt(body, lerp(xU(tk.j), xC(tk.j), q), y + 1 - lift, "1", { size: 26, anchor: "middle", base: "central", fill: C.green, alpha: a, bold: true });
+  });
+  /* row-count label */
+  if (labelAlpha > 0) txt(body, right + 26, MY + RH * Math.max(1, nVis) / 2 + 1, label, { size: 17, italic: true, fill: C.ink, base: "central", alpha: labelAlpha });
+
+  /* "unchanged" badge */
+  const badge = Math.max(seg(T, 3.2, 3.5) * (1 - seg(T, 4.6, 4.9)), seg(T, 12.3, 12.6) * (1 - seg(T, 13.0, 13.3)));
+  if (badge > 0) {
+    const bx = (MX + right) / 2, by = bottom + 34;
+    el("rect", { x: bx - 66, y: by - 16, width: 132, height: 32, rx: 16, fill: C.badge, opacity: badge }, body);
+    txt(body, bx, by + 1, "unchanged", { size: 17, anchor: "middle", base: "central", fill: C.ink, alpha: badge, italic: true });
+  }
+  /* the expected record, and how the observed one departs from it */
+  const first = T < REWIND;
+  const ta = first ? seg(T, 21.2, 21.7) : seg(T, 28.4, 28.9);
+  if (ta > 0) {
+    const ty = bottom + 42;
+    txt(body, MX - 8, ty, "expected", { size: 19, italic: true, fill: C.ink, alpha: ta, base: "central" });
+    txt(body, MX + 96, ty, "[ 0 … 0  |  1 … 1 ]", { size: 23, fill: C.text, alpha: ta, base: "central" });
+    if (first) {
+      txt(body, MX - 8, ty + 28, "one row · zeros in U · ones in C · as short as possible", { size: 16, fill: C.gray, alpha: seg(T, 22.1, 22.6), base: "central" });
+    } else {
+    }
+  }
+}
+
+/* ---------- reading the record: what each departure from the expected shape suggests ---------- */
+function reading(T) {
+  const ra = seg(T, 30.0, 30.5);
+  if (ra <= 0) return;
+  const g = el("g", {}, svg), X = 44;
+  txt(g, X, 118, "what the shape of X suggests", { size: 24, italic: true, fill: C.text, alpha: ra });
+  const lines = [
+    ["more than one row", "not merged, no single answer"],
+    ["a count in U, a 0 in C", "unfinished work"],
+    ["a count above 1 in C", "repeated information"],
+    ["more columns", "more splits; shorter is better"]
+  ];
+  lines.forEach(([a, b], i) => {
+    const t = el("text", { x: X, y: 172 + 42 * i, "font-size": 21, fill: C.text, opacity: seg(T, 30.4 + 0.3 * i, 30.8 + 0.3 * i) }, g);
+    el("tspan", { text: a, "font-weight": 700 }, t);
+    el("tspan", { text: "   →   " + b, fill: C.ink }, t);
+  });
+  txt(g, X, 172 + 42 * 4 + 14, "these departures motivate the failure structure defined next", { size: 19, italic: true, fill: C.green, alpha: seg(T, 32.2, 32.7) });
+}
+
+/* ---------- timeline: progress along the bottom, with the key moments labelled ---------- */
+/* each phase is a span; its label starts at the tick where the phase begins */
+const SPANS = [[0, "deliver"], [9.0, "expand"], [11.4, "process"], [16.8, "merge"], [19.6, "submit"], [REWIND, "rewind"], [25.6, "redundant"], [29.8, "read record"]];
+function timeline(T) {
+  const g = el("g", {}, svg);
+  const X0 = 40, X1 = 1160, Y = 512, xAt = t => lerp(X0, X1, unwarp(t) / REAL_TOTAL);
+  el("line", { x1: X0, y1: Y, x2: X1, y2: Y, stroke: C.faint, "stroke-width": 3.5 }, g);
+  el("line", { x1: X0, y1: Y, x2: xAt(T), y2: Y, stroke: C.green, "stroke-width": 4 }, g);
+  SPANS.forEach(([t0, label], i) => {
+    const t1 = i + 1 < SPANS.length ? SPANS[i + 1][0] : TOTAL;
+    const xa = xAt(t0), xb = xAt(t1), isCur = T >= t0 && T < t1, past = T >= t1;
+    if (isCur) el("rect", { x: xa, y: Y - 6, width: xb - xa, height: 12, rx: 6, fill: C.green, opacity: 0.12 }, g);
+    el("line", { x1: xa, y1: Y - 9, x2: xa, y2: Y + 9, stroke: past || isCur ? C.ink : C.faint, "stroke-width": 2 }, g);
+    txt(g, xa + 7, Y + 32, label, { size: 17, anchor: "start", italic: true, bold: isCur, fill: isCur ? C.green : past ? C.ink : C.gray });
+  });
+  el("line", { x1: X1, y1: Y - 9, x2: X1, y2: Y + 9, stroke: T >= TOTAL - 0.05 ? C.ink : C.faint, "stroke-width": 2 }, g);
+  el("circle", { cx: xAt(T), cy: Y, r: 7, fill: C.green }, g);
+}
+
+/* ---------- narration ---------- */
+const BEATS = [
+  [0.0, "1 · Deliver", "A task arrives as event e0. The task state starts as one unfinished copy: X = [ 1 | 0 ]."],
+  [2.4, "1 · Deliver", "Delivered to one agent (|R| = 1): the copy moves into a1's buffer. X is unchanged."],
+  [4.9, "1 · Deliver", "Delivered to three agents instead (|R| = 3): the row is replaced by three unfinished copies of task 0."],
+  [7.5, "1 · Deliver", "a2 and a5 discard their copies: their rows are removed."],
+  [9.0, "2 · Expand", "a1 consumes e0 and splits it into four pieces (expansion, n = 4 > m = 1): four rows and four columns, one unfinished copy per piece."],
+  [11.4, "3 · Process", "Each piece is delivered to one agent: X stays unchanged until an activation consumes it."],
+  [13.2, "3 · Process", "a2 and a4 process their pieces (transformation, n = m = 1): each count moves from U to C."],
+  [14.4, "3 · Process", "a3 waits: X is unchanged until it consumes the piece."],
+  [15.3, "3 · Process", "a3 and a5 complete the remaining pieces."],
+  [16.8, "4 · Reduce & submit", "a1 merges results 0 and 1, and a2 merges 2 and 3 (reduction, n = 1 < m = 2): each pair of rows is summed column by column."],
+  [19.6, "4 · Reduce & submit", "a1 activates again, merges the two partial results and submits e∞. The record is the expected [ 0 … 0 | 1 … 1 ]: one row, no unfinished work, each piece completed once."],
+  [REWIND, "5 · Redundant merge", "Rewind to the four results. Suppose result 1 is delivered to both a1 and a2 (|R| = 2): its row is duplicated."],
+  [25.6, "5 · Redundant merge", "Both merges consume a copy of result 1, and a1 merges their outputs: task 1 is counted twice."],
+  [28.2, "5 · Redundant merge", "The record ends with a 2 on task 1: not a wrong answer, but repeated information. We want these counts close to 1."],
+  [29.8, "6 · Reading the record", "We hope for one short row: zeros in U, ones in C. Extra rows, counts in U, zeros in C, counts above one, or extra columns each hint at a failure; the next section defines the failure structure from these shapes."]
+];
+function setText(T) {
+  let b = BEATS[0];
+  for (const x of BEATS) if (T >= x[0]) b = x;
+  $("phase").textContent = b[1];
+  $("text").textContent = b[2];
+}
+
+function render(Treal) {
+  Treal = ((Treal % REAL_TOTAL) + REAL_TOTAL) % REAL_TOTAL;
+  const T = warp(Treal);
+  while (svg.lastChild && svg.lastChild.id !== "defs") svg.removeChild(svg.lastChild);
+  stage(T);
+  matrix(T);
+  reading(T);
+  timeline(T);
+  let sc = 0;
+  SCENES.forEach((s, i) => { if (T >= s) sc = i; });
+  document.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", +c.dataset.scene === sc));
+  $("scrub").value = Math.round(Treal / REAL_TOTAL * 1000);
+  const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+  $("clock").textContent = `${fmt(Treal)} / ${fmt(REAL_TOTAL)}`;
+}
+
+/* ---------- playback ---------- */
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let time = reduceMotion ? unwarp(32.8) : 0, playing = !reduceMotion, last = null;
+function setPlaying(v) { playing = v; $("play").textContent = v ? "Pause" : "Play"; last = null; }
+$("play").onclick = () => setPlaying(!playing);
+$("replay").onclick = () => { time = 0; render(time); setPlaying(true); };
+document.querySelectorAll(".chip").forEach(c => c.onclick = () => { time = unwarp(SCENES[+c.dataset.scene]); render(time); setPlaying(true); });
+$("scrub").oninput = e => { time = e.target.value / 1000 * REAL_TOTAL; render(time); setPlaying(false); };
+document.addEventListener("visibilitychange", () => { last = null; });
+function frame(now) {
+  if (playing) { if (last !== null) time += Math.min(0.05, (now - last) / 1000); last = now; }
+  render(time);
+  requestAnimationFrame(frame);
+}
+render(time);
+setPlaying(playing);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -158,6 +158,7 @@
             <div class="is-size-5 publication-authors" style="margin-top: 1.2rem;">
             <span class="author-block">Hanqing Yang<sup>1</sup>,</span>
             <span class="author-block">Hyungwoo Lee<sup>1</sup>,</span>
+            <span class="author-block">Yuebin Mao<sup>1</sup>,</span>
             <span class="author-block">Yuhang Yao<sup>2</sup>,</span>
             <span class="author-block">Zhiwei Liu<sup>3</sup>,</span>
             <span class="author-block">Kay Liu<sup>4</sup>,</span>
@@ -207,6 +208,7 @@
               <a class="pill" href="#demo">DIG in Action</a>
               <a class="pill" href="#overview">Overview</a>
               <a class="pill" href="#dig">DIG</a>
+              <a class="pill" href="#taskstate">Task state</a>
               <a class="pill" href="#taxonomy">Failure Detection &amp; Healing</a>
               <a class="pill" href="#results">Results</a>
             </div>
@@ -415,6 +417,54 @@
               where each $\mathcal{R}_{v_t} \in \{R,\, W,\, RR,\, D,\, S\}$ is determined by the edge-action labeling function $\phi_{v_t}$.
               The resulting trace $G_T$ is the DIG used for failure detection, diagnosis, and healing.
             </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TASK STATE -->
+  <section class="section" id="taskstate">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered section-title">Expressing Task Solving with DIG</h2>
+
+      <div class="columns">
+        <div class="column">
+          <p class="mini" style="margin-bottom: 0.65rem;">
+            DIG provides a structural basis for expressing task-solving processes in asynchronous, general-purpose LLM agents:
+            activation nodes preserve input&ndash;output associations, event nodes preserve information identity, and input labels specify
+            how each recipient handles an event. On top of this structure we read a <strong>simplified task state</strong>
+            $X(t) = [\,U(t) \mid C(t)\,]$, where $U(t)$ and $C(t)$ count unfinished and completed contributions. Columns identify tasks;
+            rows distinguish copies of a task. The initial state is one unfinished task, $X(0) = [\,1 \mid 0\,]$.
+          </p>
+          <p class="mini" style="margin-bottom: 0.65rem;">
+            Every interaction primitive has a local effect on $X(t)$. <strong>Delivery:</strong> one recipient leaves $X(t)$ unchanged,
+            several recipients replace the row with one copy per recipient, no recipient removes it.
+            <strong>Input labels:</strong> <code>Wait</code> and <code>Reroute</code> leave $X(t)$ unchanged, <code>Discard</code> removes the row,
+            and the effect of <code>Consume</code> depends on the activation's outputs: <em>expansion</em> ($n > m$) splits work into new rows and
+            subtask columns, <em>reduction</em> ($n < m$) sums rows column by column, and <em>transformation</em> ($n = m$) moves counts from $U$ to $C$.
+          </p>
+          <p class="mini" style="margin-bottom: 0.9rem;">
+            For a task requiring each piece exactly once, we hope to end with one short row, $[\,0,\dots,0 \mid 1,\dots,1\,]$.
+            Departures from that shape are what the failure patterns below are built on: extra rows mean work was never merged,
+            counts left in $U$ mean unfinished work, counts above one in $C$ mean repeated information, and extra columns mean more splits than needed.
+          </p>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column">
+          <iframe
+            src="figs/task-state.html"
+            style="width:100%; height:560px; border:none; border-radius: 6px; background: #fff; display:block;"
+            title="How delivery and activations update the task state X(t)"
+            loading="lazy"
+          ></iframe>
+          <div class="cap" style="margin-top: 0.4rem;">
+            <strong>Reading the task state.</strong> A task is delivered, split into four pieces, processed, merged, and submitted; every step
+            updates $X(t)$ on the right. A rewind then delivers one result twice, and the record ends with a 2: repeated information, the intuition
+            behind the failure structure that follows.
           </div>
         </div>
       </div>
@@ -712,7 +762,7 @@
       <h2 class="title is-3 has-text-centered section-title">BibTeX</h2>
       <pre><code>@article{yang2026dig,
   title   = {DIG to Heal: Scaling General-purpose Agent Collaboration via Explainable Dynamic Decision Paths},
-  author  = {Yang, Hanqing and Lee, Hyungwoo and Yao, Yuhang and Liu, Zhiwei and Liu, Kay and Chen, Jingdi and Joe-Wong, Carlee},
+  author  = {Yang, Hanqing and Lee, Hyungwoo and Mao, Yuebin and Yao, Yuhang and Liu, Zhiwei and Liu, Kay and Chen, Jingdi and Joe-Wong, Carlee},
   journal = {arXiv preprint arXiv:2603.00309},
   year    = {2026}
 }</code></pre>

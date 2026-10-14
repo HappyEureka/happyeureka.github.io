@@ -65,7 +65,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
       <article id="work-dig" class="research-work">
         <div class="research-work-copy">
           <h3>DIG to Heal: Scaling General-Purpose Agent Collaboration via Explainable Dynamic Decision Paths</h3>
-          <p class="research-work-authors"><strong>H. Yang</strong>, H. Lee, Y. Yao, Z. Liu, K. Liu, J. Chen, and C. Joe-Wong</p>
+          <p class="research-work-authors"><strong>H. Yang</strong>, H. Lee, Y. Mao, Y. Yao, Z. Liu, K. Liu, J. Chen, and C. Joe-Wong</p>
           <div class="research-work-more">
             <span class="research-work-venue">Preprint 2026</span>
             <span class="research-work-inline-links">
