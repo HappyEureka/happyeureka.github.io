@@ -1144,13 +1144,6 @@ html[data-theme="dark"] .research-work-figure img {
 }
 
 /* a drawn figure, not an image: it keeps its own height, which stays within a three-line text block */
-.research-work-figure--icore {
-  display: block;
-  align-self: center;
-  height: auto;
-  min-height: 0;
-  padding: 0.15rem 0.4rem;
-}
 
 /* tall images that may use more of the height when the text beside them allows it */
 .research-work-figure--drwell {
@@ -1159,64 +1152,6 @@ html[data-theme="dark"] .research-work-figure img {
 
 .research-work-figure--five-ws {
   --thumb-max: 5.95rem;
-}
-
-.icore-mini {
-  display: grid;
-  grid-template-columns: 1.25rem minmax(0, 1fr);
-  grid-template-rows: auto 0.9rem auto;
-  gap: 0.15rem 0.45rem;
-  align-items: center;
-}
-
-.icore-mini-symbol {
-  color: var(--global-text-color);
-  font-family: Georgia, Times, serif;
-  font-size: 0.9rem;
-  font-weight: 400;
-  text-align: center;
-}
-
-.icore-mini-chain,
-.icore-mini-links {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.35rem;
-}
-
-.icore-mini-chain span {
-  position: relative;
-  z-index: 1;
-  padding: 0.3rem 0.18rem;
-  border: 1px solid var(--global-dark-border-color);
-  background: var(--global-bg-color);
-  color: var(--global-text-color-light);
-  font-size: 0.5rem;
-  line-height: 1.15;
-  text-align: center;
-}
-
-.icore-mini-chain span:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  width: 0.35rem;
-  border-top: 1px solid var(--global-dark-border-color);
-}
-
-.icore-mini-chain--g span {
-  border-radius: 999px;
-}
-
-.icore-mini-chain--q span {
-  border-radius: 2px;
-}
-
-.icore-mini-links span {
-  justify-self: center;
-  height: 0.9rem;
-  border-left: 1px dashed var(--global-dark-border-color);
 }
 
 /* the last group opens with a line on what the healthcare papers have in common */
@@ -1228,7 +1163,8 @@ html[data-theme="dark"] .research-work-figure img {
   margin-top: 0;
 }
 
-.research-healthcare-intro > p:not(.research-healthcare-subtitle) {
+/* one paragraph with a bold lead-in, the same pattern as the lenses on Research */
+.research-healthcare-intro > p {
   margin-bottom: 0;
   color: var(--global-text-color);
   font-size: 0.88rem;
@@ -1236,20 +1172,12 @@ html[data-theme="dark"] .research-work-figure img {
 }
 
 /* The intro evens out its lines, so the last one is never a word or two; overviews just avoid a lone last word. */
-.research-healthcare-intro > p:not(.research-healthcare-subtitle) {
+.research-healthcare-intro > p {
   text-wrap: balance;
 }
 
 .research-work-overview {
   text-wrap: pretty;
-}
-
-.research-healthcare-subtitle {
-  margin-bottom: 0.8rem;
-  color: var(--global-text-color);
-  font-size: 1rem;
-  font-weight: 650;
-  line-height: 1.4;
 }
 
 @media (max-width: 700px) {
@@ -1365,8 +1293,5 @@ html[data-theme="dark"] .research-work-figure img {
     transform: translate(-50%, -50%) rotate(52deg);
   }
 
-  .research-work-figure--icore {
-    height: auto;
-  }
 
 }

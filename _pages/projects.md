@@ -19,7 +19,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>From Prescribed to Emergent: Representing and Exploiting Structure in LLM Agents Collaboration</h3>
           <p class="research-work-authors"><strong>H. Yang</strong>, Y. Mao, Z. Zhang, Y. Yao, J. Chen, T. Lan, and C. Joe-Wong</p>
           <div class="research-work-more">
-            <span class="research-work-venue">Preprint 2026</span>
+            <span class="research-work-venue">Preprint</span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-1">Overview</button>
               <a href="/tea/TEA.pdf" download="TEA.pdf">Paper</a>
@@ -38,27 +38,16 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>Auditing Emergent LLM-Agent Collaboration through Cooperation-Obligation Coupling</h3>
           <p class="research-work-authors">Z. Zhang*, <strong>H. Yang*</strong>, C. Joe-Wong, and T. Lan</p>
           <div class="research-work-more">
-            <span class="research-work-venue">Preprint 2026</span>
+            <span class="research-work-venue">Preprint</span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-2">Overview</button>
               <a href="https://arxiv.org/abs/2607.27429">Paper</a>
             </span>
-            <p class="research-work-overview" id="overview-2">Represents emergent collaboration through coupled cooperation-obligation graphs that formalize work soundness and assignment stability. Their joint satisfaction quantifies state quality and yields a conditional performance bound.</p>
+            <p class="research-work-overview" id="overview-2">Represents emergent collaboration through coupled cooperation-obligation graphs: a cooperation graph G of actions and artifacts, an obligation graph Q of work states, and an audit map &Pi; between them, with a verifier deciding which artifacts count as evidence. The coupling formalizes work soundness and assignment stability; their joint satisfaction quantifies state quality and yields a conditional performance bound.</p>
           </div>
         </div>
-        <figure class="research-work-figure research-work-figure--icore" aria-label="iCORE: G is interaction, Q is obligation, and Pi is the evidence-backed coupling between them">
-          <div class="icore-mini" aria-hidden="true">
-            <i class="icore-mini-symbol icore-mini-symbol--g">G</i>
-            <div class="icore-mini-chain icore-mini-chain--g">
-              <span>action</span><span>artifact</span><span>evidence</span>
-            </div>
-            <i class="icore-mini-symbol icore-mini-symbol--pi">&Pi;</i>
-            <div class="icore-mini-links"><span></span><span></span><span></span></div>
-            <i class="icore-mini-symbol icore-mini-symbol--q">Q</i>
-            <div class="icore-mini-chain icore-mini-chain--q">
-              <span>open</span><span>assigned</span><span>accepted</span>
-            </div>
-          </div>
+        <figure class="research-work-figure" aria-label="iCORE: a cooperation graph G of actions, artifacts and evidence, an obligation graph Q of work states, and the audit map Pi that couples them">
+          <a href="/assets/images/research/icore-overview.svg" aria-label="Open the full figure"><img src="/assets/images/research/icore-overview.svg" alt="iCORE: the cooperation graph G records actions, artifacts and evidence; the obligation graph Q records work moving from open to assigned to accepted; the audit map Pi links artifacts and evidence in G to the obligations they declare and justify." loading="lazy"></a>
         </figure>
       </article>
 
@@ -67,7 +56,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>DIG to Heal: Scaling General-Purpose Agent Collaboration via Explainable Dynamic Decision Paths</h3>
           <p class="research-work-authors"><strong>H. Yang</strong>, H. Lee, Y. Mao, Y. Yao, Z. Liu, K. Liu, J. Chen, and C. Joe-Wong</p>
           <div class="research-work-more">
-            <span class="research-work-venue">Preprint 2026</span>
+            <span class="research-work-venue">Preprint</span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-4">Overview</button>
               <a href="https://arxiv.org/abs/2603.00309">Paper</a>
@@ -86,7 +75,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>COOP<sup>2</sup>: Defining, Observing, and Repairing Cooperation in LLM Multi-Agent Systems</h3>
           <p class="research-work-authors"><strong>H. Yang</strong>, N. Nourzad, S. Chen, M. Siew, J. Chen, and C. Joe-Wong</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://neurips.cc/Conferences/2026/CallForEvaluationsDatasets">NeurIPS 2026 E&amp;D Track</a></span>
+            <span class="research-work-venue"><a href="https://neurips.cc/Conferences/2026/CallForEvaluationsDatasets">NeurIPS26 E&amp;D Track</a></span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-3">Overview</button>
               <a href="https://arxiv.org/abs/2603.00349">Paper</a>
@@ -105,7 +94,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>The Five Ws of Multi-Agent Communication: Who Talks to Whom, When, What, and Why: A Survey from MARL to Emergent Language and LLMs</h3>
           <p class="research-work-authors">J. Chen, <strong>H. Yang</strong>, Z. Liu, and C. Joe-Wong</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://jmlr.org/tmlr/">TMLR 2026</a></span>
+            <span class="research-work-venue"><a href="https://jmlr.org/tmlr/">TMLR26</a></span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-5">Overview</button>
               <a href="https://openreview.net/forum?id=LGsed0QQVq">Paper</a>
@@ -130,7 +119,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>DR. WELL: Dynamic Reasoning and Learning with Symbolic World Model for Embodied LLM-Based Multi-Agent Collaboration</h3>
           <p class="research-work-authors">N. Nourzad*, <strong>H. Yang*</strong>, S. Chen, and C. Joe-Wong</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://sites.google.com/view/law-2025">NeurIPS 2025 LAW Workshop</a></span>
+            <span class="research-work-venue"><a href="https://sites.google.com/view/law-2025">NeurIPS25 LAW Workshop</a></span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-6">Overview</button>
               <a href="https://arxiv.org/abs/2511.04646">Paper</a>
@@ -149,7 +138,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>CUBE: Collaborative Multi-Agent Block-Pushing Environment for Collective Planning with LLM Agents</h3>
           <p class="research-work-authors"><strong>H. Yang*</strong>, N. Nourzad*, S. Chen, and C. Joe-Wong</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://sea-workshop.github.io/">NeurIPS 2025 SEA Workshop</a></span>
+            <span class="research-work-venue"><a href="https://sea-workshop.github.io/">NeurIPS25 SEA Workshop</a></span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-7">Overview</button>
               <a href="https://openreview.net/forum?id=T7OoS6t11c">Paper</a>
@@ -169,7 +158,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <p class="research-work-authors"><strong>H. Yang</strong>, J. Chen, M. Siew, T. Lorido-Botran, and C. Joe-Wong</p>
           <p class="research-work-recognition"><a href="https://rdi.berkeley.edu/llm-agents-hackathon/">First Place (tie), Decentralized and Multi-Agents Track</a> &middot; Berkeley RDI LLM Agents MOOC Hackathon</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://sites.google.com/view/marw-ai-agents">AAAI 2025 MARW Workshop</a></span>
+            <span class="research-work-venue"><a href="https://sites.google.com/view/marw-ai-agents">AAAI25 MARW Workshop</a></span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-8">Overview</button>
               <a href="https://arxiv.org/abs/2502.05453">Paper</a>
@@ -195,7 +184,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>An LLM-Based Digital Twin for Optimizing Human-in-the-Loop Systems</h3>
           <p class="research-work-authors"><strong>H. Yang</strong>, M. Siew, and C. Joe-Wong</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://fmsys24.github.io/">IEEE FMSys 2024 Workshop</a> &middot; Co-located with <a href="https://cps-iot-week2024.ie.cuhk.edu.hk/">CPS-IoT Week</a></span>
+            <span class="research-work-venue"><a href="https://fmsys24.github.io/">IEEE FMSys24 Workshop</a> &middot; Co-located with <a href="https://cps-iot-week2024.ie.cuhk.edu.hk/">CPS-IoT Week</a></span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-9">Overview</button>
               <a href="https://arxiv.org/abs/2403.16809">Paper</a>
@@ -214,8 +203,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
     <h2 id="year-2023" class="research-divider">2023 and before</h2>
 
     <header class="research-healthcare-intro">
-      <p class="research-healthcare-subtitle">Machine Learning for Healthcare</p>
-      <p>Before focusing on multi-agent systems, I worked closely with clinicians on decision support and scarce-resource allocation across international, national, and local datasets. These projects moved from validating risk scores, to aligning predictions with clinical decision horizons, to estimating treatment effects when a potentially beneficial intervention cannot be given to every eligible patient.</p>
+      <p><strong>Machine learning for healthcare.</strong> Before focusing on multi-agent systems, I worked closely with clinicians on decision support and scarce-resource allocation across international, national, and local datasets. These projects moved from validating risk scores, to aligning predictions with clinical decision horizons, to estimating treatment effects when a potentially beneficial intervention cannot be given to every eligible patient.</p>
     </header>
 
     <div class="research-work-list research-work-list--healthcare">
@@ -224,7 +212,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>Multi-Horizon Predictive Models for Guiding Extracorporeal Resource Allocation in Critically Ill COVID-19 Patients</h3>
           <p class="research-work-authors">B. Xue, N. Shah, <strong>H. Yang</strong>, T. Kannampallil, P. R. O. Payne, C. Lu, and A. S. Said</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://academic.oup.com/jamia">JAMIA 2023</a></span>
+            <span class="research-work-venue"><a href="https://academic.oup.com/jamia">JAMIA23</a></span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-10">Overview</button>
               <a href="https://doi.org/10.1093/jamia/ocac256">Paper</a>
@@ -239,7 +227,7 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
           <h3>Assisting Clinical Decisions for Scarcely Available Treatment via Disentangled Latent Representation</h3>
           <p class="research-work-authors">B. Xue, A. S. Said, Z. Xu, H. Liu, N. Shah, <strong>H. Yang</strong>, P. R. O. Payne, and C. Lu</p>
           <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://kdd.org/kdd2023/">ACM SIGKDD 2023</a></span>
+            <span class="research-work-venue"><a href="https://kdd.org/kdd2023/">KDD23</a></span>
             <span class="research-work-inline-links">
               <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-11">Overview</button>
               <a href="https://doi.org/10.1145/3580305.3599774">Paper</a>

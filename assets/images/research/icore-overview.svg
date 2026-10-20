@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -10 560 736" width="560" height="736" role="img" aria-label="iCORE. Panel a, coupling: a cooperation graph G in blue, where an initial work node leads to two concurrent actions whose artifacts form one boxed set; an obligation graph Q in gray, moving from open to assigned to accepted; and the audit map Pi in green, two-way links coupling the edge that introduces the work to open, the two edges from work into the assignees' actions to assigned, the actions to the edge from assigned to accepted, and the verified artifact set to accepted through the verifier V; a pool of issuers, system agents and intelligent agents, all in M_D, may make any of these assertions. Panel b, verification: V, declared by the application, passes or fails the artifacts; on pass the obligation is accepted, on failure it is rejected and reopened.">
+  <defs>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d4f91"/></marker>
+    <marker id="arrQ" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4a5568"/></marker>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#3f7f55"/></marker>
+    <marker id="arrX" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c0392b"/></marker>
+  </defs>
+  <style>
+    text { font-family: "Source Sans 3", "Source Sans Pro", system-ui, sans-serif; fill: #252831; }
+    .sym { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 30px; }
+    .lab { font-size: 15px; text-anchor: middle; }
+    .cap { font-size: 13px; fill: #6b7280; font-style: italic; }
+    .sub { font-size: 12px; text-anchor: middle; fill: #6b7280; }
+    .g { fill: #ffffff; stroke: #1d4f91; stroke-width: 1.8; }
+    .q { fill: #ffffff; stroke: #4a5568; stroke-width: 1.8; }
+    .eg { stroke: #1d4f91; stroke-width: 1.6; fill: none; }
+    .eq { stroke: #4a5568; stroke-width: 1.6; fill: none; }
+    .pi { stroke: #3f7f55; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+    .bad { stroke: #c0392b; stroke-width: 1.6; fill: none; }
+    .box { fill: none; stroke: #3f7f55; stroke-width: 1.4; stroke-dasharray: 5 4; }
+    .v { fill: #ffffff; stroke: #3f7f55; stroke-width: 1.8; }
+    .vsym { font-family: Georgia, "Times New Roman", serif; font-style: italic; fill: #2c5a3c; text-anchor: middle; }
+    .okt { font-size: 13px; fill: #2c5a3c; font-weight: 700; }
+    .badt { font-size: 13px; fill: #c0392b; font-weight: 700; }
+    .sep { stroke: #d5dae2; stroke-width: 1; }
+    .mem { font-size: 11px; fill: #6b7280; font-style: italic; text-anchor: middle; }
+    .dbox { fill: #f7f8fa; stroke: #d5dae2; stroke-width: 1; }
+    .dline { font-size: 12.5px; fill: #252831; }
+    .dot { stroke: #9aa3ad; stroke-width: 1.2; stroke-dasharray: 2 3; }
+    .pool { fill: none; stroke: #9aa3ad; stroke-width: 1.2; stroke-dasharray: 4 4; }
+  </style>
+  <rect y="-10" width="560" height="736" fill="#ffffff"/>
+
+  <!-- (a) coupling -->
+  <text class="cap" x="28" y="26">(a) coupling</text>
+  <text class="sym" x="18" y="52" style="fill:#1d4f91">G</text>
+  <line class="eg" x1="54" y1="81" x2="96" y2="81" marker-end="url(#arrG)"/>
+  <rect class="g" x="100" y="57" width="88" height="48" rx="8"/><text class="lab" x="144" y="86">work</text>
+  <text class="mem" x="300" y="18">∈ O<tspan font-size="8" dy="3">D</tspan></text>
+  <circle class="g" cx="300" cy="52" r="22"/><text class="lab" x="300" y="57">action</text>
+  <text class="mem" x="328" y="42" style="text-anchor:start">a1</text>
+  <circle class="g" cx="300" cy="110" r="22"/><text class="lab" x="300" y="115">action</text>
+  <text class="mem" x="328" y="128" style="text-anchor:start">a2</text>
+  <text class="mem" x="430" y="12">∈ O<tspan font-size="8" dy="3">D</tspan></text>
+  <rect class="box" x="376" y="18" width="108" height="126" rx="12"/>
+  <rect class="g" x="386" y="28" width="88" height="48" rx="8"/><text class="lab" x="430" y="57">artifact</text>
+  <rect class="g" x="386" y="86" width="88" height="48" rx="8"/><text class="lab" x="430" y="115">artifact</text>
+  <line class="eg" x1="191" y1="72" x2="277" y2="59" marker-end="url(#arrG)"/>
+  <line class="eg" x1="191" y1="90" x2="277" y2="103" marker-end="url(#arrG)"/>
+  <line class="eg" x1="325" y1="52" x2="382" y2="52" marker-end="url(#arrG)"/>
+  <line class="eg" x1="325" y1="110" x2="382" y2="110" marker-end="url(#arrG)"/>
+
+  <text class="sym" x="18" y="182" style="fill:#3f7f55">Π</text>
+  <!-- the edge that introduces the work opens the obligation; the edges from work into the assignees' actions are the assignment; their verified artifacts justify acceptance -->
+  <line class="pi" x1="90" y1="85" x2="90" y2="212" marker-end="url(#arrP)"/>
+  <circle cx="90" cy="81" r="4" fill="#3f7f55"/>
+  <line class="pi" x1="232" y1="66" x2="232" y2="212" marker-end="url(#arrP)"/>
+  <circle cx="232" cy="66" r="4" fill="#3f7f55"/>
+  <circle cx="232" cy="96" r="4" fill="#3f7f55"/>
+  <!-- the actions are nodes in G that correspond to an edge in Q: the move from assigned to accepted -->
+  <line class="pi" x1="300" y1="136" x2="300" y2="236" marker-start="url(#arrP)"/>
+  <circle cx="300" cy="240" r="4" fill="#3f7f55"/>
+  <line class="pi" x1="430" y1="148" x2="430" y2="165" marker-start="url(#arrP)"/>
+  <rect class="v" x="415" y="165" width="30" height="20" rx="4"/><text class="vsym" x="430" y="180" style="font-size:13px">V</text>
+  <line class="pi" x1="430" y1="185" x2="430" y2="212" marker-end="url(#arrP)"/>
+
+  <text class="sym" x="18" y="252" style="fill:#4a5568">Q</text>
+  <rect class="q" x="46" y="216" width="88" height="48" rx="4"/><text class="lab" x="90" y="245">open</text>
+  <rect class="q" x="188" y="216" width="88" height="48" rx="4"/><text class="lab" x="232" y="239">assigned</text><text class="sub" x="232" y="256">to {a1, a2}</text>
+  <rect class="q" x="386" y="216" width="88" height="48" rx="4"/><text class="lab" x="430" y="245">accepted</text>
+  <line class="eq" x1="137" y1="240" x2="184" y2="240" marker-end="url(#arrQ)"/>
+  <line class="eq" x1="279" y1="240" x2="382" y2="240" marker-end="url(#arrQ)"/>
+  <text class="mem" x="482" y="244" style="text-anchor:start">edges ∈ Ω</text>
+
+  <!-- issuers: all in M_D; system agents also declare D and host execution -->
+  <text class="cap" x="28" y="313">issuers</text>
+  <text class="cap" x="28" y="328">∈ M<tspan font-size="8" dy="3">D</tspan></text>
+  <line class="dot" x1="90" y1="268" x2="90" y2="292"/>
+  <line class="dot" x1="232" y1="268" x2="232" y2="292"/>
+  <line class="dot" x1="430" y1="268" x2="430" y2="292"/>
+  <rect class="pool" x="80" y="292" width="394" height="46" rx="10"/>
+  <rect class="q" x="96" y="304" width="96" height="22" rx="3"/><text class="sub" x="144" y="319" style="fill:#252831">system agents</text>
+  <rect class="q" x="208" y="304" width="112" height="22" rx="3"/><text class="sub" x="264" y="319" style="fill:#252831">intelligent agents</text>
+  <text class="sub" x="80" y="356" style="text-anchor:start">system agents also declare D and host execution</text>
+  <text class="sub" x="80" y="372" style="text-anchor:start">any of them may open, assign, or accept</text>
+
+  <!-- D: what the application declares before execution -->
+  <text class="sym" x="18" y="436" style="fill:#4a5568;font-size:26px">D</text>
+  <rect class="dbox" x="52" y="392" width="480" height="122" rx="10"/>
+  <text class="dline" x="66" y="413"><tspan font-weight="600">declared before execution</tspan>, D = (O<tspan font-size="8" dy="3">D</tspan><tspan dy="-3">, M</tspan><tspan font-size="8" dy="3">D</tspan><tspan dy="-3">, Ω, V, I</tspan><tspan font-size="8" dy="3">D</tspan><tspan dy="-3">)</tspan></text>
+  <text class="dline" x="66" y="433">O<tspan font-size="8" dy="3">D</tspan><tspan dy="-3">  action and artifact types</tspan></text>
+  <text class="dline" x="66" y="451">Ω  work operations</text>
+  <text class="dline" x="66" y="469">M<tspan font-size="8" dy="3">D</tspan><tspan dy="-3">  observable agents</tspan></text>
+  <text class="dline" x="66" y="487">V  the verifier</text>
+  <text class="dline" x="66" y="505">I<tspan font-size="8" dy="3">D</tspan><tspan dy="-3">  capability value · work weighting · local view · equivalence · terminal</tspan></text>
+
+  <line class="sep" x1="28" y1="530" x2="532" y2="530"/>
+
+  <!-- (b) verification: what happens inside each V gate -->
+  <text class="cap" x="28" y="560">(b) verification</text>
+  <text class="sub" x="120" y="606">artifacts</text>
+  <line class="pi" x1="160" y1="602" x2="218" y2="602" marker-end="url(#arrP)"/>
+  <rect class="v" x="222" y="588" width="44" height="28" rx="5"/><text class="vsym" x="244" y="608" style="font-size:17px">V</text>
+  <text class="sub" x="244" y="578">verifier, from D</text>
+  <path class="pi" d="M269 602 H418 V652" marker-end="url(#arrP)"/>
+  <text class="okt" x="300" y="594">✓</text>
+  <rect class="q" x="370" y="656" width="96" height="48" rx="4"/><text class="lab" x="418" y="685">accepted</text>
+  <line class="bad" x1="244" y1="619" x2="244" y2="652" marker-end="url(#arrX)"/>
+  <text class="badt" x="252" y="638">✗</text>
+  <rect class="q" x="200" y="656" width="88" height="48" rx="4"/><text class="lab" x="244" y="679">rejected</text>
+  <text class="sub" x="244" y="695">reopened</text>
+</svg>
