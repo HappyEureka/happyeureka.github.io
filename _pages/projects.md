@@ -14,25 +14,6 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
     <h2 id="year-2026" class="research-divider">2026</h2>
 
     <div class="research-work-list">
-      <article id="work-shape" class="research-work">
-        <div class="research-work-copy">
-          <h3>SHAPE: Scaling Collaborative Planning in LLM-Powered Heterogeneous Multi-Robot Systems</h3>
-          <p class="research-work-authors"><strong>H. Yang</strong>, Z. Weng, J. Guo, J. Chen, and C. Joe-Wong</p>
-          <div class="research-work-more">
-            <span class="research-work-venue"><a href="https://leap-workshop.github.io/">CoRL26 LEAP Workshop</a></span>
-            <span class="research-work-inline-links">
-              <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-13">Overview</button>
-              <a href="/shape/SHAPE.pdf" download="SHAPE.pdf">Paper</a>
-              <a href="/shape/">Webpage</a>
-            </span>
-            <p class="research-work-overview" id="overview-13">Characterizes what a task offers additional robots through parallel and heterogeneous participation, and studies how collaborative planning scales for teams of 3, 9, and 15 robots under Individual, Centralized, Chain, and SHAPE on eight embodied tasks in BEHAVIOR. SHAPE plans asynchronously over a shared, evolving, agent-built task graph with selective notifications, reaching higher average completion with lower coordination overhead across scales.</p>
-          </div>
-        </div>
-        <figure class="research-work-figure">
-          <a href="/shape/figs/overview.png" aria-label="Open the full figure"><img src="/shape/figs/overview.png" alt="SHAPE overview: team composition, task configuration, collaboration patterns, and evaluation by task performance and collaboration overhead." loading="lazy"></a>
-        </figure>
-      </article>
-
       <article id="work-tea" class="research-work">
         <div class="research-work-copy">
           <h3>From Prescribed to Emergent: Representing and Exploiting Structure in LLM Agents Collaboration</h3>
@@ -86,6 +67,25 @@ excerpt: "Projects on collaboration among intelligent entities, with their paper
         </div>
         <figure class="research-work-figure">
           <a href="/dig/figs/fig2_new.png" aria-label="Open the full figure"><img src="/dig/figs/fig2_new.png" alt="Dynamic Interaction Graph representation of agent activations and events." loading="lazy"></a>
+        </figure>
+      </article>
+
+      <article id="work-shape" class="research-work">
+        <div class="research-work-copy">
+          <h3>SHAPE: Scaling Collaborative Planning in LLM-Powered Heterogeneous Multi-Robot Systems</h3>
+          <p class="research-work-authors"><strong>H. Yang</strong>, Z. Weng, J. Guo, J. Chen, and C. Joe-Wong</p>
+          <div class="research-work-more">
+            <span class="research-work-venue"><a href="https://leap-workshop.github.io/">CoRL26 LEAP Workshop</a></span>
+            <span class="research-work-inline-links">
+              <button type="button" class="research-work-toggle" aria-expanded="false" aria-controls="overview-13">Overview</button>
+              <a href="/shape/SHAPE.pdf" download="SHAPE.pdf">Paper</a>
+              <a href="/shape/">Webpage</a>
+            </span>
+            <p class="research-work-overview" id="overview-13">Characterizes what a task offers additional robots through parallel and heterogeneous participation, and studies how collaborative planning scales for teams of 3, 9, and 15 robots under Individual, Centralized, Chain, and SHAPE on eight embodied tasks in BEHAVIOR. SHAPE plans asynchronously over a shared, evolving, agent-built task graph with selective notifications, reaching higher average completion with lower coordination overhead across scales.</p>
+          </div>
+        </div>
+        <figure class="research-work-figure">
+          <a href="/shape/figs/overview.png" aria-label="Open the full figure"><img src="/shape/figs/overview.png" alt="SHAPE overview: team composition, task configuration, collaboration patterns, and evaluation by task performance and collaboration overhead." loading="lazy"></a>
         </figure>
       </article>
 
