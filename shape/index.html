@@ -73,6 +73,7 @@
     }
     a.pill:hover { color: var(--accent-dark); border-color: rgba(31, 107, 142, 0.4); }
     .pill .tagish { color: rgba(0, 0, 0, 0.45); font-size: 0.78rem; }
+    .pill sup { font-size: 0.68em; line-height: 0; vertical-align: 0.45em; }
     .toc, .links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.45rem; }
     .links { margin-top: 1.2rem; }
     .links .builds-on { margin-left: 0.5rem; color: rgba(0, 0, 0, 0.5); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -92,9 +93,14 @@
     .affils .venue a:hover { color: var(--accent-dark); border-bottom-color: var(--accent-dark); }
     .section-title { margin-bottom: 1.25rem; }
     .mini { color: rgba(0, 0, 0, 0.76); font-size: 0.95rem; line-height: 1.62; }
-    .mini code, .tool code, .comparison code, .lead code, .cap code { color: var(--accent-dark); background: var(--accent-soft); font-size: 0.86em; }
+    .mini code, .comparison code, .lead code, .cap code, .pattern-list code { color: var(--accent-dark); background: var(--accent-soft); font-size: 0.86em; }
     .lead { max-width: 820px; margin: 0 auto 1.3rem; color: rgba(0, 0, 0, 0.78); font-size: 1.05rem; line-height: 1.6; text-align: center; }
     .takeaway { margin: 1rem 0 0; color: var(--accent-dark); font-size: 1.02rem; font-style: italic; font-weight: 500; }
+    .takeaways { margin: 0; padding-left: 1.4rem; color: rgba(0, 0, 0, 0.72); font-size: 0.97rem; line-height: 1.6; }
+    .takeaways li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+    .takeaways li::marker { color: var(--accent); font-weight: 800; }
+    .takeaways b { color: rgba(0, 0, 0, 0.85); }
+    .takeaways .tk { color: var(--accent-dark); font-style: italic; font-weight: 500; }
     .figure {
       overflow: hidden;
       border: 1px solid rgba(0, 0, 0, 0.08);
@@ -135,53 +141,38 @@
     .config-table td.lab { text-align: left; font-weight: 700; }
     .config-table .lo { color: rgba(0, 0, 0, 0.5); }
     .config-table .hi { color: var(--accent-dark); font-weight: 700; }
-    .formula {
-      margin: 0 auto 1.2rem; padding: 0.7rem 1rem; max-width: 560px;
-      border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 8px; background: #fff;
-      color: rgba(0, 0, 0, 0.8); font-size: 1.02rem; text-align: center;
-    }
     /* position: relative keeps KaTeX's absolutely positioned (hidden) MathML inside each scrolling box instead of widening the page */
-    .formula, .quant .eq, .step .eq, .pattern .eq { position: relative; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+    .quant .eq { position: relative; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
     .katex-display { margin: 0.3rem 0; overflow-x: auto; overflow-y: hidden; }
-    .tool-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.45rem; }
-    .tool { padding: 0.6rem 0.7rem; border: 1px solid rgba(31, 107, 142, 0.28); border-radius: 7px; background: #fff; }
-    .tool.notify { border-color: rgba(238, 162, 59, 0.7); background: linear-gradient(180deg, rgba(238, 162, 59, 0.12), #fff 70%); }
-    .tool code { font-family: 'KaTeX_Main', 'Latin Modern Roman', 'Times New Roman', serif; font-size: 1rem; font-weight: 700; background: transparent; padding: 0; color: rgba(0, 0, 0, 0.85); }
-    .tool code .arg { font-family: 'KaTeX_Math', 'KaTeX_Main', serif; font-style: italic; font-weight: 400; }
-    .tool p { margin: 0.22rem 0 0; color: rgba(0, 0, 0, 0.65); font-size: 0.78rem; line-height: 1.3; }
+    .tool-list {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, auto); grid-auto-flow: column; gap: 0.25rem 1.4rem;
+      padding: 0.7rem 1rem; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 9px; background: #fff;
+      color: rgba(0, 0, 0, 0.7); font-size: 0.9rem; line-height: 1.5;
+    }
+    .tool-list code { margin-right: 0.35rem; font-family: 'KaTeX_Main', 'Latin Modern Roman', 'Times New Roman', serif; font-size: 1rem; font-weight: 700; background: transparent; padding: 0; color: rgba(0, 0, 0, 0.85); white-space: nowrap; }
+    .tool-list code .arg { font-family: 'KaTeX_Math', 'KaTeX_Main', serif; font-style: italic; font-weight: 400; }
+    .tool-list .notify code { color: #b9651a; }
     .detail-title { margin: 1.5rem 0 0.6rem; }
     .detail-title small { margin-left: 0.4rem; color: rgba(0, 0, 0, 0.5); font-size: 0.82rem; font-weight: 500; }
-    .step-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; margin: 0.4rem 0; }
-    .step { padding: 0.95rem 1rem; border: 1px solid rgba(31, 107, 142, 0.25); border-radius: 10px; background: linear-gradient(180deg, var(--accent-soft), #fff 60%); }
-    .step .num { display: inline-flex; align-items: center; justify-content: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.85rem; font-weight: 800; }
-    .step h4 { margin: 0.5rem 0 0.2rem; font-size: 1rem; font-weight: 700; }
-    .step .eq { margin: 0 0 0.4rem; color: var(--accent-dark); font-size: 0.95rem; }
-    .step p { margin: 0; color: rgba(0, 0, 0, 0.68); font-size: 0.86rem; line-height: 1.45; }
-    .pattern-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.6rem; margin: 0.4rem 0 0; }
-    .pattern { padding: 0.9rem 1rem; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 10px; background: #fff; }
-    .pattern h4 { margin: 0 0 0.15rem; font-size: 1.05rem; font-weight: 700; }
-    .pattern h4 small { display: block; margin-top: 0.1rem; color: rgba(0, 0, 0, 0.5); font-size: 0.78rem; font-weight: 500; }
-    .pattern .eq { margin: 0.25rem 0 0.4rem; font-size: 0.92rem; color: rgba(0, 0, 0, 0.75); }
-    .pattern p { margin: 0; color: rgba(0, 0, 0, 0.68); font-size: 0.85rem; line-height: 1.45; }
-    .pattern.individual { border-top: 4px solid var(--individual); }
-    .pattern.centralized { border-top: 4px solid var(--centralized); }
-    .pattern.chain { border-top: 4px solid var(--chain); }
-    .pattern.ours { border-top: 4px solid var(--ours); }
-    .setup-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; margin: 0.4rem 0 0.9rem; }
-    .setup { padding: 0.85rem 1rem; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 9px; background: rgba(255, 255, 255, 0.85); }
-    .setup h4 { margin: 0 0 0.25rem; font-size: 0.98rem; font-weight: 700; }
-    .setup p { margin: 0; color: rgba(0, 0, 0, 0.68); font-size: 0.86rem; line-height: 1.45; }
-    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.35rem 1.4rem; margin: 0; padding: 0.8rem 1rem; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 9px; background: #fff; }
+    .pattern-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.35rem; padding: 0.7rem 1rem; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 9px; background: #fff; color: rgba(0, 0, 0, 0.7); font-size: 0.9rem; line-height: 1.5; }
+    .pattern-list div { padding-left: 0.75rem; border-left: 3px solid var(--individual); }
+    .pattern-list div.centralized { border-left-color: var(--centralized); }
+    .pattern-list div.chain { border-left-color: var(--chain); }
+    .pattern-list div.ours { border-left-color: var(--ours); }
+    .pattern-list b { margin-right: 0.3rem; color: rgba(0, 0, 0, 0.85); }
+    .pattern-list .eq { margin-right: 0.45rem; color: rgba(0, 0, 0, 0.78); }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem 1.4rem; margin: 0; padding: 0.8rem 1rem; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 9px; background: #fff; }
     .metrics div { color: rgba(0, 0, 0, 0.7); font-size: 0.88rem; line-height: 1.5; }
     .metrics b { color: rgba(0, 0, 0, 0.85); }
+    .metrics code { color: var(--accent-dark); background: var(--accent-soft); font-size: 0.86em; }
     .metrics .kind { color: var(--accent-dark); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
     .comparison { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     .comparison th, .comparison td { padding: 0.6rem 0.7rem; border-bottom: 1px solid rgba(0, 0, 0, 0.07); vertical-align: top; }
     .comparison th { background: var(--accent-soft); color: rgba(0, 0, 0, 0.72); text-align: left; font-weight: 700; }
-    .comparison th.group { text-align: center; background: rgba(31, 107, 142, 0.14); }
     .comparison td.num, .comparison th.num { text-align: right; font-variant-numeric: tabular-nums; }
     .comparison td.center, .comparison th.center { text-align: center; }
     .comparison td.label { font-weight: 700; white-space: nowrap; }
+    .comparison th.group { text-align: center; background: rgba(31, 107, 142, 0.14); }
     .comparison tr.ours td.label { color: var(--accent-dark); }
     .comparison tr.ours td { background: rgba(47, 143, 78, 0.07); }
     .comparison td.na { color: rgba(0, 0, 0, 0.35); text-align: center; }
@@ -189,10 +180,10 @@
     .comparison tr.scene th { background: rgba(31, 107, 142, 0.2); color: var(--accent-dark); text-align: left; }
     .comparison td.n { font-weight: 700; vertical-align: middle; text-align: center; background: rgba(0, 0, 0, 0.02); }
     .comparison td.first, .comparison th.first { border-left: 1px solid rgba(0, 0, 0, 0.1); }
-    .comparison.is-compact { font-size: 0.84rem; }
-    .comparison.is-compact th, .comparison.is-compact td { padding: 0.45rem 0.5rem; }
     .comparison.is-dense { font-size: 0.74rem; }
     .comparison.is-dense th, .comparison.is-dense td { padding: 0.28rem 0.32rem; white-space: nowrap; }
+    .comparison.is-compact { font-size: 0.84rem; }
+    .comparison.is-compact th, .comparison.is-compact td { padding: 0.45rem 0.5rem; }
     .comparison .yes { color: var(--ours); font-weight: 700; }
     .comparison .no { color: rgba(0, 0, 0, 0.3); }
     .comparison .desc { color: rgba(0, 0, 0, 0.7); white-space: normal; }
@@ -201,10 +192,6 @@
     .table-title { margin: 0 0 0.5rem; color: rgba(0, 0, 0, 0.62); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
     .theme-title { margin: 2rem 0 0.5rem; }
     .theme-title small { margin-left: 0.5rem; color: rgba(0, 0, 0, 0.45); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
-    .direction-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; margin-top: 0.8rem; }
-    .direction { padding: 0.9rem 1rem; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 9px; background: #fff; }
-    .direction h4 { margin: 0 0 0.25rem; font-size: 1rem; font-weight: 700; }
-    .direction p { margin: 0; color: rgba(0, 0, 0, 0.68); font-size: 0.86rem; line-height: 1.45; }
     details.more { margin-top: 1.3rem; border: 1px solid rgba(0, 0, 0, 0.09); border-radius: 10px; background: rgba(255, 255, 255, 0.75); }
     details.more > summary {
       display: flex; align-items: center; gap: 0.55rem;
@@ -224,8 +211,6 @@
     .footer { border-top: 1px solid rgba(0, 0, 0, 0.06); }
 
     @media (max-width: 1023px) {
-      .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .pattern-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 768px) {
       .publication-title { font-size: 2rem !important; }
@@ -233,16 +218,12 @@
       .hero-body { padding: 2.3rem 1rem 1.6rem; }
       .moves { grid-template-columns: minmax(0, 1fr); }
       .quant-grid { grid-template-columns: minmax(0, 1fr); }
-      .step-grid { grid-template-columns: minmax(0, 1fr); }
-      .setup-grid { grid-template-columns: minmax(0, 1fr); }
+      .tool-list { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-auto-flow: row; }
       .metrics { grid-template-columns: minmax(0, 1fr); }
-      .direction-grid { grid-template-columns: minmax(0, 1fr); }
       .comparison.is-wide { min-width: 640px; }
       .comparison.is-dense { min-width: 1080px; }
     }
     @media (max-width: 480px) {
-      .tool-grid { grid-template-columns: minmax(0, 1fr); }
-      .pattern-grid { grid-template-columns: minmax(0, 1fr); }
     }
   </style>
 
@@ -277,7 +258,7 @@
               <a class="pill" href="SHAPE.pdf" download="SHAPE.pdf"><i class="fas fa-file-pdf" aria-hidden="true"></i> Paper</a>
               <span class="builds-on">Builds on</span>
               <a class="pill" href="../tea/"><i class="fas fa-project-diagram" aria-hidden="true"></i> TEA <span class="tagish">task graph</span></a>
-              <a class="pill" href="../coop2/"><i class="fas fa-sync-alt" aria-hidden="true"></i> COOP<sup>2</sup> <span class="tagish">interaction loop</span></a>
+              <a class="pill" href="../coop2/"><i class="fas fa-sync-alt" aria-hidden="true"></i> <span>COOP<sup>2</sup></span> <span class="tagish">interaction loop</span></a>
             </div>
             <nav class="toc" aria-label="Page sections" style="margin-top: 0.9rem;">
               <a class="pill" href="#overview">Overview</a>
@@ -319,6 +300,18 @@
         </figcaption>
       </figure>
 
+      <figure class="figure" style="margin-top: 1rem;">
+        <img src="figs/trajectory.jpg" alt="Six frames of transporting a light object: the RidgebackUr navigates to the notebook, the Jackal navigates to the RidgebackUr, the RidgebackUr grasps the notebook, loads it onto the Jackal, unloads it from the Jackal after transport, and places it on top of the bed" />
+        <figcaption class="cap">
+          <strong>One task goal, up close: transporting a light object.</strong> The RidgebackUr manipulator navigates within reach of the
+          notebook while the Jackal carrier moves alongside it; the manipulator grasps the notebook and loads it onto the carrier, since it
+          cannot navigate while holding an object; after transport it unloads the notebook and places it on the bed. A single goal already
+          needs two robot types in the right places and costs environment steps in proportion to the distance traveled. Tasks are designed
+          as graphs of such goals, with dependencies among them and the robot types each one needs; how much of that work can run in
+          parallel, and how many robot types it calls for, are the two demand measures defined under <a href="#demands">Task Demands</a>.
+        </figcaption>
+      </figure>
+
       <div class="moves">
         <article class="move measure">
           <span class="num">1</span>
@@ -344,18 +337,7 @@
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered section-title">What Does a Task Offer Extra Robots?</h2>
 
-      <figure class="figure">
-        <img src="figs/trajectory.jpg" alt="Six frames of transporting a light object: the RidgebackUr navigates to the notebook, the Jackal navigates to the RidgebackUr, the RidgebackUr grasps the notebook, loads it onto the Jackal, unloads it from the Jackal after transport, and places it on top of the bed" />
-        <figcaption class="cap">
-          <strong>An example task goal: transporting a light object.</strong> The RidgebackUr manipulator navigates within reach of the
-          notebook while the Jackal carrier moves alongside it; the manipulator grasps the notebook and loads it onto the carrier, since it
-          cannot navigate while holding an object; after transport it unloads the notebook and places it on the bed. One goal needs two
-          robot types in the right places, and each navigation takes environment steps in proportion to the distance. A task is a set of
-          such goals with dependencies among them.
-        </figcaption>
-      </figure>
-
-      <p class="lead" style="margin-top: 1.4rem;">
+      <p class="lead">
         For evaluation, each task is a typed directed acyclic graph \(T = (V, E, \rho)\): a node \(v\) is a task goal, \(\rho_v \subseteq R\)
         lists the robot types eligible to complete it, and an edge \((u, v)\) is a dependency, so \(v\) counts as complete only after \(u\).
         Two quantifiers summarize what the graph offers a team.
@@ -459,70 +441,39 @@
         </figcaption>
       </figure>
 
-      <h3 class="title is-5 detail-title">Shared task state <small>task, evidence, and notification tools</small></h3>
-      <div class="tool-grid">
-        <article class="tool"><code>OPEN(<span class="arg">&delta;, &sigma;</span>)</code><p>Create a task with a fresh identity.</p></article>
-        <article class="tool"><code>EDIT(<span class="arg">q, &delta;&prime;</span>)</code><p>Revise a goal or evaluation rule.</p></article>
-        <article class="tool"><code>UPDATE(<span class="arg">q, &sigma;&prime;</span>)</code><p>Update the current state.</p></article>
-        <article class="tool"><code>SPLIT(<span class="arg">q, {(k<sub>j</sub>, &delta;<sub>j</sub>, &sigma;<sub>j</sub>)}</span>)</code><p>Create subtasks or branch out.</p></article>
-        <article class="tool"><code>JOIN(<span class="arg">{q<sub>j</sub>}, k&prime;, &delta;&prime;, &sigma;&prime;</span>)</code><p>Combine input task versions.</p></article>
-        <article class="tool"><code>CLOSE(<span class="arg">k</span>)</code><p>Mark the identity as closed.</p></article>
-        <article class="tool"><code>ATTACH(<span class="arg">s, x, q</span>)</code><p>Attach evidence to task version \(q\).</p></article>
-        <article class="tool notify"><code>NOTIFY(<span class="arg">J<sub>j</sub></span>)</code><p>Interrupt the agents in \(J_j\) so they reconsider their plans.</p></article>
+      <h3 class="title is-5 detail-title">Shared task state <small>eight tools</small></h3>
+      <div class="tool-list">
+        <div><code>OPEN(<span class="arg">&delta;, &sigma;</span>)</code> create a task with a fresh identity</div>
+        <div><code>EDIT(<span class="arg">q, &delta;&prime;</span>)</code> revise a goal or evaluation rule</div>
+        <div><code>UPDATE(<span class="arg">q, &sigma;&prime;</span>)</code> update the current state</div>
+        <div><code>SPLIT(<span class="arg">q, {(k<sub>j</sub>, &delta;<sub>j</sub>, &sigma;<sub>j</sub>)}</span>)</code> create subtasks or branch out</div>
+        <div><code>JOIN(<span class="arg">{q<sub>j</sub>}, k&prime;, &delta;&prime;, &sigma;&prime;</span>)</code> combine input task versions</div>
+        <div><code>CLOSE(<span class="arg">k</span>)</code> mark the identity as closed</div>
+        <div><code>ATTACH(<span class="arg">s, x, q</span>)</code> attach evidence to task version \(q\)</div>
+        <div class="notify"><code>NOTIFY(<span class="arg">J<sub>j</sub></span>)</code> interrupt the agents in \(J_j\) so they reconsider their plans</div>
       </div>
       <p class="mini" style="margin-top: 0.7rem;">
-        A task version \(q = (k, \delta, \sigma)\) records a persistent identity, a specification with the goal and evaluation rule, and
-        a state; <code>EDIT</code> and <code>UPDATE</code> append versions under the same identity. Evidence \(\phi = (s, x, q)\), from
-        BDDL evaluation results or agent messages, attaches to an exact version and informs the decisions that follow.
+        A task version \(q = (k, \delta, \sigma)\) carries a persistent identity, a specification (goal and evaluation rule), and a
+        state; <code>EDIT</code> and <code>UPDATE</code> append versions under the same identity, and evidence \(\phi = (s, x, q)\),
+        from BDDL evaluation results or agent messages, attaches to an exact version.
       </p>
 
-      <h3 class="title is-5 detail-title">One planning decision <small>per activation of agent \(j\)</small></h3>
-      <div class="formula">
-        \( (u_{T,j},\, \hat{\pi}_j,\, J_j) \leftarrow \mathrm{LLM}(o_{E,j},\, o_{G_T,j}) \)
-      </div>
-      <div class="step-grid">
-        <article class="step">
-          <span class="num">1</span>
-          <h4>Observe</h4>
-          <p class="eq">\(o_{E,j}\), \(o_{G_T,j}\)</p>
-          <p>The environment observation and the task observation: the latest versions of open tasks, agent work histories, and the structural relationships among tasks.</p>
-        </article>
-        <article class="step">
-          <span class="num">2</span>
-          <h4>Decide</h4>
-          <p class="eq">\(u_{T,j}\), \(\hat{\pi}_j\)</p>
-          <p>A TAG tool call with its arguments, possibly none, applied before any notification goes out, and an execution plan for each robot in the agent's team.</p>
-        </article>
-        <article class="step">
-          <span class="num">3</span>
-          <h4>Notify, selectively</h4>
-          <p class="eq">\(J_j \subseteq J \setminus \{j\}\)</p>
-          <p>Within a per-step notification budget \(b_j\), <code>notify</code> moves each chosen recipient into the interruption stage with a chance to revise. The environment advances once every agent has actions ready; an uninterrupted agent plans again when its robots finish their current plans.</p>
-        </article>
-      </div>
+      <h3 class="title is-5 detail-title">Each planning decision <small>one activation of an agent</small></h3>
+      <p class="mini">
+        An agent reads its environment observation and the task graph (the latest versions of open tasks, agents' work histories,
+        and the relationships among tasks) and returns three things: a TAG tool call, an execution plan for each robot in its team,
+        and the agents to notify, any of which may be empty. The tool call takes effect before any notification goes out; each
+        notification spends a per-step budget and moves its recipient into the interruption stage with a chance to revise. The
+        environment advances once every agent has actions ready, and an uninterrupted agent plans again when its robots finish
+        their current plans.
+      </p>
 
       <h3 class="title is-5 detail-title">Collaboration patterns <small>who may message whom</small></h3>
-      <div class="pattern-grid">
-        <article class="pattern individual">
-          <h4>Individual <small>no communication</small></h4>
-          <p class="eq">\( E_{\mathrm{ind}} = \varnothing \)</p>
-          <p>Agents plan independently and never exchange a message.</p>
-        </article>
-        <article class="pattern centralized">
-          <h4>Centralized <small>a coordinator</small></h4>
-          <p class="eq">\( E_{\mathrm{cen}} = \{(0, j), (j, 0) : j \neq 0\} \)</p>
-          <p>Agent 0 also serves as coordinator, and every other agent exchanges messages with it.</p>
-        </article>
-        <article class="pattern chain">
-          <h4>Chain <small>a broadcast chain</small></h4>
-          <p class="eq">\( E_{\mathrm{chain}} = \{(j, j') : j < j'\} \)</p>
-          <p>In index order, each agent considers the earlier messages, broadcasts its own to all following agents, then plans for its team.</p>
-        </article>
-        <article class="pattern ours">
-          <h4>SHAPE <small>selected recipients</small></h4>
-          <p class="eq">\( E_{\mathrm{ours}} = \{(j, j') : j' \in J_j\} \)</p>
-          <p>Agents share the task graph and message only the recipients they select for each <code>notify</code> call.</p>
-        </article>
+      <div class="pattern-list">
+        <div class="individual"><b>Individual</b> <span class="eq">\( E_{\mathrm{ind}} = \varnothing \)</span> agents plan independently and never exchange a message.</div>
+        <div class="centralized"><b>Centralized</b> <span class="eq">\( E_{\mathrm{cen}} = \{(0, j), (j, 0) : j \neq 0\} \)</span> agent 0 also coordinates, and every other agent exchanges messages with it.</div>
+        <div class="chain"><b>Chain</b> <span class="eq">\( E_{\mathrm{chain}} = \{(j, j') : j < j'\} \)</span> a broadcast chain: in index order, each agent reads the earlier messages, broadcasts its own to all following agents, then plans for its team.</div>
+        <div class="ours"><b>SHAPE</b> <span class="eq">\( E_{\mathrm{ours}} = \{(j, j') : j' \in J_j\} \)</span> agents share the task graph and message only the recipients they select for each <code>notify</code> call.</div>
       </div>
 
       <figure class="figure" style="margin-top: 1.4rem;">
@@ -539,141 +490,61 @@
   <section class="section hero is-light" id="results">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered section-title">Results</h2>
-      <div class="setup-grid">
-        <article class="setup">
-          <h4>Teams</h4>
-          <p>Teams of three, one RidgebackUr, one Jackal, and one Crazyflie each, with one LLM agent per team. \(N \in \{3, 9, 15\}\) robots are controlled by one, three, and five agents, so composition stays balanced as the team grows.</p>
-        </article>
-        <article class="setup">
-          <h4>Simulation</h4>
-          <p>BEHAVIOR's BDDL specifies each task's initial and goal conditions; OmniGibson simulates the scenes and executes the robots' symbolic tools in <code>Merom_1_int</code> and <code>Beechwood_0_int</code>.</p>
-        </article>
-        <article class="setup">
-          <h4>Runs</h4>
-          <p><code>gpt-5.6-terra</code> is the LLM for every agent. Each task, team size, and method is run three times; summary numbers also average the two scenes.</p>
-        </article>
-      </div>
-      <div class="metrics" aria-label="Metrics">
-        <div><span class="kind">Performance</span><br /><b>CR</b>, completion rate: the fraction of task-graph nodes completed, \(|V_{\mathrm{done}}| / |V|\). <b>ES</b>, environment steps: the episode's step count, up to a limit, whether it completed or ran out.</div>
-        <div><span class="kind">Overhead</span><br /><b>WT</b> and <b>IT</b>: time the agents spend waiting and handling interruptions, summed over agents. <b>ML</b>: messages counted per recipient, including those <code>notify</code> sends. <b>TO</b>: the share of runs ended by the step or wall-clock limit. With a single team (\(N = 3\)) there is no one to wait for or message, so WT, IT, and ML are undefined.</div>
+      <h3 class="title is-5 theme-title" style="margin-top: 0.4rem;">Experiment and metric design <small>setup</small></h3>
+      <div class="metrics" aria-label="Experiment and metric design">
+        <div><span class="kind">Teams</span><br />Teams of three, one RidgebackUr, one Jackal, and one Crazyflie each, with one LLM agent per team. \(N \in \{3, 9, 15\}\) robots are controlled by one, three, and five agents, so composition stays balanced as the team grows.</div>
+        <div><span class="kind">Simulation and runs</span><br />BEHAVIOR's BDDL specifies each task's initial and goal conditions; OmniGibson simulates <code>Merom_1_int</code> and <code>Beechwood_0_int</code> and executes the symbolic tools. <code>gpt-5.6-terra</code> drives every agent; each task, team size, and method is run three times, and summary numbers also average the two scenes.</div>
+        <div><span class="kind">Performance metrics</span><br /><b>CR</b>, completion rate: the fraction of task-graph nodes completed, \(|V_{\mathrm{done}}| / |V|\). <b>ES</b>, environment steps: the episode's step count, up to a limit, whether it completed or ran out.</div>
+        <div><span class="kind">Overhead metrics</span><br /><b>WT</b> and <b>IT</b>: time the agents spend waiting and handling interruptions, summed over agents. <b>ML</b>: messages counted per recipient, including those <code>notify</code> sends. <b>TO</b>: the share of runs ended by the step or wall-clock limit. With a single team (\(N = 3\)) there is no one to wait for or message, so WT, IT, and ML are undefined.</div>
       </div>
 
-      <h3 class="title is-5 theme-title">Shared task understanding <small>theme 1</small></h3>
-      <div class="columns is-vcentered">
-        <div class="column is-7">
-          <p class="mini">
-            Individual forms its understanding of the task state alone; Centralized and Chain exchange task information through
-            messages; SHAPE maintains an explicit, evolving task state built from all agents' asynchronous contributions. When
-            heterogeneous demand is low (LL and HL), Individual keeps a high completion rate as the team grows. When it is high (LH and
-            HH), completion falls from 3 to 15 robots, and SHAPE's mean completion stays well above Individual's.
-          </p>
-        </div>
-        <div class="column is-5">
-          <p class="table-title">Completion rate at N = 15, mean of both scenes</p>
-          <div class="table-wrap">
-            <table class="comparison is-compact">
-              <thead><tr><th>Method</th><th class="num">LH</th><th class="num">HH</th></tr></thead>
-              <tbody>
-                <tr><td class="label">Individual</td><td class="num">0.20</td><td class="num">0.70</td></tr>
-                <tr><td class="label">Centralized</td><td class="num">0.20</td><td class="num"><strong>0.85</strong></td></tr>
-                <tr><td class="label">Chain</td><td class="num">0.30</td><td class="num">0.65</td></tr>
-                <tr class="ours"><td class="label">SHAPE</td><td class="num"><strong>0.60</strong></td><td class="num"><strong>0.85</strong></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <p class="takeaway">Shared task understanding becomes especially valuable as teams scale on tasks with high heterogeneous demands.</p>
-
-      <h3 class="title is-5 theme-title">Agent perspectives <small>theme 2</small></h3>
-      <div class="columns is-vcentered">
+      <div class="columns" style="margin-top: 1.4rem;">
         <div class="column is-5">
           <figure class="figure is-padded">
             <img src="figs/cr-vs-n.png" loading="lazy" alt="Mean completion rate versus team size for Individual, Centralized, Chain, and SHAPE (labeled Task Graph, Ours), with standard-deviation shading. The three baselines decline from about 0.9 at three robots to about 0.7 to 0.75 at fifteen; SHAPE rises to about 0.97 at nine robots and stays highest, about 0.86, at fifteen" />
             <figcaption class="cap">
-              <strong>Mean completion rate versus team size</strong> over all settings; shading is the standard deviation across runs.
-              The baselines decline with scale; SHAPE peaks at \(N = 9\) and remains highest at \(N = 15\).
+              <strong>Task performance.</strong> Mean completion rate versus team size over all settings; shading is the standard deviation
+              across runs. The baselines decline with scale; SHAPE peaks at \(N = 9\) and remains highest at \(N = 15\).
             </figcaption>
           </figure>
         </div>
         <div class="column is-7">
-          <p class="mini">
-            Centralized relies on a leader, Chain incorporates perspectives sequentially, and SHAPE lets agents asynchronously revise
-            shared tasks. At \(N = 15\), Chain and SHAPE complete more of the LH tasks than Centralized, while Centralized and SHAPE
-            complete more of the HH tasks than Chain: multiple perspectives help resolve task dependencies, and centralized decisions help
-            allocate work. SHAPE integrates both through a shared, revisable task graph, and across all tasks it has the highest mean
-            completion at \(N = 9\) and \(N = 15\).
-          </p>
-        </div>
-      </div>
-      <p class="takeaway">Diverse perspectives become more valuable as teams grow and dependencies become more complex, but they must be effectively integrated to improve task completion.</p>
-
-      <h3 class="title is-5 theme-title">Timely agreement and synchronization costs <small>theme 3</small></h3>
-      <div class="columns is-vcentered">
-        <div class="column is-6">
-          <p class="mini">
-            Synchronization aligns agents' plans but delays execution as teams grow. Individual has little overhead because its agents
-            never communicate; Chain waits for sequential responses and times out most often; from 9 to 15 robots, Centralized and
-            Chain incur rising waiting time, interruption time, and message load. At \(N = 15\), averaged over configurations and scenes,
-            SHAPE's waiting time, interruption time, and message load are roughly 37.5%, 54.5%, and 49.5% lower than Centralized's,
-            and all three are lower than Chain's.
-          </p>
-        </div>
-        <div class="column is-6">
           <figure class="figure is-padded">
             <img src="figs/overhead-vs-n.png" loading="lazy" alt="Four line plots versus team size with standard-deviation shading: message load, interruption time, waiting time, and percentage of episodes timed out. Chain rises steepest in all four, Centralized is in between, SHAPE (labeled Task Graph, Ours) stays lowest among the communicating methods, and Individual has no messages or interruptions but a timeout rate that climbs to about 50% at fifteen robots" />
             <figcaption class="cap">
-              <strong>Overhead versus team size.</strong> Mean message load, interruption time, waiting time, and timeout frequency, with
-              standard-deviation shading across runs.
+              <strong>Collaboration overhead.</strong> Mean message load, interruption time, waiting time, and timeout frequency versus team
+              size. At \(N = 15\), SHAPE's waiting time, interruption time, and message load are roughly 37.5%, 54.5%, and 49.5% lower than
+              Centralized's, and all three are lower than Chain's.
             </figcaption>
           </figure>
         </div>
       </div>
-      <p class="takeaway">SHAPE's shared task state and asynchronous notifications support coordination as teams grow, enabling timely agreement with low collaboration overhead.</p>
 
-      <h3 class="title is-5 theme-title">Does the structure matter? <small>shared-channel ablation</small></h3>
-      <p class="mini">
-        Replacing the structured task graph with an unstructured shared channel that provides the full message history while keeping
-        <code>notify</code> (<strong>Shared-Channel</strong>) isolates the graph's contribution. In <code>Merom_1_int</code>, SHAPE
-        completes more of the low-parallelism, high-heterogeneity task at \(N = 9\) (1.0 versus 0.7) and uses fewer environment steps on
-        the high-parallelism, low-heterogeneity task at \(N = 9\) (1259.7 versus 3515.0) and \(N = 15\) (1226.0 versus 1431.0). The two are
-        otherwise comparable, except that Shared-Channel completes more of the HH task at \(N = 15\) (0.9 versus 0.8).
+      <h3 class="title is-5 theme-title">Three takeaways</h3>
+      <ol class="takeaways">
+        <li>
+          <b>Shared task understanding.</b>
+          <span class="tk">Shared task understanding becomes especially valuable as teams scale on tasks with high heterogeneous demands.</span>
+          Individual keeps a high completion rate as the team grows when heterogeneous demand is low, but on high-heterogeneity tasks
+          at 15 robots its completion falls far below SHAPE's.
+        </li>
+        <li>
+          <b>Agent perspectives.</b>
+          <span class="tk">Diverse perspectives become more valuable as teams grow and dependencies become more complex, but they must be effectively integrated to improve task completion.</span>
+          Every baseline's mean completion declines with team size; SHAPE, which integrates perspectives through the shared,
+          revisable task graph, is highest at 9 and 15 robots.
+        </li>
+        <li>
+          <b>Timely agreement and synchronization costs.</b>
+          <span class="tk">SHAPE's shared task state and asynchronous notifications support coordination as teams grow, enabling timely agreement with low collaboration overhead.</span>
+          Chain's sequential responses delay execution and time out most often, and Centralized's overhead keeps rising from 9 to 15
+          robots, while SHAPE stays well below both.
+        </li>
+      </ol>
+      <p class="mini" style="margin-top: 0.8rem;">
+        The paper also reports a shared-channel ablation, which replaces the structured task graph with a plain message history, and
+        a case study with teams grouped by robot type. The full results by scene, configuration, and team size are below.
       </p>
-      <p class="takeaway">These mixed results highlight the potential of structured task state over full message histories, and motivate further study of structured representations for task selection, dependency resolution, and synchronization.</p>
-
-      <h3 class="title is-5 theme-title">Teams grouped by robot type <small>case study</small></h3>
-      <div class="columns is-vcentered">
-        <div class="column is-5">
-          <p class="mini">
-            Nine robots are regrouped into three single-type teams, each controlled by one LLM agent, on the two high-\(C(T)\) tasks of
-            <code>Merom_1_int</code>, so completing work requires coordination across agents. SHAPE reduces waiting time, interruption
-            time, and message load compared with Centralized; its completion is lower in LH but higher in HH, where more parallel
-            opportunities exist.
-          </p>
-        </div>
-        <div class="column is-7">
-          <p class="table-title">N = 9 robots in three single-type teams</p>
-          <div class="table-wrap">
-            <table class="comparison is-compact is-wide">
-              <thead><tr><th>Method</th><th class="num">CR &uarr;</th><th class="num">ES &darr;</th><th class="num">WT &darr;</th><th class="num">IT &darr;</th><th class="num">ML &darr;</th></tr></thead>
-              <tbody>
-                <tr class="scene"><th colspan="6">LH &middot; low parallel, high heterogeneous participation</th></tr>
-                <tr><td class="label">Individual</td><td class="num">0.17</td><td class="num">5744.0</td><td class="num"><strong>34.2</strong></td><td class="na">&ndash;</td><td class="na">&ndash;</td></tr>
-                <tr><td class="label">Chain</td><td class="num">0.33</td><td class="num">5126.7</td><td class="num">871.8</td><td class="num">273.2</td><td class="num">52.7</td></tr>
-                <tr><td class="label">Centralized</td><td class="num"><strong>0.43</strong></td><td class="num"><strong>4889.0</strong></td><td class="num">618.8</td><td class="num">231.5</td><td class="num">61.3</td></tr>
-                <tr class="ours"><td class="label">SHAPE</td><td class="num">0.37</td><td class="num">5504.0</td><td class="num">408.0</td><td class="num"><strong>115.9</strong></td><td class="num"><strong>24.0</strong></td></tr>
-                <tr class="scene"><th colspan="6">HH &middot; high parallel, high heterogeneous participation</th></tr>
-                <tr><td class="label">Individual</td><td class="num">0.57</td><td class="num">5716.7</td><td class="num"><strong>43.5</strong></td><td class="na">&ndash;</td><td class="na">&ndash;</td></tr>
-                <tr><td class="label">Chain</td><td class="num">0.40</td><td class="num">5289.7</td><td class="num">752.4</td><td class="num">270.9</td><td class="num">42.7</td></tr>
-                <tr><td class="label">Centralized</td><td class="num">0.77</td><td class="num"><strong>4722.3</strong></td><td class="num">576.1</td><td class="num">243.1</td><td class="num">62.7</td></tr>
-                <tr class="ours"><td class="label">SHAPE</td><td class="num"><strong>0.80</strong></td><td class="num">5265.3</td><td class="num">521.3</td><td class="num"><strong>156.6</strong></td><td class="num"><strong>27.0</strong></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="mini" style="margin-top: 0.4rem; font-size: 0.82rem;">Best value per task in bold. IT and ML are undefined for Individual, which never sends a message.</p>
-        </div>
-      </div>
-      <p class="takeaway">SHAPE reduces collaboration overhead even when task completion requires coordination across agents with different robot capabilities.</p>
 
       <details class="more">
         <summary>Read more: results by scene, task configuration, and team size</summary>
@@ -724,30 +595,14 @@
 
       <h3 class="title is-5 theme-title">Where this leads <small>future directions</small></h3>
       <p class="mini">
-        Parallel and heterogeneous participation shape how LLM-powered robot teams scale, and SHAPE achieves higher average completion with
-        lower overhead than Centralized and Chain across scales. These findings motivate adaptive multi-robot planning that maintains shared
-        task understanding, integrates agent perspectives, and balances timely agreement against synchronization costs.
+        These findings motivate adaptive multi-robot planning that maintains shared task understanding, integrates agent perspectives,
+        and balances timely agreement against synchronization costs. Three directions follow: letting agents request robot types, so
+        that team composition becomes part of the collaboration problem; encoding capability requirements and dependencies in the
+        task graph to reduce synchronization costs; and using task structure to retrieve and compose context for larger teams on
+        long-horizon and distributed tasks.
       </p>
-      <div class="direction-grid">
-        <article class="direction">
-          <h4>Composition as part of the problem</h4>
-          <p>Letting agents request robot types would make team composition part of the collaboration problem rather than a fixed input.</p>
-        </article>
-        <article class="direction">
-          <h4>Encoding task attributes</h4>
-          <p>Effective encodings of capability requirements and dependencies in the task graph could reduce synchronization costs.</p>
-        </article>
-        <article class="direction">
-          <h4>Structure as context</h4>
-          <p>Using task structure to retrieve and compose context could support larger teams on long-horizon and distributed tasks.</p>
-        </article>
-      </div>
 
-      <p class="mini" style="margin-top: 1.6rem; font-size: 0.86rem; color: rgba(0, 0, 0, 0.6);">
-        <strong>Acknowledgments.</strong> Research supported by the NVIDIA Academic Grant Program using NVIDIA RTX PRO 6000 Max-Q
-        Workstation Edition GPUs.
-      </p>
-      <p class="mini has-text-centered" style="margin-top: 1rem;"><a href="#top">Back to top</a></p>
+      <p class="mini has-text-centered" style="margin-top: 1.6rem;"><a href="#top">Back to top</a></p>
     </div>
   </section>
 
